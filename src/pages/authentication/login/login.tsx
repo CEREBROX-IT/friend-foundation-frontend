@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import BackgroundImage from "../../../assets/authentication/background_image.webp";
 import LeftPanel from "../../../assets/authentication/left_panel.webp";
 import RightPanel from "../../../assets/authentication/right_panel.webp";
+import SdaIcon from "../../../assets/white_sda_icon.webp";
 import SampleLogo from "../../../assets/authentication/sample_logo.webp";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -43,6 +44,10 @@ const LoginScreen: FC = () => {
         backgroundSize: "cover",
       }}
     >
+      <img
+        src={SdaIcon}
+        className="absolute z-10 top-0 left-0 w-[140px] md:w-[200px] mt-4 ml-4"
+      />
       <div
         data-aos="zoom-in"
         className="z-20 relative flex flex-col items-center w-[90%] md:w-[450px] bg-white py-4 px-10 rounded-[20px]"
@@ -134,7 +139,7 @@ const LoginScreen: FC = () => {
         </p>
       </div>
 
-      <div className="absolute w-full h-screen hidden lg:flex flex-row justify-between">
+      <div className="absolute w-full h-screen hidden xl:flex flex-row justify-between">
         <img
           src={LeftPanel}
           className="absolute lg:h-[90vh] lg:w-[60vh] top-0 left-0 mt-[-4rem] ml-[-4rem]"
