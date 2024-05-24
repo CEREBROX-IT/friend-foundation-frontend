@@ -1,12 +1,22 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-
+import { Routes, Route } from "react-router-dom";
+import SideBar from "../components/sidebar";
+import AdminDashboard from "../pages/dashboard/admin-dashboard/admin-dashboard";
 const Protected = () => {
   return (
-    <div>
-            <p>undefined</p>
+    <div className="parent-container flex flec-col bg-fourth-light">
+      <Routes>
+        <Route
+          path="/dashboard"
+          element={
+            <>
+              <SideBar />
+              <AdminDashboard />
+            </>
+          }
+        />
+      </Routes>
     </div>
-  )
-}
+  );
+};
 
-export default Protected
+export default Protected;

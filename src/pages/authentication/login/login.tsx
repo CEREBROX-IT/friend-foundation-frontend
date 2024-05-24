@@ -38,7 +38,7 @@ const LoginScreen: FC = () => {
 
   return (
     <div
-      className="relative flex flex-col items-center justify-center w-full h-screen overflow-x-hidden overflow-y-hidden"
+      className="parent-container relative flex-col items-center justify-center w-full h-screen overflow-x-hidden overflow-y-hidden"
       style={{
         backgroundImage: `url(${BackgroundImage})`,
         backgroundSize: "cover",

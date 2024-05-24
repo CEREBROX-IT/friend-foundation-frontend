@@ -11,17 +11,21 @@ export default {
         },
         secondary: {
           light: "#FDB714",
-          dark: "#047857",
+          dark: "#FDB714",
         },
         third: {
           light: "#E9A60A",
           dark: "#b45309",
         },
         fourth: {
-          light: "#F7F9F9",
+          light: "#F5F6FB",
           dark: "#b45309",
         },
         fifth: {
+          light: "#202020",
+          dark: "#202020",
+        },
+        six: {
           light: "#FFFFFF",
           dark: "#b45309",
         },
