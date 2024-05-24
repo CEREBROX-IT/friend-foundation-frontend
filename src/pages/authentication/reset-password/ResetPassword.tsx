@@ -2,8 +2,6 @@ import { FC } from "react";
 import BackgroundImage from "../../../assets/authentication/background_image.webp";
 import SdaIcon from "../../../assets/white_sda_icon.webp";
 import SampleLogo from "../../../assets/authentication/sample_logo.webp";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import { useForm, SubmitHandler } from "react-hook-form";
 
