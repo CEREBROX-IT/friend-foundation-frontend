@@ -330,7 +330,7 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
       </form>
 
       <p className="mb-[30px] mt-[50px]">
-        Don't have an account?{" "}
+        Already have an Account?{" "}
         <span
           className="hover:underline cursor-pointer text-secondary-light"
           onClick={handleBackToLogin}

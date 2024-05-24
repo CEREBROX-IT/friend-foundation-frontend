@@ -40,7 +40,7 @@ const LoginScreen: FC = () => {
   };
 
   const handleBackToLogin = () => {
-    setAnimation("flip-left");
+    setAnimation("flip-right");
     setIsRegister(false);
   };
 
