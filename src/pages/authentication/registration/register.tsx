@@ -21,12 +21,14 @@ interface IFormInput {
 }
 
 const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues
   } = useForm<IFormInput>();
+  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
