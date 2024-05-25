@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface AdminCardsProps {
+interface CardsProps {
   title: string;
   result: string;
   incomplete: string;
@@ -10,7 +10,7 @@ interface AdminCardsProps {
   navigation_path: string;
 }
 
-const AdminCards: FC<AdminCardsProps> = ({
+const ResultCards: FC<CardsProps> = ({
   title,
   result,
   incomplete,
@@ -42,4 +42,4 @@ const AdminCards: FC<AdminCardsProps> = ({
   );
 };
 
-export default AdminCards;
+export default ResultCards;

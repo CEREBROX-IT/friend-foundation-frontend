@@ -1,12 +1,15 @@
 import { FC } from "react";
 import Header from "../../../components/header";
-import AdminCards from "../../../components/admin-components/admin-cards";
+import ResultCards from "../../../components/result-cards";
 import { HiMiniUsers } from "react-icons/hi2";
 import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
+import SubmittedFormOverview from "../../../components/admin-components/submitted-forms-overview";
+import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
+import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
 
 const AdminDashboard: FC = () => {
   return (
-    <div className="relative flex flex-col w-full bg-fourth-light overflow-y-scroll">
+    <div className="relative flex flex-col w-full bg-fourth-light overflow-y-auto">
       <Header />
       <div className="w-full h-[200px] bg-primary-light p-4">
         <p className="text-sixth-light font-semibold text-[25px]">
@@ -14,7 +17,7 @@ const AdminDashboard: FC = () => {
         </p>
       </div>
       <div className="flex flex-wrap flex-row gap-4 px-4 mt-[-7.5rem]">
-        <AdminCards
+        <ResultCards
           title="No. of Users"
           result="2,210"
           incomplete="463"
@@ -22,7 +25,7 @@ const AdminDashboard: FC = () => {
           icon={HiMiniUsers}
           navigation_path="/dashboard/users"
         />
-        <AdminCards
+        <ResultCards
           title="Form Submission"
           result="731"
           incomplete="211"
@@ -30,7 +33,7 @@ const AdminDashboard: FC = () => {
           icon={FaFile}
           navigation_path="/dashboard"
         />
-        <AdminCards
+        <ResultCards
           title="No. of Pastors"
           result="1,381"
           incomplete="463"
@@ -38,7 +41,7 @@ const AdminDashboard: FC = () => {
           icon={FaUserTie}
           navigation_path="/dashboard"
         />
-        <AdminCards
+        <ResultCards
           title="No. of Church"
           result="441"
           incomplete="14"
@@ -49,6 +52,24 @@ const AdminDashboard: FC = () => {
       </div>
 
       {/* ============================ First Table ============================ */}
+
+      <div className="w-full p-4 mt-2">
+        <div className="bg-sixth-light shadow-lg rounded-[10px]">
+          <SubmittedFormOverview />
+        </div>
+      </div>
+
+      <div className="w-full p-4 mt-2">
+        <div className="bg-sixth-light shadow-lg rounded-[10px]">
+          <AssignmentLogsOverview />
+        </div>
+      </div>
+
+      <div className="w-full p-4 mt-2">
+        <div className="bg-sixth-light shadow-lg rounded-[10px]">
+          <PendingUserOverview />
+        </div>
+      </div>
     </div>
   );
 };
