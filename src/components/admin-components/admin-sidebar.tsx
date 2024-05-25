@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import SDA_Logo from "../assets/sda_logo_only.webp";
+import SDA_Logo from "../../assets/sda_logo_only.webp";
 import { HiMiniUsers } from "react-icons/hi2";
 import { IoIosArrowBack, IoIosArrowDown, IoIosFolder } from "react-icons/io";
 import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
 import { MdDashboardCustomize } from "react-icons/md";
+import { TbReportSearch } from "react-icons/tb";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -45,7 +46,7 @@ const SideBar = () => {
           openSidebar
             ? "w-[220px] ease-out-in duration-500"
             : "w-[60px] ease-in-out duration-500"
-        } h-full text-white flex flex-col tablet:relative absolute z-10 bg-fifth-dark shadow-black shadow-md`}
+        } h-full text-white relative flex-col hidden md:flex z-10 bg-fifth-dark shadow-black shadow-md`}
       >
         {/* ----Menu icon---- */}
         <div
@@ -80,8 +81,7 @@ const SideBar = () => {
               location.pathname === "/dashboard" ? "border-secondary-dark" : ""
             }`}
             onClick={() => {
-              //change it to the actual path
-              navigate("/");
+              navigate("/dashboard");
             }}
           >
             <div className="h-[42px] min-w-[42px]  flex items-center justify-center">
@@ -94,7 +94,6 @@ const SideBar = () => {
               location.pathname === "/" ? "border-secondary-dark" : ""
             }`}
             onClick={() => {
-              //change it to the actual path
               navigate("/dashboard/users");
             }}
           >
@@ -198,7 +197,6 @@ const SideBar = () => {
                     : ""
                 }`}
                 onClick={() => {
-                  //change it to the actual path
                   navigate("/dashboard/church-district/district-assignment");
                 }}
               >
@@ -216,7 +214,6 @@ const SideBar = () => {
                     : ""
                 }`}
                 onClick={() => {
-                  //change it to the actual path
                   navigate("/dashboard/church-district/church-assignment");
                 }}
               >
@@ -234,7 +231,6 @@ const SideBar = () => {
                     : ""
                 }`}
                 onClick={() => {
-                  //change it to the actual path
                   navigate("/dashboard/church-district/assignment-logs");
                 }}
               >
@@ -254,7 +250,7 @@ const SideBar = () => {
             }}
           >
             <div className="h-[42px] min-w-[42px]  flex items-center justify-center">
-              <FaChurch className="text-[25px] ease-in-out duration-500 mx-2" />
+              <TbReportSearch className="text-[25px] ease-in-out duration-500 mx-2" />
               {showName && (
                 <p
                   className={`${
@@ -316,7 +312,6 @@ const SideBar = () => {
                     : ""
                 }`}
                 onClick={() => {
-                  //change it to the actual path
                   navigate("/dashboard/analytic-alert/notification");
                 }}
               >

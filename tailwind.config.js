@@ -25,7 +25,7 @@ export default {
           light: "#202020",
           dark: "#202020",
         },
-        six: {
+        sixth: {
           light: "#FFFFFF",
           dark: "#b45309",
         },
