@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import SideBar from "../components/sidebar";
+import SideBar from "../components/admin-sidebar";
 import AdminDashboard from "../pages/dashboard/admin-dashboard/admin-dashboard";
 const Protected = () => {
   return (

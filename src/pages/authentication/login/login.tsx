@@ -23,7 +23,7 @@ const LoginScreen: FC = () => {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const [showPassword, setShowPassword] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
-  const [isResetPassword, setIsResetPassword] = useState(false)
+  const [isResetPassword, setIsResetPassword] = useState(false);
   const [animation, setAnimation] = useState("zoom-in");
 
   const {
@@ -39,14 +39,15 @@ const LoginScreen: FC = () => {
   const handleOpenRegister = () => {
     setAnimation("flip-right");
     setIsRegister(true);
-    setIsResetPassword(false)
+    setIsResetPassword(false);
+    // navigate("/register");
   };
 
   const handleOpenResetPassword = () => {
     setAnimation("flip-right");
     setIsResetPassword(true);
-    
-  }
+    // navigate("/reset/password");
+  };
 
   const handleBackToLogin = () => {
     setAnimation("flip-right");
@@ -76,7 +77,9 @@ const LoginScreen: FC = () => {
       />
       {isRegister ? (
         <RegisterScreen handleBackToLogin={handleBackToLogin} />
-      ) : isResetPassword ? <ResetPassword handleOpenRegister={handleOpenRegister}/> : (
+      ) : isResetPassword ? (
+        <ResetPassword handleOpenRegister={handleOpenRegister} />
+      ) : (
         <div
           data-aos={animation}
           className="z-20 relative flex flex-col items-center w-[90%] md:w-[450px] bg-white py-4 px-10 rounded-[20px]"
@@ -120,7 +123,10 @@ const LoginScreen: FC = () => {
             <div className="w-full mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
                 <span>Password</span>
-                <span className="hover:underline cursor-pointer text-secondary-light" onClick={handleOpenResetPassword}>
+                <span
+                  className="hover:underline cursor-pointer text-secondary-light"
+                  onClick={handleOpenResetPassword}
+                >
                   Forgot Password?
                 </span>
               </div>

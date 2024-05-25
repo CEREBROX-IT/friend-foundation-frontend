@@ -21,19 +21,19 @@ interface IFormInput {
 }
 
 const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues
+    getValues,
   } = useForm<IFormInput>();
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleClickShowConfirmPassowrd = () =>setShowConfirmPassword((prevValue) => !prevValue);
+  const handleClickShowConfirmPassowrd = () =>
+    setShowConfirmPassword((prevValue) => !prevValue);
 
   const onSubmitHandler: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
@@ -41,11 +41,14 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
   return (
     <div
       data-aos="flip-left"
-      className="z-20 relative flex flex-col items-center w-[90%] md:w-[450px] bg-white py-4 px-10 rounded-[20px] max-h-[80vh] lg:max-h-[90vh] overflow-auto"
+      className="z-20 relative flex flex-col items-center w-[90%] md:w-[450px] bg-white py-4 px-10 rounded-[20px] max-h-[80vh] lg:max-h-[90vh]"
     >
       <img src={SampleLogo} className="w-[180px] mb-[20px]" alt="Logo" />
 
-      <form className="w-full flex flex-col items-center" onSubmit={handleSubmit(onSubmitHandler)}>
+      <form
+        className="w-full flex flex-col items-center overflow-y-auto custom-scrollbar"
+        onSubmit={handleSubmit(onSubmitHandler)}
+      >
         <div className="w-full mt-[10px]">
           <div className="flex flex-row px-1 text-[15px] mb-1">
             <span>First Name</span>
@@ -106,7 +109,7 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
             </p>
           )}
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
               <span>Middle Name</span>
@@ -146,10 +149,10 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
               placeholder="suffix"
               error={errors.suffix ? true : false}
               {...register("suffix", {
-                required: "Suffix is required",
+                required: "Required",
                 pattern: {
                   value: /^[A-Za-z]+$/,
-                  message: "Invalid Suffix",
+                  message: "Invalid",
                 },
               })}
               className="w-full bg-fourth-light"
@@ -194,7 +197,7 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
             </p>
           )}
         </div>
-        <div className="flex w-full gap-4">
+        <div className="flex w-full gap-2">
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
               <span>Birth Date</span>
@@ -297,8 +300,8 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
             error={errors.confirm_password ? true : false}
             {...register("confirm_password", {
               required: "Confirm Password is required",
-              validate: (value) => value === getValues("password") || "Passwords do not match",
-
+              validate: (value) =>
+                value === getValues("password") || "Passwords do not match",
             })}
             className="w-full bg-fourth-light"
             InputProps={{

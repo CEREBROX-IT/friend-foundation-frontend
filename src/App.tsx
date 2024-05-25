@@ -5,7 +5,7 @@ import Protected from "./routes/protected";
 function App() {
   return (
     <>
-      <BrowserRouter>{true ? <Protected /> : <Unprotected />}</BrowserRouter>
+      <BrowserRouter>{false ? <Protected /> : <Unprotected />}</BrowserRouter>
     </>
   );
 }

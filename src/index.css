@@ -41,6 +41,54 @@ html::-webkit-scrollbar-thumb:hover {
   background-color: #c4c4c4;
 }
 
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #e3e3e3 transparent; /* Set the scrollbar color and hide the thumb */
+}
+
+/* Custom scrollbar for Webkit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  scrollbar-width: thin;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e3e3e3;
+}
+
+/* Custom scrollbar for Firefox */
+/* Note: Firefox doesn't support styling the scrollbar thumb directly */
+/* You can use a wrapper with a background to achieve a similar effect */
+/* Adjust the colors as needed */
+.scrollbar-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: #e3e3e3 transparent;
+}
+
+.scrollbar-wrapper::-webkit-scrollbar {
+  scrollbar-width: thin;
+  width: 7px;
+}
+
+.scrollbar-wrapper::-webkit-scrollbar-thumb {
+  background-color: #e3e3e3;
+}
+
+/* Fallback for other browsers (including Edge and Internet Explorer) */
+/* You can adjust the colors as needed */
+.scrollbar-fallback {
+  scrollbar-width: thin;
+  overflow-y: scroll;
+}
+
+.scrollbar-fallback::-webkit-scrollbar {
+  width: 7px;
+}
+
+.scrollbar-fallback::-webkit-scrollbar-thumb {
+  background-color: #e3e3e3;
+}
+
 @font-face {
   font-family: "oxygen", sans-serif;
   src: url(../public/fonts/Oxygen-Regular.ttf);
