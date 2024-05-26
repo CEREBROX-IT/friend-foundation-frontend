@@ -16,11 +16,12 @@ const SubmittedFormOverview: FC = () => {
   }, [searchQuery]);
 
   const applyFilters = () => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData = FormSubmitted.filter((row) => {
       return (
-        row.user_full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        row.district_id.includes(searchQuery) ||
-        row.church_id.includes(searchQuery)
+        row.user_full_name.toLowerCase().includes(lowerCaseQuery) ||
+        row.district_id.toLowerCase().includes(lowerCaseQuery) ||
+        row.church_id.toLowerCase().includes(lowerCaseQuery)
       );
     });
     setFilteredRows(filteredData);

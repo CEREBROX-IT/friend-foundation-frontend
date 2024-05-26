@@ -16,13 +16,14 @@ const AssignmentLogsOverview: FC = () => {
   }, [searchQuery]);
 
   const applyFilters = () => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData = AsigneeLogs.filter((row) => {
       return (
-        row.user_full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        row.title.includes(searchQuery) ||
-        row.role.includes(searchQuery) ||
-        row.previous_assign.includes(searchQuery) ||
-        row.current_assign.includes(searchQuery)
+        row.user_full_name.toLowerCase().includes(lowerCaseQuery) ||
+        row.title.toLowerCase().includes(lowerCaseQuery) ||
+        row.role.toLowerCase().includes(lowerCaseQuery) ||
+        row.previous_assign.toLowerCase().includes(lowerCaseQuery) ||
+        row.current_assign.toLowerCase().includes(lowerCaseQuery)
       );
     });
     setFilteredRows(filteredData);

@@ -16,10 +16,11 @@ const PendingUserOverview: FC = () => {
   }, [searchQuery]);
 
   const applyFilters = () => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData = PendingAccount.filter((row) => {
       return (
-        row.user_full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        row.title.includes(searchQuery)
+        row.user_full_name.toLowerCase().includes(lowerCaseQuery) ||
+        row.title.toLowerCase().includes(lowerCaseQuery)
       );
     });
     setFilteredRows(filteredData);
