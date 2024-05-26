@@ -1,9 +1,13 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import SDA_Logo from "../../assets/sda_logo_only.webp";
 import { HiMiniUsers } from "react-icons/hi2";
 import { IoIosArrowBack, IoIosArrowDown, IoIosFolder } from "react-icons/io";
 import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
-import { MdDashboardCustomize } from "react-icons/md";
+import {
+  MdDashboardCustomize,
+  MdDarkMode,
+  MdOutlineDarkMode,
+} from "react-icons/md";
 import { TbReportSearch } from "react-icons/tb";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -17,6 +21,9 @@ interface Props {
 const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light"
+  );
   const [dropdowns, setDropdowns] = useState({
     dropdown1: true,
     dropdown2: true,
@@ -28,6 +35,26 @@ const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
       [dropdown]: !prevState[dropdown],
     }));
   };
+
+  const handleThemeSwitch = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      setTheme(storedTheme);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   return (
     <div
@@ -48,7 +75,6 @@ const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
         className={`bg-primary pt-[62px] ease-out-in duration-500 fixed flex-wrap h-[100vh] w-[250px]`}
       >
         <img src={SDA_Logo} className="h-[190px] mx-auto mb-5" />
-
         <div
           className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
             location.pathname === "/dashboard" ? "border-secondary-dark" : ""
@@ -220,6 +246,23 @@ const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
             </div>
           </>
         )}
+        <div
+          className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
+            location.pathname === "/dashboard" ? "border-secondary-dark" : ""
+          }`}
+          onClick={handleThemeSwitch}
+        >
+          <div className="h-[42px] min-w-[42px] flex items-center justify-center">
+            {theme === "dark" ? (
+              <MdDarkMode className="text-[25px] ease-in-out duration-500" />
+            ) : (
+              <MdOutlineDarkMode className="text-[25px] ease-in-out duration-500" />
+            )}
+          </div>
+          <p className={`text-bold text-[15px]`}>
+            {theme === "dark" ? "Off Dark Mode" : "On Dark Mode"}
+          </p>
+        </div>
       </div>
     </div>
   );

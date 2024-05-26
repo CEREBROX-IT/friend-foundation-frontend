@@ -8,7 +8,7 @@ const Protected = () => {
         <Route
           path="/dashboard"
           element={
-            <div className="relative mx-auto w-full flex flex-row">
+            <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
               <AdminSideBar />
               <AdminDashboard />
             </div>

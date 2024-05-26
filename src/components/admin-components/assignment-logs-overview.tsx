@@ -1,15 +1,17 @@
-import { FC, useState, useEffect, useMemo } from "react";
-import { Box } from "@mui/material";
+import { FC, useState, useEffect, useContext, useMemo } from "react";
+import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
 import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
 import { AsigneeLogs } from "../../MockDataFiles/Mockdata";
 import { isWithinInterval, addDays } from "date-fns";
+import ThemeContext from "../ThemeContext";
 
 const AssignmentLogsOverview: FC = () => {
   const currentDate = new Date();
   const threeDaysAgo = addDays(currentDate, -3);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState(AsigneeLogs);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     applyFilters();
@@ -94,8 +96,8 @@ const AssignmentLogsOverview: FC = () => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row justify-between items-center px-4 py-3 border-t-[4px] border-secondary-light">
-        <p className=" text-[20px] font-semibold mb-2 md:mb-0">
+      <div className="flex flex-col md:flex-row justify-between dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
+        <p className="text-[20px] font-semibold mb-2 md:mb-0">
           Latest Assignment Logs
         </p>
         <div className="md:mt-0 lg:w-[400px] w-full">
@@ -106,7 +108,7 @@ const AssignmentLogsOverview: FC = () => {
           <input
             type="text"
             placeholder="Search by Column Name"
-            className="md:w-[406px] w-full p-2 pl-10 border rounded-[360px] shadow-sm"
+            className="md:w-[406px] w-full p-2 pl-10 border rounded-[360px] shadow-sm bg-sixth-light dark:bg-fourth-dark"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -122,35 +124,48 @@ const AssignmentLogsOverview: FC = () => {
           overflowX: "hidden",
           "& .MuiDataGrid-root": {
             flex: 1,
+            borderColor: theme === "dark" ? "#676767" : "#CFCFCF",
           },
           "& .MuiDataGrid-cell": {
             borderBottom: 1,
             borderRight: 1,
-            borderColor: "#CFCFCF",
+            borderColor: theme === "dark" ? "#676767" : "#CFCFCF",
+            color: theme === "dark" ? "white" : "black",
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "white",
             borderBottom: 1,
             borderTop: 1,
             borderRadius: 0,
-            borderColor: "#CFCFCF",
+            borderColor: theme === "dark" ? "#676767" : "#CFCFCF",
             fontWeight: "bold",
-            color: "black",
+            backgroundColor: theme === "dark" ? "#3333" : "white",
+            color: theme === "dark" ? "white" : "black",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: "white",
+            backgroundColor: theme === "dark" ? "#3333" : "white",
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: 1,
-            backgroundColor: "#white",
-            color: "black",
-            borderColor: "#CFCFCF",
+            backgroundColor: theme === "dark" ? "#3333" : "white",
+            color: theme === "dark" ? "white" : "black",
+            borderColor: theme === "dark" ? "#676767" : "#CFCFCF",
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: "black !important",
+            color: theme === "dark" ? "white !important" : "black !important",
           },
           "& .MuiDataGrid .MuiButton-text": {
-            color: "white !important",
+            color: theme === "dark" ? "white !important" : "black !important",
+          },
+          // Scrollbar styling for dark mode
+          "&::-webkit-scrollbar": {
+            width: "7px",
+            height: "7px",
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#2e2e2e",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#646464",
           },
         }}
       >
@@ -167,9 +182,20 @@ const AssignmentLogsOverview: FC = () => {
           }}
         />
       </Box>
-      <button className="items-center w-full p-2 bg-blue-400 hover:bg-blue-500 text-white">
-        <p>VIEW MORE</p>
-      </button>
+      <Button
+        sx={{
+          alignItems: "center",
+          width: "100%",
+          background: "#60a5fa",
+          borderRadius: 0,
+          color: "white",
+          "&:hover": {
+            background: "#3b82f6",
+          },
+        }}
+      >
+        VIEW MORE
+      </Button>
     </>
   );
 };

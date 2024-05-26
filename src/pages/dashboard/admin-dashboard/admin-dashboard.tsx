@@ -9,7 +9,7 @@ import PendingUserOverview from "../../../components/admin-components/pending-us
 
 const AdminDashboard: FC = () => {
   return (
-    <div className="relative flex flex-col w-full bg-fourth-light overflow-y-auto">
+    <div className="relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto">
       <Header />
       <div className="w-full h-[200px] bg-primary-light p-4">
         <p className="text-sixth-light font-semibold text-[25px]">
@@ -54,19 +54,19 @@ const AdminDashboard: FC = () => {
       {/* ============================ First Table ============================ */}
 
       <div className="w-full p-4 mt-2">
-        <div className="bg-sixth-light shadow-lg rounded-[10px]">
+        <div className="bg-sixth-light dark:bg-sixth-dark shadow-lg rounded-[10px] custom-scrollbar">
           <SubmittedFormOverview />
         </div>
       </div>
 
       <div className="w-full p-4 mt-2">
-        <div className="bg-sixth-light shadow-lg rounded-[10px]">
+        <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">
           <AssignmentLogsOverview />
         </div>
       </div>
 
       <div className="w-full p-4 mt-2">
-        <div className="bg-sixth-light shadow-lg rounded-[10px]">
+        <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">
           <PendingUserOverview />
         </div>
       </div>

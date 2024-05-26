@@ -19,7 +19,7 @@ export default {
         },
         fourth: {
           light: "#F5F6FB",
-          dark: "#b45309",
+          dark: "#454545",
         },
         fifth: {
           light: "#202020",
@@ -27,7 +27,7 @@ export default {
         },
         sixth: {
           light: "#FFFFFF",
-          dark: "#b45309",
+          dark: "#2c2c2c",
         },
       },
     },

@@ -1,13 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import SDA_Logo from "../../assets/sda_logo_only.webp";
 import { HiMiniUsers } from "react-icons/hi2";
 import { IoIosArrowBack, IoIosArrowDown, IoIosFolder } from "react-icons/io";
 import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
-import { MdDashboardCustomize } from "react-icons/md";
+import {
+  MdDashboardCustomize,
+  MdDarkMode,
+  MdOutlineDarkMode,
+} from "react-icons/md";
 import { TbReportSearch } from "react-icons/tb";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import ThemeContext from "../ThemeContext";
 type Dropdowns = "dropdown1" | "dropdown2";
 
 const AdminSideBar = () => {
@@ -15,6 +19,8 @@ const AdminSideBar = () => {
   const location = useLocation();
   const [openSidebar, setOpenSidebar] = useState(true);
   const [showName, setShowName] = useState(false);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   const [dropdowns, setDropdowns] = useState({
     dropdown1: true,
     dropdown2: true,
@@ -28,6 +34,13 @@ const AdminSideBar = () => {
   };
 
   useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+
     if (openSidebar) {
       const timeoutId = setTimeout(() => {
         setShowName(true);
@@ -37,7 +50,7 @@ const AdminSideBar = () => {
     } else {
       setShowName(false);
     }
-  }, [openSidebar]);
+  }, [openSidebar, theme]);
 
   return (
     <>
@@ -324,6 +337,25 @@ const AdminSideBar = () => {
               </div>
             </>
           )}
+          <div
+            className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
+              location.pathname === "/" ? "border-secondary-dark" : ""
+            }`}
+            onClick={toggleTheme}
+          >
+            <div className="h-[42px] min-w-[42px]  flex items-center justify-center">
+              {theme === "dark" ? (
+                <MdDarkMode className="text-[25px] ease-in-out duration-500" />
+              ) : (
+                <MdOutlineDarkMode className="text-[25px] ease-in-out duration-500" />
+              )}
+            </div>
+            {showName && (
+              <p className={`text-bold text-[15px]`}>
+                {theme === "dark" ? "Off Dark Mode" : "On Dark Mode"}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </>
