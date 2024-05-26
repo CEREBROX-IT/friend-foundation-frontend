@@ -10,7 +10,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 type Dropdowns = "dropdown1" | "dropdown2";
 
-const SideBar = () => {
+const AdminSideBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openSidebar, setOpenSidebar] = useState(true);
@@ -52,7 +52,7 @@ const SideBar = () => {
         <div
           className={`flex justify-end pt-4 ${
             openSidebar
-              ? "w-[220px] ease-out-in duration-500 "
+              ? "w-[220px] ease-out-in duration-500"
               : "w-[60px] ease-in-out duration-500 justify-center"
           } cursor-pointer`}
           onClick={() => {
@@ -60,9 +60,9 @@ const SideBar = () => {
           }}
         >
           {openSidebar ? (
-            <AiOutlineMenuFold size={35} className="mr-2 fixed z-10" />
+            <AiOutlineMenuFold className="mr-2 fixed z-10 text-[35px]" />
           ) : (
-            <AiOutlineMenuUnfold size={35} className=" fixed z-10" />
+            <AiOutlineMenuUnfold className=" fixed z-10 text-[35px]" />
           )}
         </div>
 
@@ -330,4 +330,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default AdminSideBar;

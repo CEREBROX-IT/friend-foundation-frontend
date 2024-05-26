@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import SideBar from "../components/admin-components/admin-sidebar";
+import AdminSideBar from "../components/admin-components/admin-sidebar";
 import AdminDashboard from "../pages/dashboard/admin-dashboard/admin-dashboard";
 const Protected = () => {
   return (
@@ -9,7 +9,7 @@ const Protected = () => {
           path="/dashboard"
           element={
             <div className="relative mx-auto w-full flex flex-row">
-              <SideBar />
+              <AdminSideBar />
               <AdminDashboard />
             </div>
           }
