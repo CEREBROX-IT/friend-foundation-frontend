@@ -104,7 +104,7 @@ const AdminSideBar = () => {
           </div>
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-              location.pathname === "/" ? "border-secondary-dark" : ""
+              location.pathname === "/dashboard/users" ? "border-secondary-dark" : ""
             }`}
             onClick={() => {
               navigate("/dashboard/users");
