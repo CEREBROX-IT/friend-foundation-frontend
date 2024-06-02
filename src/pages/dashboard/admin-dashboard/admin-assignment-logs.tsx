@@ -1,5 +1,5 @@
 import Header from "../../../components/header";
-import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
+import AllAssignmentLogsOverview from "../../../components/admin-components/admin-all-assignment-logs-overview";
 const AdminAssignmentLogs = () => {
   return (
     <div
@@ -15,7 +15,7 @@ const AdminAssignmentLogs = () => {
       <div className="flex-1 w-full px-4 absolute translate-y-32">
         <div className="bg-white p-4 rounded-[10px] dark:bg-fourth-dark">
           <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">
-            <AssignmentLogsOverview />
+            <AllAssignmentLogsOverview />
           </div>
         </div>
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
