@@ -32,7 +32,11 @@ const AdminUserList = () => {
             <ListUsersOverview />
           </div>
         </div>
+        <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
+          © Copyright reserve Friend Foundation Management System 2024
+        </p>
       </div>
+
       {openNewUserModal && (
         <NewUserModal closeUserModal={hanldeCloseOpenNewUserModal} />
       )}

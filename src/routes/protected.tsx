@@ -4,6 +4,7 @@ import AdminDashboard from "../pages/dashboard/admin-dashboard/admin-dashboard";
 import AdminUserList from "../pages/dashboard/admin-dashboard/admin-userlist";
 import AdminDistrictAssignment from "../pages/dashboard/admin-dashboard/admin-district-assignment";
 import AdminChurchAssignment from "../pages/dashboard/admin-dashboard/admin-church-assignment";
+import AdminAssignmentLogs from "../pages/dashboard/admin-dashboard/admin-assignment-logs";
 
 const Protected = () => {
   return (
@@ -42,6 +43,15 @@ const Protected = () => {
             <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
               <AdminSideBar />
               <AdminChurchAssignment />
+            </div>
+          }
+        />
+        <Route
+          path="/dashboard/church-district/assignment-logs"
+          element={
+            <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
+              <AdminSideBar />
+              <AdminAssignmentLogs />
             </div>
           }
         />

@@ -12,8 +12,12 @@ const AdminDistrictAssignment = () => {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
+    
   } = useForm<IFormInput>();
+
+  const onSubmitHandle: SubmitHandler<IFormInput> = (data) => {
+    console.log(data)
+  }
   return (
     <div
       className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto `}
@@ -32,51 +36,55 @@ const AdminDistrictAssignment = () => {
           </p>
           <div className="flex flex-col lg:flex-row justify-between gap-4 lg:items-center  mb-4">
             <div className="flex flex-col md:flex-row gap-2 border-white lg:min-w-96 min-w-full">
-              <TextField
-                type="text"
-                placeholder="Pastor not assign"
-                select
-                error={errors.pastor_not_assigned ? true : false}
-                {...register("pastor_not_assigned")}
-                className="w-full bg-fourth-light rounded-[10px]"
-                InputProps={{
-                  sx: {
-                    height: "45px",
-                    lineHeight: "normal",
-                    borderRadius: "10px",
-                  },
-                }}
+              <form
+                onSubmit={handleSubmit(onSubmitHandle)}
+                className="w-full flex flex-col md:flex-row gap-2"
               >
-                <MenuItem value="Male">
-                  <p className="text-slate-500 text-sm">John Ray D. Canete</p>
-                </MenuItem>
-                <MenuItem value="Female">
-                  <p className="text-slate-500 text-sm">Jannine Canete</p>
-                </MenuItem>
-              </TextField>
-              <TextField
-                type="text"
-                placeholder="District Available"
-                select
-                error={errors.district_available ? true : false}
-                {...register("district_available")}
-                className="w-full bg-fourth-light  rounded-[10px]"
-                InputProps={{
-                  sx: {
-                    height: "45px",
-                    lineHeight: "normal",
-                    borderRadius: "10px",
-                  },
-                }}
-              >
-                <MenuItem value="Male">
-                  <p className="text-slate-500 text-sm">District 1</p>
-                </MenuItem>
-                <MenuItem value="Female">
-                  <p className="text-slate-500 text-sm">District 2</p>
-                </MenuItem>
-              </TextField>
-
+                <TextField
+                  type="text"
+                  placeholder="Pastor not assign"
+                  select
+                  error={errors.pastor_not_assigned ? true : false}
+                  {...register("pastor_not_assigned")}
+                  className="w-full bg-fourth-light rounded-[10px]"
+                  InputProps={{
+                    sx: {
+                      height: "45px",
+                      lineHeight: "normal",
+                      borderRadius: "10px",
+                    },
+                  }}
+                >
+                  <MenuItem value="Male">
+                    <p className="text-slate-500 text-sm">John Ray D. Canete</p>
+                  </MenuItem>
+                  <MenuItem value="Female">
+                    <p className="text-slate-500 text-sm">Jannine Canete</p>
+                  </MenuItem>
+                </TextField>
+                <TextField
+                  type="text"
+                  placeholder="District Available"
+                  select
+                  error={errors.district_available ? true : false}
+                  {...register("district_available")}
+                  className="w-full bg-fourth-light  rounded-[10px]"
+                  InputProps={{
+                    sx: {
+                      height: "45px",
+                      lineHeight: "normal",
+                      borderRadius: "10px",
+                    },
+                  }}
+                >
+                  <MenuItem value="Male">
+                    <p className="text-slate-500 text-sm">District 1</p>
+                  </MenuItem>
+                  <MenuItem value="Female">
+                    <p className="text-slate-500 text-sm">District 2</p>
+                  </MenuItem>
+                </TextField>
+              </form>
             </div>
             <div>
               <button className="bg-secondary-light py-2 px-7 text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">
@@ -96,6 +104,9 @@ const AdminDistrictAssignment = () => {
             <DistrictOverview />
           </div>
         </div>
+        <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
+          © Copyright reserve Friend Foundation Management System 2024
+        </p>
       </div>
     </div>
   );
