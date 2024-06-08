@@ -1,16 +1,16 @@
 import { useState } from "react";
 import Header from "../../../components/header";
-import ListUsersOverview from "../../../components/admin-components/list-users-overview";
-import NewUserModal from "../../../components/admin-components/new-user-modal";
-const AdminFormManagement = () => {
-  const [openNewUserModal, setOpenNewUserModal] = useState(false);
+import AdminAddForm from "../../../components/admin-components/admin-add-form";
 
-  const handleOpenNewuserModal = () => setOpenNewUserModal(true);
-  const hanldeCloseOpenNewUserModal = () => setOpenNewUserModal(false);
+const AdminFormManagement = () => {
+  const [openAddForm, setOpenAddForm] = useState(false);
+
+  const handleOpenForm = () => setOpenAddForm(true);
+  const handleCloseForm = () => setOpenAddForm(false);
   return (
     <div
       className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark ${
-        openNewUserModal ? "overflow-hidden max-h-screen " : "overflow-y-auto"
+        openAddForm ? "overflow-hidden max-h-screen " : "overflow-y-auto"
       }`}
     >
       <Header />
@@ -25,19 +25,17 @@ const AdminFormManagement = () => {
           <div className="flex gap-2 flex-wrap basis-4">
             <button
               className="bg-fourth-dark py-2 px-7 text-white dark:bg-white  dark:text-black font-bold  rounded-md mb-4 hover:opacity-85"
-              onClick={handleOpenNewuserModal}
+              onClick={handleOpenForm}
             >
               Create Form
             </button>
             <button
               className="bg-fourth-dark py-2 px-7 text-white dark:bg-white  dark:text-black font-bold  rounded-md mb-4 hover:opacity-85"
-              onClick={handleOpenNewuserModal}
             >
                 Submitted Logs
             </button>
             <button
               className="bg-fourth-dark py-2 px-7 text-white dark:bg-white  dark:text-black font-bold  rounded-md mb-4 hover:opacity-85"
-              onClick={handleOpenNewuserModal}
             >
               Pending Logs
             </button>
@@ -51,8 +49,8 @@ const AdminFormManagement = () => {
         </p>
       </div>
 
-      {openNewUserModal && (
-        <NewUserModal closeUserModal={hanldeCloseOpenNewUserModal} />
+      {openAddForm && (
+        <AdminAddForm closeForm={handleCloseForm} />
       )}
     </div>
   );
