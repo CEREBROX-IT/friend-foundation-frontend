@@ -11,7 +11,6 @@ interface LoginResponse {
   // other properties if any
 }
 
-
 export const loginApi = createApi({
   reducerPath: "loginApi",
   baseQuery: fetchBaseQuery({
@@ -25,7 +24,14 @@ export const loginApi = createApi({
         body: data,
       }),
     }),
+    postForgotPassword: builder.mutation<void, Partial<User>>({
+      query: (data) => ({
+        url: "/auth/forgot-password",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { usePostLoginMutation } = loginApi;
+export const { usePostLoginMutation, usePostForgotPasswordMutation } = loginApi;

@@ -89,7 +89,7 @@ const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
       {isRegister ? (
         <RegisterScreen handleBackToLogin={handleBackToLogin} />
       ) : isResetPassword ? (
-        <ResetPassword handleOpenRegister={handleOpenRegister} />
+        <ResetPassword handleOpenRegister={handleOpenRegister}/>
       ) : (
         <div
           data-aos={animation}

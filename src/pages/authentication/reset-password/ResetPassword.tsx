@@ -4,7 +4,8 @@ import SdaIcon from "../../../assets/white_sda_icon.webp";
 import SampleLogo from "../../../assets/authentication/sample_logo.webp";
 import TextField from "@mui/material/TextField";
 import { useForm, SubmitHandler } from "react-hook-form";
-
+import { usePostForgotPasswordMutation } from "../../../redux/services/loginApi";
+import LoadingAnimation from "../../../components/loading-animation";
 interface RegisterScreenProps {
   handleOpenRegister: () => void;
 }
@@ -13,15 +14,22 @@ interface IFormInput {
   email: string;
 }
 const ResetPassword: FC<RegisterScreenProps> = ({ handleOpenRegister }) => {
+  const [postResetPassword, { isLoading, isError, isSuccess }] =
+    usePostForgotPasswordMutation();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const onSubmitHandler: SubmitHandler<IFormInput> = (data) => {
-    console.log(data)
-  }
+  const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
+    await postResetPassword(data)
+      .unwrap()
+      .then((response) => {
+        console.log(response);
+      });
+  };
 
   return (
     <div
@@ -41,10 +49,18 @@ const ResetPassword: FC<RegisterScreenProps> = ({ handleOpenRegister }) => {
       >
         <img src={SampleLogo} className="w-[180px] mb-[20px]" alt="Logo" />
         <div className="flex flex-col w-full gap-4 mt-10">
-          <h1 className="text-xl md:text-2xl font-bold text-primary-light">TROUBLE LOGGING IN?</h1>
-          <p className=" text-primary-dark">Enter your email and we will send you a link to get back your account.</p>
+          <h1 className="text-xl md:text-2xl font-bold text-primary-light">
+            TROUBLE LOGGING IN?
+          </h1>
+          <p className=" text-primary-dark">
+            Enter your email and we will send you a link to get back your
+            account.
+          </p>
         </div>
-        <form className="w-full flex flex-col items-center mt-10" onSubmit={handleSubmit(onSubmitHandler)}>
+        <form
+          className="w-full flex flex-col items-center mt-10"
+          onSubmit={handleSubmit(onSubmitHandler)}
+        >
           <div className="w-full mt-[10px]">
             <div className="flex flex-row px-1 text-[15px] mb-1">
               <span>Email Address</span>
@@ -73,6 +89,25 @@ const ResetPassword: FC<RegisterScreenProps> = ({ handleOpenRegister }) => {
               <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
                 {errors.email.message}
               </p>
+            )}
+          </div>
+          <div className="w-full mt-[15px]">
+            {isLoading ? (
+              <LoadingAnimation message="Verifying email, please wait!" />
+            ) : (
+              ""
+            )}
+            {isError ? (
+              <p className="text-sm text-red-600">Email doesn't exist</p>
+            ) : (
+              ""
+            )}
+            {isSuccess ? (
+              <p className="text-sm font-bold">
+                Please check your gmail account, thank you!
+              </p>
+            ) : (
+              ""
             )}
           </div>
 
