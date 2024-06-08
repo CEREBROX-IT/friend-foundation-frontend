@@ -12,14 +12,16 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import RegisterScreen from "../registration/register";
 import ResetPassword from "../reset-password/ResetPassword";
 import { usePostLoginMutation } from "../../../redux/services/loginApi";
-
 import AOS from "aos";
 import "aos/dist/aos.css";
+import LoadingAnimation from "../../../components/loading-animation";
+import { Cookies } from "typescript-cookie";
 
 interface IFormInput {
   email: string;
   password: string;
 }
+
 
 const LoginScreen: FC = () => {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -28,21 +30,22 @@ const LoginScreen: FC = () => {
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [animation, setAnimation] = useState("zoom-in");
 
-  const [postLogin] = usePostLoginMutation()
+  const [postLogin, { isLoading }] = usePostLoginMutation();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
-    try {
-      const result = await postLogin(data);
-      console.log("Response:", result.data);
-    } catch (err) {
-      console.error("Error:", err);
-    }
-  };
+
+const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
+  await postLogin(data).unwrap().then(response => {
+    Cookies.set("token", response.token)
+    window.location.href = "/";
+  })
+};
+
 
   const handleOpenRegister = () => {
     setAnimation("flip-right");
@@ -165,6 +168,13 @@ const LoginScreen: FC = () => {
                 </p>
               )}
             </div>
+            {isLoading ? (
+              <div className="w-full mt-[15px]">
+                <LoadingAnimation message="Verifying, Please wait" />
+              </div>
+            ) : (
+              ""
+            )}
             <button
               type="submit"
               className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-full h-[45px]"

@@ -1,13 +1,34 @@
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Navigate } from "react-router-dom";
 import Unprotected from "./routes/unprotected";
 import Protected from "./routes/protected";
 import { ThemeProvider } from "./components/ThemeContext";
-
+import JwtDecoder from "./utils/jwt-decoder";
+import { useEffect, useState } from "react";
 function App() {
+  const token = JwtDecoder().isTokenValid;
+  const [isLoading, setIsloading] = useState(true);
+
+  useEffect(() => {
+    if (token) {
+      setIsloading(false);
+    } else {
+      setIsloading(false);
+      <Navigate to="/" />
+    }
+  }, [token]);
+
+  
+  
   return (
-    <ThemeProvider>
-      <BrowserRouter>{false ? <Protected /> : <Unprotected />}</BrowserRouter>
-    </ThemeProvider>
+    <>
+      {isLoading ? undefined : (
+        <ThemeProvider>
+          <BrowserRouter>
+            {token ? <Protected /> : <Unprotected />}
+          </BrowserRouter>
+        </ThemeProvider>
+      )}
+    </>
   );
 }
 
