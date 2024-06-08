@@ -104,7 +104,9 @@ const AdminSideBar = () => {
           </div>
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-              location.pathname === "/dashboard/users" ? "border-secondary-dark" : ""
+              location.pathname === "/dashboard/users"
+                ? "border-secondary-dark"
+                : ""
             }`}
             onClick={() => {
               navigate("/dashboard/users");
@@ -119,7 +121,9 @@ const AdminSideBar = () => {
           </div>
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-              location.pathname === "/" ? "border-secondary-dark" : ""
+              location.pathname === "/dashboard/pastors-management"
+                ? "border-secondary-dark"
+                : ""
             }`}
             onClick={() => {
               //change it to the actual path
@@ -137,7 +141,9 @@ const AdminSideBar = () => {
           </div>
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-              location.pathname === "/" ? "border-secondary-dark" : ""
+              location.pathname === "/dashboard/forms-management"
+                ? "border-secondary-dark"
+                : ""
             }`}
             onClick={() => {
               //change it to the actual path

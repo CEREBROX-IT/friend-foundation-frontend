@@ -6,6 +6,7 @@ import AdminDistrictAssignment from "../pages/dashboard/admin-dashboard/admin-di
 import AdminChurchAssignment from "../pages/dashboard/admin-dashboard/admin-church-assignment";
 import AdminAssignmentLogs from "../pages/dashboard/admin-dashboard/admin-assignment-logs";
 import AdminNotificationLogs from "../pages/dashboard/admin-dashboard/admin-notification-logs";
+import AdminFormManagement from "../pages/dashboard/admin-dashboard/admin-form-management";
 
 const Protected = () => {
   return (
@@ -63,6 +64,16 @@ const Protected = () => {
             <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
               <AdminSideBar />
               <AdminNotificationLogs />
+            </div>
+          }
+        />
+
+        <Route
+          path="/dashboard/forms-management"
+          element={
+            <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
+              <AdminSideBar />
+              <AdminFormManagement />
             </div>
           }
         />

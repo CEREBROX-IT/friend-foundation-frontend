@@ -54,8 +54,8 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
     <div className="absolute inset-0 flex justify-center items-center md:items-start backdrop-brightness-50 overflow-y-hidden  ">
       <div
         className=" max-h-[90vh] md:max-h-[100vh] max-w-[450px] dark:bg-fourth-dark dark:text-white  bg-white  rounded-[10px]  p-4 mx-4 fixed top-0 "
-        data-aos="fade-down"
-        data-aos-duration="200"
+        // data-aos="fade-down"
+        // data-aos-duration="200"
       >
         <div className="flex justify-end" onClick={closeUserModal}>
           <IoMdCloseCircle className="text-4xl cursor-pointer" />
