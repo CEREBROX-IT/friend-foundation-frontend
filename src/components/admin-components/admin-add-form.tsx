@@ -40,13 +40,13 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
 
   return (
     <div className="absolute inset-0 flex justify-center items-center backdrop-brightness-50 overflow-y-hidden">
-      <div className="max-h-[90vh] md:max-h-[100vh] max-w-[600px] min-w-[600px] dark:bg-fourth-dark dark:text-white bg-white rounded-[10px] p-4 mx-4">
+      <div className="max-h-[90vh] md:max-h-[100vh] max-w-[600px] md:min-w-[600px] dark:bg-fourth-dark dark:text-white bg-white rounded-[10px] p-4 mx-4">
         <div className="flex justify-end" onClick={closeForm}>
           <IoMdCloseCircle className="text-4xl cursor-pointer" />
         </div>
 
         <form
-          className="w-full flex flex-col items-center overflow-auto custom-scrollbar max-h-[400px]"
+          className="w-full flex flex-col items-center overflow-auto custom-scrollbar max-h-[450px]"
           onSubmit={handleSubmit(onSubmitHandler)}
         >
           <div className="w-full mt-[10px] rounded-full">
