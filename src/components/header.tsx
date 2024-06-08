@@ -6,7 +6,7 @@ import { FaUser } from "react-icons/fa6";
 import MobileAdminSideBar from "./admin-components/mobile-admin-sidebar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-
+import { Cookies } from "typescript-cookie";
 const Header = () => {
   const [OpenMenu, setOpenMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -25,6 +25,11 @@ const Header = () => {
   const CloseMenuHandler = () => {
     setOpenMenu(false);
   };
+
+  const handleLogout = () => {
+    Cookies.remove("token")
+    window.location.href = "/"
+  }
 
   return (
     <>
@@ -77,7 +82,7 @@ const Header = () => {
           >
             <MenuItem onClick={handleClose}>User Profile</MenuItem>
             <MenuItem onClick={handleClose}>Settings</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
           <div className="rounded-[50%] bg-fourth-light dark:bg-fourth-dark h-[40px] min-w-[40px] flex items-center cursor-pointer">
             <img src={BellIcon} className="h-[35px] mx-auto" />
