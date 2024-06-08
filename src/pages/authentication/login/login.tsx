@@ -11,6 +11,8 @@ import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form";
 import RegisterScreen from "../registration/register";
 import ResetPassword from "../reset-password/ResetPassword";
+import { usePostLoginMutation } from "../../../redux/services/loginApi";
+
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -26,14 +28,20 @@ const LoginScreen: FC = () => {
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [animation, setAnimation] = useState("zoom-in");
 
+  const [postLogin] = usePostLoginMutation()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const onSubmitHandler: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+  const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      const result = await postLogin(data);
+      console.log("Response:", result.data);
+    } catch (err) {
+      console.error("Error:", err);
+    }
   };
 
   const handleOpenRegister = () => {

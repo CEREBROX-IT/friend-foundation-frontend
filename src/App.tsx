@@ -6,7 +6,7 @@ import { ThemeProvider } from "./components/ThemeContext";
 function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>{true ? <Protected /> : <Unprotected />}</BrowserRouter>
+      <BrowserRouter>{false ? <Protected /> : <Unprotected />}</BrowserRouter>
     </ThemeProvider>
   );
 }

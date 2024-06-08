@@ -6,13 +6,10 @@ import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
 import SubmittedFormOverview from "../../../components/admin-components/submitted-forms-overview";
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
-import { useGetSampleDataQuery } from "../../../redux/services/sample";
 
 const AdminDashboard: FC = () => {
-  const { data } = useGetSampleDataQuery();
-  console.log(data)
-
   
+
   return (
     <div className="relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto">
       <Header />

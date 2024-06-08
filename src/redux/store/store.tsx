@@ -1,19 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from '@reduxjs/toolkit/query'
-import { sampleApi } from "../services/sample";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { loginApi } from "../services/loginApi";
 
 export const store = configureStore({
-    reducer: {
-      // Add the generated reducer as a specific top-level slice
-      [sampleApi.reducerPath]: sampleApi.reducer,
-    },
-    // Adding the api middleware enables caching, invalidation, polling,
-    // and other useful features of `rtk-query`.
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(sampleApi.middleware),
-  })
+  reducer: {
+    [loginApi.reducerPath]: loginApi.reducer,
+  },
+  
 
-setupListeners(store.dispatch)
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(loginApi.middleware),
+});
 
+setupListeners(store.dispatch);
 
-export default store
+export default store;
