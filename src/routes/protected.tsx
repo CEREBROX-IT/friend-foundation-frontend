@@ -13,7 +13,7 @@ const Protected = () => {
     <div className="flex bg-white min-h-[100vh]">
       <Routes>
         <Route
-          path="/"
+          path="/dashboard"
           element={
             <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
               <AdminSideBar />

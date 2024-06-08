@@ -30,7 +30,7 @@ const LoginScreen: FC = () => {
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [animation, setAnimation] = useState("zoom-in");
 
-  const [postLogin, { isLoading }] = usePostLoginMutation();
+  const [postLogin, { isLoading, isError }] = usePostLoginMutation();
 
   const {
     register,
@@ -42,7 +42,7 @@ const LoginScreen: FC = () => {
 const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
   await postLogin(data).unwrap().then(response => {
     Cookies.set("token", response.token)
-    window.location.href = "/";
+    window.location.href = "/dashboard";
   })
 };
 
@@ -175,6 +175,7 @@ const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
             ) : (
               ""
             )}
+            {isError ? <p className="text-red-600 w-full text-sm">Invalid Credentials</p> : ""}
             <button
               type="submit"
               className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-full h-[45px]"
