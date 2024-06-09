@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { FC, ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface CardsProps {
   title: string;
-  result?: number;
-  incomplete?: number;
+  result?: number | ReactElement;
+  incomplete?: number | ReactElement;
   description?: string;
   icon: React.ComponentType<{ className?: string }>;
   navigation_path: string;

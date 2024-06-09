@@ -7,11 +7,12 @@ import SubmittedFormOverview from "../../../components/admin-components/submitte
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
 import { useGetUserCountQuery, useGetFormSubmissionCountQuery, useGetChurchCountQuery } from "../../../redux/services/statsApi";
+import LoadingAnimation2 from "../../../components/loading-animation2";
 const AdminDashboard: FC = () => {
 
-  const {data: userCount} = useGetUserCountQuery()
-  const {data: FormSubmissionCount} = useGetFormSubmissionCountQuery()
-  const {data: ChurchCount} = useGetChurchCountQuery()
+  const {data: userCount, isLoading: UserLoading} = useGetUserCountQuery()
+  const {data: FormSubmissionCount, isLoading: FormLoading} = useGetFormSubmissionCountQuery()
+  const {data: ChurchCount, isLoading: ChurchLoading} = useGetChurchCountQuery()
   return (
     <div className="relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto">
       <Header />
@@ -23,7 +24,7 @@ const AdminDashboard: FC = () => {
       <div className="flex flex-wrap flex-row gap-4 px-4 mt-[-7.5rem]">
         <ResultCards
           title="No. of Users"
-          result={userCount?.active_user}
+          result={UserLoading ? <LoadingAnimation2 /> : userCount?.active_user}
           incomplete={userCount?.pending_user}
           description="Pending User"
           icon={HiMiniUsers}
@@ -31,7 +32,13 @@ const AdminDashboard: FC = () => {
         />
         <ResultCards
           title="Form Submission"
-          result={FormSubmissionCount?.submitted_pastors}
+          result={
+            FormLoading ? (
+              <LoadingAnimation2 />
+            ) : (
+              FormSubmissionCount?.submitted_pastors
+            )
+          }
           incomplete={FormSubmissionCount?.not_submitted_pastors}
           description="Pastors not subbmitted"
           icon={FaFile}
@@ -47,7 +54,9 @@ const AdminDashboard: FC = () => {
         /> */}
         <ResultCards
           title="No. of Church"
-          result={ChurchCount?.total_churches}
+          result={
+            ChurchLoading ? <LoadingAnimation2 /> : ChurchCount?.total_churches
+          }
           // incomplete="14"
           // description="Church not assigned"
           icon={FaChurch}
