@@ -28,21 +28,26 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
     getValues,
   } = useForm<IFormInput>();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [postRegister] = usePostRegisterUserMutation()
+  const [postRegister] = usePostRegisterUserMutation();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleClickShowConfirmPassowrd = () => setShowConfirmPassword((prevValue) => !prevValue);
-
-
+  const handleClickShowConfirmPassowrd = () =>
+    setShowConfirmPassword((prevValue) => !prevValue);
 
   const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
-    
-    await postRegister(data).unwrap().then((response) => {console.log(response)}).catch((error) => console.log(error))
-    console.log(data)
+    await postRegister(data)
+      .unwrap()
+      .then((response) => {
+        console.log(response);
+        handleBackToLogin();
+        reset()
+      })
+      .catch((error) => console.log(error ));
   };
 
   return (
@@ -216,7 +221,6 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
               error={errors.age ? true : false}
               {...register("age", {
                 valueAsNumber: true,
-                
               })}
               className="w-full bg-fourth-light"
               InputProps={{
