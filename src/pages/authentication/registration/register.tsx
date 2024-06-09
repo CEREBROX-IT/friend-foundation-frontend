@@ -3,7 +3,7 @@ import SampleLogo from "../../../assets/authentication/sample_logo.webp";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { MenuItem, TextField, InputAdornment, IconButton } from "@mui/material";
 import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
-import { usePostRegisterUserMutation } from "../../../redux/services/loginApi";
+import { usePostRegisterUserMutation } from "../../../redux/services/usersApi";
 import LoadingAnimation from "../../../components/loading-animation";
 
 interface RegisterScreenProps {

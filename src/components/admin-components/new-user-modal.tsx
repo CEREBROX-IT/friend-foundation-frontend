@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { MenuItem, TextField, InputAdornment, IconButton } from "@mui/material";
 import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
 import { IoMdCloseCircle } from "react-icons/io";
-import { usePostRegisterUserMutation } from "../../redux/services/loginApi";
+import { usePostRegisterUserMutation } from "../../redux/services/usersApi";
 import LoadingAnimation from "../loading-animation";
 interface IFormInput {
   first_name: string;

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-interface User {
+ interface User {
   email: string;
   password: string;
   first_name: string
@@ -24,6 +24,7 @@ interface LoginResponse {
 
 export const loginApi = createApi({
   reducerPath: "loginApi",
+  tagTypes:["UserList"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -49,8 +50,10 @@ export const loginApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["UserList"]
+      
     }),
   }),
 });
 
-export const { usePostLoginMutation, usePostForgotPasswordMutation, usePostRegisterUserMutation } = loginApi;
+export const { usePostLoginMutation, usePostForgotPasswordMutation } = loginApi;

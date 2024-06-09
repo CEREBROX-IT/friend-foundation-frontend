@@ -1,104 +1,118 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
-import { AsigneeLogs } from "../../MockDataFiles/Mockdata";
-import { isWithinInterval, addDays } from "date-fns";
+import {
+  DataGrid,
+  GridToolbar,
+  GridRenderCellParams,
+  GridAlignment,
+} from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
+import {
+  useGetUserListQuery,
+  usePostApproveUserMutation,
+} from "../../redux/services/usersApi";
 
+interface Approve {
+  targetUserId: number
+}
 const ListUsersOverview: FC = () => {
-  const currentDate = new Date();
-  const threeDaysAgo = addDays(currentDate, -3);
+  const { data: GetUserList } = useGetUserListQuery();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(AsigneeLogs);
+  const [filteredRows, setFilteredRows] = useState(GetUserList ?? []);
   const { theme } = useContext(ThemeContext);
-
+const [approve] = usePostApproveUserMutation();
   useEffect(() => {
     applyFilters();
-  }, [searchQuery]);
+  }, [searchQuery, GetUserList]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const filteredData = AsigneeLogs.filter((row) => {
-      return (
-        row.user_full_name.toLowerCase().includes(lowerCaseQuery) ||
-        row.title.toLowerCase().includes(lowerCaseQuery) ||
-        row.role.toLowerCase().includes(lowerCaseQuery) ||
-        row.previous_assign.toLowerCase().includes(lowerCaseQuery) ||
-        row.current_assign.toLowerCase().includes(lowerCaseQuery)
-      );
-    });
+    const filteredData =
+      GetUserList?.filter((row) => {
+        return (
+          (row.first_name.toLowerCase().includes(lowerCaseQuery) ||
+            row.title.toLowerCase().includes(lowerCaseQuery)) &&
+          row.role.toLowerCase() === "pending"
+        );
+      }) ?? [];
     setFilteredRows(filteredData);
   };
 
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
+const handleApprove = async (targetUserId: Approve) => {
+  const value = { targetUserId: targetUserId };
+  await approve(value).unwrap().then((response) => {
+    console.log(response)
+  })
+};
   //-----for the Table------
   const columns = [
     {
-      field: "user_full_name",
-      headerName: "FULL NAME",
+      field: "first_name",
+      headerName: "First Name",
       flex: 1,
       minWidth: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        const dateCreated = new Date(params.row.date);
-        const isNew = isWithinInterval(dateCreated, {
-          start: threeDaysAgo,
-          end: currentDate,
-        });
-        return (
-          <div className="relative flex items-center">
-            <span>{params.value}</span>
-            {isNew && (
-              <span
-                className="bg-[#3b82f6] text-[10px] rounded-[50px] px-2
-                         text-white justify-end mt-[-1rem] ml-1 min-h-[10px] min-w-[10px] end-0"
-              >
-                New
-              </span>
-            )}
-          </div>
-        );
-      },
+      type: "string", // Added type property
+    },
+    {
+      field: "last_name",
+      headerName: "Last Name",
+      flex: 1,
+      minWidth: 170,
+      type: "string", // Added type property
     },
     {
       field: "title",
       headerName: "TITLE",
       flex: 1,
       minWidth: 200,
+      type: "string", // Added type property
     },
     {
       field: "role",
-      headerName: "ROLE",
+      headerName: "Role",
       flex: 1,
       minWidth: 200,
+      type: "string", // Added type property
     },
     {
-      field: "previous_assign",
-      headerName: "PREVIOUS ASSIGN",
+      field: "actions",
+      headerName: "Actions",
+      sortable: false,
+      headerAlign: "center" as GridAlignment,
+      minWidth: 200,
       flex: 1,
-      minWidth: 250,
-    },
-    {
-      field: "current_assign",
-      headerName: "CURRENT ASSIGN",
-      flex: 1,
-      minWidth: 250,
-    },
-    {
-      field: "date",
-      headerName: "DATE",
-      flex: 1,
-      minWidth: 170,
+      renderCell: (params: GridRenderCellParams) => (
+        <div className="flex justify-evenly w-full">
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleApprove(params?.row.user_id)}
+          >
+            Approved
+          </Button>
+          <Button variant="contained" color="error" size="small">
+            Remove
+          </Button>
+        </div>
+      ),
     },
   ];
 
+  // // Handle delete action
+  // const handleDelete = (id) => {
+  //   // Logic for deleting the user
+  //   console.log("Delete user with ID:", id);
+  // };
+
   return (
     <>
-      <div className="flex flex-col md:flex-row justify-end dark:text-white items-center px-4 py-6 lg:py-0 border-t-[4px] border-secondary-light">
-       
-        <div className="md:mt-0 lg:w-[400px] w-full lg:-translate-y-[60px]">
+      <div className="flex flex-col md:flex-row justify-end dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
+        <div className="md:mt-0 lg:w-[400px] w-full lg:-translate-y-[68px]">
           <FiSearch
             size={20}
             className="absolute mt-[11px] right-50 font-black ml-3"
@@ -117,9 +131,9 @@ const ListUsersOverview: FC = () => {
           display: "flex",
           flexDirection: "column",
           flex: 1,
+
           width: "100%",
           height: "80vh",
-          maxWidth: "100%",
           overflowX: "hidden",
           "& .MuiDataGrid-root": {
             flex: 1,
@@ -168,18 +182,24 @@ const ListUsersOverview: FC = () => {
           },
         }}
       >
-        <DataGrid
-          rows={memoizedFilteredRows}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-          componentsProps={{
-            toolbar: {
-              printOptions: {
-                disableToolbarButton: true,
-              },
-            },
-          }}
-        />
+        {memoizedFilteredRows.length <= 0 ? (
+          <h1 className="m-auto font-bold text-2xl">No Pending Accounts</h1>
+        ) : (
+          <>
+            <DataGrid
+              rows={memoizedFilteredRows}
+              columns={columns}
+              components={{ Toolbar: GridToolbar }}
+              componentsProps={{
+                toolbar: {
+                  printOptions: {
+                    disableToolbarButton: true,
+                  },
+                },
+              }}
+            />
+          </>
+        )}
       </Box>
       <Button
         sx={{

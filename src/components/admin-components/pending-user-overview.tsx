@@ -130,7 +130,7 @@ const PendingUserOverview: FC = () => {
           },
         }}
       >
-        <DataGrid
+        {memoizedFilteredRows.length <= 0 ? <h1 className="m-auto font-bold text-2xl">No Pending Accounts</h1>: <><DataGrid
           rows={memoizedFilteredRows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
@@ -141,7 +141,7 @@ const PendingUserOverview: FC = () => {
               },
             },
           }}
-        />
+        /></>}
       </Box>
       <Button
         sx={{
