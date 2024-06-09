@@ -15,17 +15,18 @@ const PendingUserOverview: FC = () => {
     applyFilters();
   }, [searchQuery, GetUserList]);
 
-  const applyFilters = () => {
-    const lowerCaseQuery = searchQuery.toLowerCase();
-    const filteredData =
-      GetUserList?.filter((row) => {
-        return (
-          row.first_name.toLowerCase().includes(lowerCaseQuery) ||
-          row.title.toLowerCase().includes(lowerCaseQuery)
-        );
-      }) ?? [];
-    setFilteredRows(filteredData);
-  };
+ const applyFilters = () => {
+   const lowerCaseQuery = searchQuery.toLowerCase();
+   const filteredData =
+     GetUserList?.filter((row) => {
+       return (
+         (row.first_name.toLowerCase().includes(lowerCaseQuery) ||
+           row.title.toLowerCase().includes(lowerCaseQuery)) &&
+         row.role.toLowerCase() === "pending"
+       );
+     }) ?? [];
+   setFilteredRows(filteredData);
+ };
 
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
