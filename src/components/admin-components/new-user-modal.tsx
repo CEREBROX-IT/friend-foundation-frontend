@@ -1,22 +1,24 @@
-import { useState, FC, useEffect } from "react";
+import { useState, FC } from "react";
 import SampleLogo from "../../assets/authentication/sample_logo.webp";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { MenuItem, TextField, InputAdornment, IconButton } from "@mui/material";
 import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
 import { IoMdCloseCircle } from "react-icons/io";
-import AOS from "aos";
-import "aos/dist/aos.css";
-
+import { usePostRegisterUserMutation } from "../../redux/services/loginApi";
+import LoadingAnimation from "../loading-animation";
 interface IFormInput {
-  firstname: string;
-  lastname: string;
-  middlename: string;
+  first_name: string;
+  last_name: string;
+  middle_name: string;
   suffix: string;
-  position: string;
-  birthday: string;
+  age: number;
+  title: string;
+  contact_no: number;
+  birth_date: string;
   gender: string;
   password: string;
   confirm_password: string;
+  email: string;
 }
 
 interface NewUserModalProps {
@@ -36,27 +38,23 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowConfirmPassowrd = () => setShowConfirmPassword((prevValue) => !prevValue);
+  const [postRegister, {isLoading}] = usePostRegisterUserMutation()
 
-  const onSubmitHandler: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+  const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
+    await postRegister(data)
+      .unwrap()
+      .then((response) => {
+        console.log(response);
+        closeUserModal()
+      
+      })
+      .catch((error) => console.log(error));
   };
-
-  useEffect(() => {
-    AOS.init({
-
-      
-      
-    });
-    
-  }, []);
+ 
 
   return (
     <div className="absolute inset-0 flex justify-center items-center md:items-start backdrop-brightness-50 overflow-y-hidden  ">
-      <div
-        className=" max-h-[90vh] md:max-h-[100vh] max-w-[450px] dark:bg-fourth-dark dark:text-white  bg-white  rounded-[10px]  p-4 mx-4 fixed top-0 "
-        // data-aos="fade-down"
-        // data-aos-duration="200"
-      >
+      <div className=" max-h-[90vh] md:max-h-[100vh] max-w-[450px] dark:bg-fourth-dark dark:text-white  bg-white  rounded-[10px]  p-4 mx-4 fixed top-0 ">
         <div className="flex justify-end" onClick={closeUserModal}>
           <IoMdCloseCircle className="text-4xl cursor-pointer" />
         </div>
@@ -71,6 +69,36 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           className="w-full flex flex-col items-center overflow-auto custom-scrollbar max-h-[400px]"
           onSubmit={handleSubmit(onSubmitHandler)}
         >
+          <div className="w-full mt-[10px]">
+            <div className="flex flex-row px-1 text-[15px] mb-1">
+              <span>Email Address</span>
+            </div>
+            <TextField
+              type="email"
+              placeholder="example@sample.com"
+              error={errors.email ? true : false}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                  message: "Invalid email address",
+                },
+              })}
+              className="w-full bg-fourth-light"
+              InputProps={{
+                sx: {
+                  height: "45px",
+                  lineHeight: "normal",
+                  borderRadius: "10px",
+                },
+              }}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
           <div className="w-full mt-[10px] rounded-full ">
             <div className="flex flex-row px-1 text-[15px] mb-1">
               <span>First Name</span>
@@ -78,8 +106,8 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
             <TextField
               type="text"
               placeholder="first name"
-              error={errors.firstname ? true : false}
-              {...register("firstname", {
+              error={errors.first_name ? true : false}
+              {...register("first_name", {
                 required: "Firstname is required",
                 pattern: {
                   value: /^[A-Za-z\s]+$/,
@@ -95,9 +123,9 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
                 },
               }}
             />
-            {errors.firstname && (
+            {errors.first_name && (
               <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                {errors.firstname.message}
+                {errors.first_name.message}
               </p>
             )}
           </div>
@@ -108,8 +136,8 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
             <TextField
               type="text"
               placeholder="last name"
-              error={errors.lastname ? true : false}
-              {...register("lastname", {
+              error={errors.last_name ? true : false}
+              {...register("last_name", {
                 required: "Last Name is required",
                 pattern: {
                   value: /^[A-Za-z]+$/,
@@ -125,9 +153,9 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
                 },
               }}
             />
-            {errors.lastname && (
+            {errors.last_name && (
               <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                {errors.lastname.message}
+                {errors.last_name.message}
               </p>
             )}
           </div>
@@ -139,8 +167,8 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
               <TextField
                 type="text"
                 placeholder="middle name"
-                error={errors.middlename ? true : false}
-                {...register("middlename", {
+                error={errors.middle_name ? true : false}
+                {...register("middle_name", {
                   required: "Middle Name is required",
                   pattern: {
                     value: /^[A-Za-z]+$/,
@@ -156,9 +184,9 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
                   },
                 }}
               />
-              {errors.middlename && (
+              {errors.middle_name && (
                 <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                  {errors.middlename.message}
+                  {errors.middle_name.message}
                 </p>
               )}
             </div>
@@ -171,7 +199,6 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
                 placeholder="suffix"
                 error={errors.suffix ? true : false}
                 {...register("suffix", {
-                  required: "Required",
                   pattern: {
                     value: /^[A-Za-z]+$/,
                     message: "Invalid",
@@ -192,6 +219,32 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
                 </p>
               )}
             </div>
+            <div className="w-1/3 mt-[15px]">
+              <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+                <span>Age</span>
+              </div>
+              <TextField
+                type="number"
+                placeholder="Age"
+                error={errors.age ? true : false}
+                {...register("age", {
+                  valueAsNumber: true,
+                })}
+                className="w-full bg-fourth-light"
+                InputProps={{
+                  sx: {
+                    height: "45px",
+                    lineHeight: "normal",
+                    borderRadius: "10px",
+                  },
+                }}
+              />
+              {errors.age && (
+                <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                  {errors.age.message}
+                </p>
+              )}
+            </div>
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
@@ -200,8 +253,8 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
             <TextField
               type="text"
               placeholder="title/position"
-              error={errors.position ? true : false}
-              {...register("position", {
+              error={errors.title ? true : false}
+              {...register("title", {
                 required: "Position is required",
               })}
               className="w-full bg-fourth-light rounded-[10px]"
@@ -213,9 +266,39 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
                 },
               }}
             />
-            {errors.position && (
+            {errors.title && (
               <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                {errors.position.message}
+                {errors.title.message}
+              </p>
+            )}
+          </div>
+          <div className="w-full mt-[15px]">
+            <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+              <span>Contact Number</span>
+            </div>
+            <TextField
+              type="number"
+              placeholder="Contact Number"
+              error={errors.contact_no ? true : false}
+              {...register("contact_no", {
+                required: "Contact Number is required",
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Invalid Contact Number",
+                },
+              })}
+              className="w-full bg-fourth-light"
+              InputProps={{
+                sx: {
+                  height: "45px",
+                  lineHeight: "normal",
+                  borderRadius: "10px",
+                },
+              }}
+            />
+            {errors.contact_no && (
+              <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                {errors.contact_no.message}
               </p>
             )}
           </div>
@@ -227,8 +310,8 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
               <TextField
                 type="date"
                 placeholder="MM-DD-YY"
-                error={errors.birthday ? true : false}
-                {...register("birthday", {
+                error={errors.birth_date ? true : false}
+                {...register("birth_date", {
                   required: "Birthday is required",
                 })}
                 className="w-full bg-fourth-light rounded-[10px]"
@@ -240,9 +323,9 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
                   },
                 }}
               />
-              {errors.birthday && (
+              {errors.birth_date && (
                 <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                  {errors.birthday.message}
+                  {errors.birth_date.message}
                 </p>
               )}
             </div>
@@ -351,7 +434,13 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
               </p>
             )}
           </div>
-
+          <div className="w-full mt-[15px]">
+            {isLoading ? (
+              <LoadingAnimation message="Registering, please wait!" />
+            ) : (
+              ""
+            )}
+          </div>
           <button
             type="submit"
             className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-full h-[45px]"

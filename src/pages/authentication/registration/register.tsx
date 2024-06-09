@@ -4,6 +4,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { MenuItem, TextField, InputAdornment, IconButton } from "@mui/material";
 import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
 import { usePostRegisterUserMutation } from "../../../redux/services/loginApi";
+import LoadingAnimation from "../../../components/loading-animation";
+
 interface RegisterScreenProps {
   handleBackToLogin: () => void;
 }
@@ -34,7 +36,7 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [postRegister] = usePostRegisterUserMutation();
+  const [postRegister, { isLoading }] = usePostRegisterUserMutation();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowConfirmPassowrd = () =>
     setShowConfirmPassword((prevValue) => !prevValue);
@@ -45,9 +47,9 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
       .then((response) => {
         console.log(response);
         handleBackToLogin();
-        reset()
+        reset();
       })
-      .catch((error) => console.log(error ));
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -422,7 +424,13 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
             </p>
           )}
         </div>
-
+        <div className="w-full mt-[15px]">
+          {isLoading ? (
+            <LoadingAnimation message="Registering, please wait!" />
+          ) : (
+            ""
+          )}
+        </div>
         <button
           type="submit"
           className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-full h-[45px]"
