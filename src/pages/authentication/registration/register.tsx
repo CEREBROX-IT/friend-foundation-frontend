@@ -3,21 +3,24 @@ import SampleLogo from "../../../assets/authentication/sample_logo.webp";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { MenuItem, TextField, InputAdornment, IconButton } from "@mui/material";
 import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
-
+import { usePostRegisterUserMutation } from "../../../redux/services/loginApi";
 interface RegisterScreenProps {
   handleBackToLogin: () => void;
 }
 
 interface IFormInput {
-  firstname: string;
-  lastname: string;
-  middlename: string;
+  first_name: string;
+  last_name: string;
+  middle_name: string;
   suffix: string;
-  position: string;
-  birthday: string;
+  age: number;
+  title: string;
+  contact_no: number;
+  birth_date: string;
   gender: string;
   password: string;
   confirm_password: string;
+  email: string;
 }
 
 const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
@@ -30,14 +33,18 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const [postRegister] = usePostRegisterUserMutation()
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleClickShowConfirmPassowrd = () =>
-    setShowConfirmPassword((prevValue) => !prevValue);
+  const handleClickShowConfirmPassowrd = () => setShowConfirmPassword((prevValue) => !prevValue);
 
-  const onSubmitHandler: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+
+
+  const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
+    
+    await postRegister(data).unwrap().then((response) => {console.log(response)}).catch((error) => console.log(error))
+    console.log(data)
   };
+
   return (
     <div
       data-aos="flip-left"
@@ -51,13 +58,43 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
       >
         <div className="w-full mt-[10px]">
           <div className="flex flex-row px-1 text-[15px] mb-1">
+            <span>Email Address</span>
+          </div>
+          <TextField
+            type="email"
+            placeholder="example@sample.com"
+            error={errors.email ? true : false}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                message: "Invalid email address",
+              },
+            })}
+            className="w-full bg-fourth-light"
+            InputProps={{
+              sx: {
+                height: "45px",
+                lineHeight: "normal",
+                borderRadius: "10px",
+              },
+            }}
+          />
+          {errors.email && (
+            <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+        <div className="w-full mt-[10px]">
+          <div className="flex flex-row px-1 text-[15px] mb-1">
             <span>First Name</span>
           </div>
           <TextField
             type="text"
             placeholder="first name"
-            error={errors.firstname ? true : false}
-            {...register("firstname", {
+            error={errors.first_name ? true : false}
+            {...register("first_name", {
               required: "Firstname is required",
               pattern: {
                 value: /^[A-Za-z\s]+$/,
@@ -73,9 +110,9 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
               },
             }}
           />
-          {errors.firstname && (
+          {errors.first_name && (
             <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-              {errors.firstname.message}
+              {errors.first_name.message}
             </p>
           )}
         </div>
@@ -86,8 +123,8 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
           <TextField
             type="text"
             placeholder="last name"
-            error={errors.lastname ? true : false}
-            {...register("lastname", {
+            error={errors.last_name ? true : false}
+            {...register("last_name", {
               required: "Last Name is required",
               pattern: {
                 value: /^[A-Za-z]+$/,
@@ -103,9 +140,9 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
               },
             }}
           />
-          {errors.lastname && (
+          {errors.last_name && (
             <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-              {errors.lastname.message}
+              {errors.last_name.message}
             </p>
           )}
         </div>
@@ -117,8 +154,8 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
             <TextField
               type="text"
               placeholder="middle name"
-              error={errors.middlename ? true : false}
-              {...register("middlename", {
+              error={errors.middle_name ? true : false}
+              {...register("middle_name", {
                 required: "Middle Name is required",
                 pattern: {
                   value: /^[A-Za-z]+$/,
@@ -134,9 +171,9 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
                 },
               }}
             />
-            {errors.middlename && (
+            {errors.middle_name && (
               <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                {errors.middlename.message}
+                {errors.middle_name.message}
               </p>
             )}
           </div>
@@ -149,7 +186,6 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
               placeholder="suffix"
               error={errors.suffix ? true : false}
               {...register("suffix", {
-                required: "Required",
                 pattern: {
                   value: /^[A-Za-z]+$/,
                   message: "Invalid",
@@ -170,6 +206,33 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
               </p>
             )}
           </div>
+          <div className="w-1/3 mt-[15px]">
+            <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+              <span>Age</span>
+            </div>
+            <TextField
+              type="number"
+              placeholder="Age"
+              error={errors.age ? true : false}
+              {...register("age", {
+                valueAsNumber: true,
+                
+              })}
+              className="w-full bg-fourth-light"
+              InputProps={{
+                sx: {
+                  height: "45px",
+                  lineHeight: "normal",
+                  borderRadius: "10px",
+                },
+              }}
+            />
+            {errors.age && (
+              <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                {errors.age.message}
+              </p>
+            )}
+          </div>
         </div>
         <div className="w-full mt-[15px]">
           <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
@@ -178,9 +241,9 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
           <TextField
             type="text"
             placeholder="title/position"
-            error={errors.position ? true : false}
-            {...register("position", {
-              required: "Position is required",
+            error={errors.title ? true : false}
+            {...register("title", {
+              required: "Position/Title is required",
             })}
             className="w-full bg-fourth-light"
             InputProps={{
@@ -191,9 +254,39 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
               },
             }}
           />
-          {errors.position && (
+          {errors.title && (
             <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-              {errors.position.message}
+              {errors.title.message}
+            </p>
+          )}
+        </div>
+        <div className="w-full mt-[15px]">
+          <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+            <span>Contact Number</span>
+          </div>
+          <TextField
+            type="number"
+            placeholder="Contact Number"
+            error={errors.contact_no ? true : false}
+            {...register("contact_no", {
+              required: "Contact Number is required",
+              pattern: {
+                value: /^[0-9]+$/,
+                message: "Invalid Contact Number",
+              },
+            })}
+            className="w-full bg-fourth-light"
+            InputProps={{
+              sx: {
+                height: "45px",
+                lineHeight: "normal",
+                borderRadius: "10px",
+              },
+            }}
+          />
+          {errors.contact_no && (
+            <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+              {errors.contact_no.message}
             </p>
           )}
         </div>
@@ -205,8 +298,8 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
             <TextField
               type="date"
               placeholder="MM-DD-YY"
-              error={errors.birthday ? true : false}
-              {...register("birthday", {
+              error={errors.birth_date ? true : false}
+              {...register("birth_date", {
                 required: "Birthday is required",
               })}
               className="w-full bg-fourth-light"
@@ -218,9 +311,9 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
                 },
               }}
             />
-            {errors.birthday && (
+            {errors.birth_date && (
               <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                {errors.birthday.message}
+                {errors.birth_date.message}
               </p>
             )}
           </div>

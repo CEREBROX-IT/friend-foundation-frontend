@@ -3,7 +3,18 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 interface User {
   email: string;
   password: string;
+  first_name: string
+  last_name: string
+  middle_name: string
+  suffix: string
+  age: number
+  contact_no: number
+  birthdate: string
+  title: string
+  gender: string
 }
+
+
 
 interface LoginResponse {
   message?: string;
@@ -31,7 +42,14 @@ export const loginApi = createApi({
         body: data,
       }),
     }),
+    postRegisterUser: builder.mutation<void, Partial<User>>({
+      query: (data) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { usePostLoginMutation, usePostForgotPasswordMutation } = loginApi;
+export const { usePostLoginMutation, usePostForgotPasswordMutation, usePostRegisterUserMutation } = loginApi;
