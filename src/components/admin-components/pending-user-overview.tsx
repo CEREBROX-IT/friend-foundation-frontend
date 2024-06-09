@@ -1,30 +1,29 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
-import { PendingAccount } from "../../MockDataFiles/Mockdata";
-import { isWithinInterval, addDays } from "date-fns";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
+import { useGetUserListQuery } from "../../redux/services/usersApi";
 
 const PendingUserOverview: FC = () => {
-  const currentDate = new Date();
-  const threeDaysAgo = addDays(currentDate, -3);
+  const { data: GetUserList } = useGetUserListQuery();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(PendingAccount);
+  const [filteredRows, setFilteredRows] = useState(GetUserList ?? []);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     applyFilters();
-  }, [searchQuery]);
+  }, [searchQuery, GetUserList]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const filteredData = PendingAccount.filter((row) => {
-      return (
-        row.user_full_name.toLowerCase().includes(lowerCaseQuery) ||
-        row.title.toLowerCase().includes(lowerCaseQuery)
-      );
-    });
+    const filteredData =
+      GetUserList?.filter((row) => {
+        return (
+          row.first_name.toLowerCase().includes(lowerCaseQuery) ||
+          row.title.toLowerCase().includes(lowerCaseQuery)
+        );
+      }) ?? [];
     setFilteredRows(filteredData);
   };
 
@@ -34,30 +33,17 @@ const PendingUserOverview: FC = () => {
   //-----for the Table------
   const columns = [
     {
-      field: "user_full_name",
-      headerName: "FULL NAME",
+      field: "first_name",
+      headerName: "First Name",
       flex: 1,
       minWidth: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        const dateCreated = new Date(params.row.date);
-        const isNew = isWithinInterval(dateCreated, {
-          start: threeDaysAgo,
-          end: currentDate,
-        });
-        return (
-          <div className="relative flex items-center">
-            <span>{params.value}</span>
-            {isNew && (
-              <span
-                className="bg-[#3b82f6] text-[10px] rounded-[50px] px-2
-                         text-white justify-end mt-[-1rem] ml-1 min-h-[10px] min-w-[10px] end-0"
-              >
-                New
-              </span>
-            )}
-          </div>
-        );
-      },
+     
+    },
+    {
+      field: "last_name",
+      headerName: "Last Name",
+      flex: 1,
+      minWidth: 170,
     },
     {
       field: "title",
@@ -65,12 +51,7 @@ const PendingUserOverview: FC = () => {
       flex: 1,
       minWidth: 200,
     },
-    {
-      field: "date",
-      headerName: "DATE",
-      flex: 1,
-      minWidth: 170,
-    },
+    
   ];
 
   return (

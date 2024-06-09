@@ -6,6 +6,10 @@ interface User {
   title: string;
   role: string;
 }
+
+interface UserListResponse {
+  data: User[];
+}
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
@@ -18,6 +22,7 @@ export const userApi = createApi({
         url: "/user",
         method: "GET",
       }),
+      transformResponse: (response: UserListResponse) => response.data,
     }),
   }),
 });
