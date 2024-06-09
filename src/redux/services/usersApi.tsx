@@ -10,18 +10,14 @@ export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
-    prepareHeaders: (headers) => {
-      const token = Cookies.get("token");
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-
-      return headers;
-    },
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getUserList: builder.query<User[], void>({
-      query: () => "/user",
+      query: () => ({
+        url: "/user",
+        method: "GET",
+      }),
     }),
   }),
 });

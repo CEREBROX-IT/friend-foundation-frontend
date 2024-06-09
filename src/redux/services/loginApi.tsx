@@ -26,6 +26,7 @@ export const loginApi = createApi({
   reducerPath: "loginApi",
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     postLogin: builder.mutation<LoginResponse, Partial<User>>({

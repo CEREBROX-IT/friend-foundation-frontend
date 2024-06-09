@@ -42,6 +42,7 @@ const LoginScreen: FC = () => {
 const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
   await postLogin(data).unwrap().then(response => {
     Cookies.set("token", response.token)
+    console.log(response)
     window.location.href = "/dashboard";
   })
 };

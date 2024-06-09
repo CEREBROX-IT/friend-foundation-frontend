@@ -14,7 +14,7 @@ import HeadDistrictChurchList from "../pages/dashboard/head-district-dashboard/h
 import HeadDistrictFormSubmission from "../pages/dashboard/head-district-dashboard/head-district-form-submission";
 
 const Protected = () => {
-  const [role, setRole] = useState("Head");
+  const [role, setRole] = useState("Admin");
   return (
     <>
       {role === "Admin" && (
