@@ -6,10 +6,12 @@ import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
 import SubmittedFormOverview from "../../../components/admin-components/submitted-forms-overview";
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
-
+import { useGetUserCountQuery, useGetFormSubmissionCountQuery, useGetChurchCountQuery } from "../../../redux/services/statsApi";
 const AdminDashboard: FC = () => {
-  
 
+  const {data: userCount} = useGetUserCountQuery()
+  const {data: FormSubmissionCount} = useGetFormSubmissionCountQuery()
+  const {data: ChurchCount} = useGetChurchCountQuery()
   return (
     <div className="relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto">
       <Header />
@@ -21,33 +23,33 @@ const AdminDashboard: FC = () => {
       <div className="flex flex-wrap flex-row gap-4 px-4 mt-[-7.5rem]">
         <ResultCards
           title="No. of Users"
-          result="2,210"
-          incomplete="463"
+          result={userCount?.active_user}
+          incomplete={userCount?.pending_user}
           description="Pending User"
           icon={HiMiniUsers}
           navigation_path="/dashboard/users"
         />
         <ResultCards
           title="Form Submission"
-          result="731"
-          incomplete="211"
+          result={FormSubmissionCount?.submitted_pastors}
+          incomplete={FormSubmissionCount?.not_submitted_pastors}
           description="Pastors not subbmitted"
           icon={FaFile}
           navigation_path="/dashboard"
         />
-        <ResultCards
-          title="No. of Pastors"
-          result="1,381"
-          incomplete="463"
+        {/* <ResultCards
+          title="No. of Reports Form"
+          // result="1,381"
+          // incomplete="463"
           description="Pastors not assigned"
           icon={FaUserTie}
           navigation_path="/dashboard"
-        />
+        /> */}
         <ResultCards
           title="No. of Church"
-          result="441"
-          incomplete="14"
-          description="Church not assigned"
+          result={ChurchCount?.total_churches}
+          // incomplete="14"
+          // description="Church not assigned"
           icon={FaChurch}
           navigation_path="/dashboard"
         />

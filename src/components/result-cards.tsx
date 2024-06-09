@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 interface CardsProps {
   title: string;
-  result: string;
-  incomplete: string;
-  description: string;
+  result?: number;
+  incomplete?: number;
+  description?: string;
   icon: React.ComponentType<{ className?: string }>;
   navigation_path: string;
 }
