@@ -1,26 +1,36 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
- interface User {
-   email: string;
-   password: string;
-   first_name: string;
-   last_name: string;
-   middle_name: string;
-   suffix: string;
-   age: number;
-   contact_no: number;
-   birthdate: string;
-   title: string;
-   gender: string;
-   role: string
- }
+interface User {
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  middle_name: string;
+  suffix: string;
+  age: number;
+  contact_no: number;
+  birthdate: string;
+  title: string;
+  gender: string;
+  role: string;
+}
+
+interface Stats {
+  active_user: number | undefined;
+  pending_user: number;
+  submitted_pastors: number;
+  not_submitted_pastors: number;
+  total_churches: number;
+  completed_forms: number;
+  pending_forms: number;
+}
 
 interface Approved {
   targetUserId: {};
 }
 
 interface UserListResponse {
-  data: User[] ;
+  data: User[];
 }
 
 export const userApi = createApi({
@@ -46,6 +56,22 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["Users"],
     }),
+
+    getUserCount: builder.query<Stats, void>({
+      query: () => "/stats/user-counts",
+      keepUnusedDataFor: 60,
+      providesTags: ["Users"],
+    }),
+    getFormSubmissionCount: builder.query<Stats, void>({
+      query: () => "/stats/submission-counts",
+      keepUnusedDataFor: 60,
+      providesTags: ["Users"],
+    }),
+    getChurchCount: builder.query<Stats, void>({
+      query: () => "/stats/churches-count",
+      keepUnusedDataFor: 60,
+      providesTags: ["Users"],
+    }),
     postRegisterUser: builder.mutation<void, Partial<User>>({
       query: (data) => ({
         url: "/auth/register",
@@ -57,4 +83,11 @@ export const userApi = createApi({
   }),
 });
 
-export const { useGetUserListQuery, usePostApproveUserMutation, usePostRegisterUserMutation } = userApi;
+export const {
+  useGetUserListQuery,
+  usePostApproveUserMutation,
+  usePostRegisterUserMutation,
+  useGetUserCountQuery,
+  useGetFormSubmissionCountQuery,
+  useGetChurchCountQuery,
+} = userApi;

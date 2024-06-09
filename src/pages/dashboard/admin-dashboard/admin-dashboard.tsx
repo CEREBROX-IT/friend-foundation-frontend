@@ -6,7 +6,7 @@ import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
 import SubmittedFormOverview from "../../../components/admin-components/submitted-forms-overview";
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
-import { useGetUserCountQuery, useGetFormSubmissionCountQuery, useGetChurchCountQuery } from "../../../redux/services/statsApi";
+import { useGetUserCountQuery, useGetFormSubmissionCountQuery, useGetChurchCountQuery } from "../../../redux/services/usersApi";
 import LoadingAnimation2 from "../../../components/loading-animation2";
 const AdminDashboard: FC = () => {
 
@@ -40,7 +40,7 @@ const AdminDashboard: FC = () => {
             )
           }
           incomplete={FormSubmissionCount?.not_submitted_pastors}
-          description="Pastors not subbmitted"
+          description="Pastors not submitted"
           icon={FaFile}
           navigation_path="/dashboard"
         />
