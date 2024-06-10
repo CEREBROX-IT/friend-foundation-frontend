@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import SDA_Logo from "../../assets/sda_logo_only.webp";
 import { HiMiniUsers } from "react-icons/hi2";
 import { IoIosArrowBack, IoIosArrowDown, IoIosFolder } from "react-icons/io";
-import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
+import {  FaFile, FaChurch } from "react-icons/fa6";
 import {
   MdDashboardCustomize,
   MdDarkMode,
