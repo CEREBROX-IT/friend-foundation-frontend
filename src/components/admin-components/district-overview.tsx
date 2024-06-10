@@ -1,33 +1,35 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
-import { AsigneeLogs } from "../../MockDataFiles/Mockdata";
-import { isWithinInterval, addDays } from "date-fns";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { useGetDistrictListQuery } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
 
 const DistrictOverview: FC = () => {
-  const currentDate = new Date();
-  const threeDaysAgo = addDays(currentDate, -3);
+  const { data: GetDistrictList, isLoading: LoadingDistrict } = useGetDistrictListQuery();
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(AsigneeLogs);
+  const [filteredRows, setFilteredRows] = useState(GetDistrictList ?? []);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     applyFilters();
-  }, [searchQuery]);
+  }, [searchQuery, GetDistrictList]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const filteredData = AsigneeLogs.filter((row) => {
-      return (
-        row.user_full_name.toLowerCase().includes(lowerCaseQuery) ||
-        row.title.toLowerCase().includes(lowerCaseQuery) ||
-        row.role.toLowerCase().includes(lowerCaseQuery) ||
-        row.previous_assign.toLowerCase().includes(lowerCaseQuery) ||
-        row.current_assign.toLowerCase().includes(lowerCaseQuery)
-      );
-    });
+    const filteredData =
+      GetDistrictList?.filter((row) => {
+        return (
+          row.union_conference.toLowerCase().includes(lowerCaseQuery) ||
+          row.district_name.toLowerCase().includes(lowerCaseQuery) ||
+          row.head_district_full_name.toLowerCase().includes(lowerCaseQuery) ||
+          row.district_region.toLowerCase().includes(lowerCaseQuery) ||
+          row.district_province.toLowerCase().includes(lowerCaseQuery) ||
+          row.district_municipal.toLowerCase().includes(lowerCaseQuery) ||
+          row.headquarters_address.toLowerCase().includes(lowerCaseQuery)
+        );
+      }) ?? [];
     setFilteredRows(filteredData);
   };
 
@@ -37,58 +39,38 @@ const DistrictOverview: FC = () => {
   //-----for the Table------
   const columns = [
     {
-      field: "user_full_name",
-      headerName: "FULL NAME",
-      flex: 1,
-      minWidth: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        const dateCreated = new Date(params.row.date);
-        const isNew = isWithinInterval(dateCreated, {
-          start: threeDaysAgo,
-          end: currentDate,
-        });
-        return (
-          <div className="relative flex items-center">
-            <span>{params.value}</span>
-            {isNew && (
-              <span
-                className="bg-[#3b82f6] text-[10px] rounded-[50px] px-2
-                         text-white justify-end mt-[-1rem] ml-1 min-h-[10px] min-w-[10px] end-0"
-              >
-                New
-              </span>
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      field: "title",
-      headerName: "TITLE",
+      field: "union_conference",
+      headerName: "Union Conference Name",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "role",
-      headerName: "ROLE",
+      field: "district_name",
+      headerName: "District Name",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "previous_assign",
-      headerName: "PREVIOUS ASSIGN",
+      field: "head_district_full_name",
+      headerName: "District Head",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "district_region",
+      headerName: "District Region",
       flex: 1,
       minWidth: 250,
     },
     {
-      field: "current_assign",
-      headerName: "CURRENT ASSIGN",
+      field: "district_municipal",
+      headerName: "District Municipality",
       flex: 1,
       minWidth: 250,
     },
     {
-      field: "date",
-      headerName: "DATE",
+      field: "headquarters_address",
+      headerName: "Headquarters Address",
       flex: 1,
       minWidth: 170,
     },
@@ -97,7 +79,6 @@ const DistrictOverview: FC = () => {
   return (
     <>
       <div className="flex flex-col md:flex-row justify-end dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
-       
         <div className="md:mt-0 max-w-[400px] w-full">
           <FiSearch
             size={20}
@@ -167,18 +148,24 @@ const DistrictOverview: FC = () => {
           },
         }}
       >
-        <DataGrid
-          rows={memoizedFilteredRows}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-          componentsProps={{
-            toolbar: {
-              printOptions: {
-                disableToolbarButton: true,
-              },
-            },
-          }}
-        />
+        {LoadingDistrict ? (
+          <h1>Please wait</h1>
+        ) : (
+          <>
+            <DataGrid
+              rows={memoizedFilteredRows}
+              columns={columns}
+              components={{ Toolbar: GridToolbar }}
+              componentsProps={{
+                toolbar: {
+                  printOptions: {
+                    disableToolbarButton: true,
+                  },
+                },
+              }}
+            />
+          </>
+        )}
       </Box>
       <Button
         sx={{

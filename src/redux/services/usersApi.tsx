@@ -80,14 +80,22 @@ interface UserListResponse {
 }
 
 interface DistrictDetails {
+  id: number;
   union_conference: string;
   district_name: string;
   head_district_assign: number | ""; // user ID or empty string for null
   date_establish: string; // ISO 8601 date string
+  head_district_full_name: string
   district_region: string;
   district_province: string;
   district_municipal: string;
   headquarters_address: string;
+  date_updated: string;
+  date_created: string;
+}
+
+interface DistrictList {
+  data: DistrictDetails[]
 }
 
 interface Unassigned {
@@ -99,6 +107,7 @@ interface UnassignedResponse {
   message: string
   data: Unassigned[]
 }
+
 export const userApi = createApi({
   reducerPath: "userApi",
   tagTypes: ["Users", "DISTRICT"],
@@ -166,6 +175,12 @@ export const userApi = createApi({
       keepUnusedDataFor: 60,
       providesTags: ["DISTRICT"],
     }),
+    getDistrictList: builder.query<DistrictDetails[], void>({
+      query: () => "/district/list",
+      keepUnusedDataFor: 60,
+      transformResponse: (response: DistrictList) => response.data,
+      providesTags: ["DISTRICT"],
+    }),
   }),
 });
 
@@ -179,5 +194,6 @@ export const {
   usePostRemoveUserMutation,
   useGetUserDetailsQuery,
   usePostNewDistrictMutation,
-  useGetUnassignedUserQuery
+  useGetUnassignedUserQuery,
+  useGetDistrictListQuery
 } = userApi;
