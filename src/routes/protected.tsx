@@ -12,6 +12,7 @@ import HeadDistrictSidebar from "../components/head-district-components/head-dis
 import HeadDistrictDashboard from "../pages/dashboard/head-district-dashboard/head-district-dashboard";
 import HeadDistrictChurchList from "../pages/dashboard/head-district-dashboard/head-district-church-list";
 import HeadDistrictFormSubmission from "../pages/dashboard/head-district-dashboard/head-district-form-submission";
+import UserProfile from "../components/user-profile";
 
 const Protected = () => {
   const [role, setRole] = useState("Admin");
@@ -83,6 +84,15 @@ const Protected = () => {
                   <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
                     <AdminSideBar />
                     <AdminFormManagement />
+                  </div>
+                }
+              />
+              <Route
+                path="/user-profile"
+                element={
+                  <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
+                    <AdminSideBar />
+                    <UserProfile />
                   </div>
                 }
               />

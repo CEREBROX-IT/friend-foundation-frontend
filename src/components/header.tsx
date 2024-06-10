@@ -8,11 +8,13 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Cookies } from "typescript-cookie";
 import { useGetUserDetailsQuery } from "../redux/services/usersApi";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
+  const navigate = useNavigate();
   const [OpenMenu, setOpenMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const {data: GetUserData} = useGetUserDetailsQuery()
-  
+  const { data: GetUserData } = useGetUserDetailsQuery();
+
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -20,6 +22,10 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleUserProfile = () => {
+    navigate("/user-profile")
+  }
 
   const MenuHandler = () => {
     setOpenMenu(true);
@@ -30,9 +36,9 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    Cookies.remove("token")
-    window.location.href = "/"
-  }
+    Cookies.remove("token");
+    window.location.href = "/";
+  };
 
   return (
     <>
@@ -83,7 +89,7 @@ const Header = () => {
               // },
             }}
           >
-            <MenuItem onClick={handleClose}>User Profile</MenuItem>
+            <MenuItem onClick={handleUserProfile}>User Profile</MenuItem>
             <MenuItem onClick={handleClose}>Settings</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
