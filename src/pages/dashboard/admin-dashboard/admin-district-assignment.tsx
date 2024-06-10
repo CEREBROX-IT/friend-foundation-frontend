@@ -4,20 +4,52 @@ import { MenuItem, TextField } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import AddDistrictModal from "../../../components/admin-components/add-district-modal";
 import { useState } from "react";
+import {
+  useGetUnassignedUserQuery,
+  useGetDistrictListQuery,
+  usePostUpdateDistrictMutation,
+} from "../../../redux/services/usersApi";
+
 interface IFormInput {
-  pastor_not_assigned: string;
-  district_available: string;
+  head_district_assign: number;
+  id: number;
 }
 const AdminDistrictAssignment = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<IFormInput>();
-  const [openNewDistrictModal, setOpenNewDistrictModal] = useState(false);
+  const watchValues = watch();
+  const { head_district_assign, id } = watchValues;
+  const isDisabled = !head_district_assign || !id;
 
-  const onSubmitHandle: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+  const [openNewDistrictModal, setOpenNewDistrictModal] = useState(false);
+  const [UpdateDistrict] = usePostUpdateDistrictMutation();
+  const { data: UnAssignedUsers } = useGetUnassignedUserQuery();
+  const { data: DistrictList } = useGetDistrictListQuery();
+  const filter = DistrictList?.filter(
+    (item) => item.head_district_assign === null
+  );
+
+  const onSubmitHandle: SubmitHandler<IFormInput> = async (data) => {
+    const filter = DistrictList?.filter((item) => item.id === data.id) || [];
+
+    const value = {
+      union_conference: filter[0]?.union_conference,
+      head_district_assign: data.head_district_assign,
+      district_name: filter[0]?.district_name,
+      date_establish: filter[0]?.date_establish,
+      district_region: filter[0]?.district_region,
+      district_province: filter[0]?.district_province,
+      district_municipal: filter[0]?.district_municipal,
+      headquarters_address: filter[0]?.headquarters_address,
+    };
+
+    await UpdateDistrict({ id: filter[0].id, data: value })
+      .unwrap()
+      .then((response) => console.log(response));
   };
 
   const handleOpenNewDistrictModal = () => setOpenNewDistrictModal(true);
@@ -43,17 +75,17 @@ const AdminDistrictAssignment = () => {
             Assign Pastor as District Head
           </p>
           <div className="flex flex-col lg:flex-row justify-between gap-4 lg:items-center  mb-4">
-            <div className="flex flex-col md:flex-row gap-2 border-white lg:min-w-96 min-w-full">
+            <div className="flex flex-col md:flex-row gap-2  lg:min-w-96 w-full ">
               <form
                 onSubmit={handleSubmit(onSubmitHandle)}
-                className="w-full flex flex-col md:flex-row gap-2"
+                className="w-full flex flex-col lg:flex-row  justify-between  gap-2"
               >
                 <TextField
                   type="text"
                   placeholder="Pastor not assign"
                   select
-                  error={errors.pastor_not_assigned ? true : false}
-                  {...register("pastor_not_assigned")}
+                  error={errors.head_district_assign ? true : false}
+                  {...register("head_district_assign")}
                   className="w-full bg-fourth-light rounded-[10px]"
                   InputProps={{
                     sx: {
@@ -63,19 +95,18 @@ const AdminDistrictAssignment = () => {
                     },
                   }}
                 >
-                  <MenuItem value="Male">
-                    <p className="text-slate-500 text-sm">John Ray D. Canete</p>
-                  </MenuItem>
-                  <MenuItem value="Female">
-                    <p className="text-slate-500 text-sm">Jannine Canete</p>
-                  </MenuItem>
+                  {UnAssignedUsers?.data?.map((item) => (
+                    <MenuItem value={item.id}>
+                      <p className="text-slate-500 text-sm">{item.full_name}</p>
+                    </MenuItem>
+                  ))}
                 </TextField>
                 <TextField
                   type="text"
                   placeholder="District Available"
                   select
-                  error={errors.district_available ? true : false}
-                  {...register("district_available")}
+                  error={errors.id ? true : false}
+                  {...register("id")}
                   className="w-full bg-fourth-light  rounded-[10px]"
                   InputProps={{
                     sx: {
@@ -85,19 +116,19 @@ const AdminDistrictAssignment = () => {
                     },
                   }}
                 >
-                  <MenuItem value="Male">
-                    <p className="text-slate-500 text-sm">District 1</p>
-                  </MenuItem>
-                  <MenuItem value="Female">
-                    <p className="text-slate-500 text-sm">District 2</p>
-                  </MenuItem>
+                  {filter?.map((item) => (
+                    <MenuItem value={item.id}>
+                      <p className="text-slate-500 text-sm">
+                        {item.district_name}
+                      </p>
+                    </MenuItem>
+                  ))}
                 </TextField>
+
+                <button className=" bg-secondary-light py-2 lg:w-[400px] text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85" disabled={isDisabled}>
+                  ASSIGN PASTOR
+                </button>
               </form>
-            </div>
-            <div>
-              <button className="bg-secondary-light py-2 px-7 text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">
-                ASSIGN PASTOR
-              </button>
             </div>
           </div>
           <div className="flex flex-col md:flex-row gap-2 lg:gap-4  lg:absolute translate-y-5 mb-10">

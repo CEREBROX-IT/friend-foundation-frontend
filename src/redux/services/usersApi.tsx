@@ -80,18 +80,18 @@ interface UserListResponse {
 }
 
 interface DistrictDetails {
-  id: number;
+  id?: number;
   union_conference: string;
   district_name: string;
   head_district_assign: number | ""; // user ID or empty string for null
   date_establish: string; // ISO 8601 date string
-  head_district_full_name: string
+  head_district_full_name?: string
   district_region: string;
   district_province: string;
   district_municipal: string;
   headquarters_address: string;
-  date_updated: string;
-  date_created: string;
+  date_updated?: string;
+  date_created?: string;
 }
 
 interface DistrictList {
@@ -106,6 +106,12 @@ interface Unassigned {
 interface UnassignedResponse {
   message: string
   data: Unassigned[]
+}
+
+
+interface UpdateDistrictArgs {
+  id: number;
+  data: DistrictDetails;
 }
 
 export const userApi = createApi({
@@ -181,6 +187,14 @@ export const userApi = createApi({
       transformResponse: (response: DistrictList) => response.data,
       providesTags: ["DISTRICT"],
     }),
+    postUpdateDistrict: builder.mutation<void, Partial<UpdateDistrictArgs>>({
+      query: ({data, id}) => ({
+        url: `/district/update?id=${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["DISTRICT"],
+    }),
   }),
 });
 
@@ -195,5 +209,6 @@ export const {
   useGetUserDetailsQuery,
   usePostNewDistrictMutation,
   useGetUnassignedUserQuery,
-  useGetDistrictListQuery
+  useGetDistrictListQuery,
+  usePostUpdateDistrictMutation
 } = userApi;
