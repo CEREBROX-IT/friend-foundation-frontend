@@ -41,7 +41,7 @@ const AddDistrictModal: FC<NewDistrictModalProps> = ({closeDistrictModal,}) => {
 
   return (
     <div className="absolute inset-0 flex justify-center items-center md:items-start backdrop-brightness-50 overflow-y-hidden  ">
-      <div className=" max-h-[90vh] md:max-h-[100vh] max-w-[450px] dark:bg-fourth-dark dark:text-white  bg-white  rounded-[10px]  p-4 mx-4 fixed top-0 ">
+      <div className=" max-h-[90vh] md:max-h-[100vh] max-w-[350px] min-w-[400px] dark:bg-fourth-dark dark:text-white  bg-white  rounded-[10px]  p-4 mx-4 fixed top-0 ">
         <div className="flex justify-end" onClick={closeDistrictModal}>
           <IoMdCloseCircle className="text-4xl cursor-pointer" />
         </div>
@@ -53,10 +53,10 @@ const AddDistrictModal: FC<NewDistrictModalProps> = ({closeDistrictModal,}) => {
         />
 
         <form
-          className="w-full flex flex-col items-center overflow-auto custom-scrollbar max-h-[400px] min-w-[400px]"
+          className="w-full flex flex-col overflow-auto custom-scrollbar max-h-[400px] "
           onSubmit={handleSubmit(onSubmitHandler)}
         >
-          <div className="w-full mt-[10px]">
+          <div className=" mt-[10px]">
             <div className="flex flex-row px-1 text-[15px] mb-1">
               <span>Union Conference</span>
             </div>

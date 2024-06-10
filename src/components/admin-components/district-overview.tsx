@@ -78,7 +78,7 @@ const DistrictOverview: FC = () => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row justify-end dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
+      <div className="flex flex-col lg:flex-row justify-end dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
         <div className="md:mt-0 max-w-[400px] w-full">
           <FiSearch
             size={20}
@@ -87,7 +87,7 @@ const DistrictOverview: FC = () => {
           <input
             type="text"
             placeholder="Search by Column Name"
-            className="md:w-[406px] w-full p-2 pl-10 border rounded-[360px] shadow-sm bg-sixth-light dark:bg-fourth-dark"
+            className="lg:w-[406px] w-full p-2 pl-10 border rounded-[360px] shadow-sm bg-sixth-light dark:bg-fourth-dark"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />

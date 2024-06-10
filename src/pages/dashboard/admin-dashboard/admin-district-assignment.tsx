@@ -102,13 +102,10 @@ const AdminDistrictAssignment = () => {
           </div>
           <div className="flex flex-col md:flex-row gap-2 lg:gap-4  lg:absolute translate-y-5 mb-10">
             <button
-              className="bg-secondary-light py-2 px-7  text-white dark:bg-white  dark:text-black  rounded-md  hover:opacity-85"
+              className="bg-[#B378FF] py-2 px-7  text-white dark:bg-white  dark:text-black  rounded-md  hover:opacity-85"
               onClick={handleOpenNewDistrictModal}
             >
               ADD NEW DISTRICT
-            </button>
-            <button className="bg-[#B378FF] py-2 px-7 text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">
-              VACANT DISTRICT
             </button>
           </div>
           <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">
