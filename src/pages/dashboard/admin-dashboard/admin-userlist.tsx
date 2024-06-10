@@ -6,7 +6,6 @@ import { useGetUserListQuery } from "../../../redux/services/usersApi";
 const AdminUserList = () => {
   const [openNewUserModal, setOpenNewUserModal] = useState(false)
   const {data: userData} = useGetUserListQuery()
-  console.log(userData)
   const handleOpenNewuserModal = () => setOpenNewUserModal(true)
   const hanldeCloseOpenNewUserModal = () => setOpenNewUserModal(false)
   return (
@@ -34,7 +33,7 @@ const AdminUserList = () => {
             <ListUsersOverview />
           </div>
         </div>
-        <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
+        <p className="px-4 mb-2 text-[14px] text-[#707070] text-center dark:text-white">
           © Copyright reserve Friend Foundation Management System 2024
         </p>
       </div>

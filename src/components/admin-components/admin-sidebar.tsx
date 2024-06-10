@@ -119,26 +119,7 @@ const AdminSideBar = () => {
               <p className={`text-bold text-[15px]`}>List of Users</p>
             )}
           </div>
-          <div
-            className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-              location.pathname === "/dashboard/pastors-management"
-                ? "border-secondary-dark"
-                : ""
-            }`}
-            onClick={() => {
-              //change it to the actual path
-              navigate("/dashboard/pastors-management");
-            }}
-          >
-            <div className="h-[42px] min-w-[42px]  flex items-center justify-center">
-              <FaUserTie className="text-[25px]" />
-            </div>
-            {showName && (
-              <p className={`text-bold text-[15px] ease-in-out duration-500`}>
-                List of Pastors
-              </p>
-            )}
-          </div>
+          
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
               location.pathname === "/dashboard/forms-management"

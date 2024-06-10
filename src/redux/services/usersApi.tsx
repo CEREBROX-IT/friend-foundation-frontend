@@ -79,11 +79,29 @@ interface UserListResponse {
   data: User[];
 }
 
+interface DistrictDetails {
+  union_conference: string;
+  district_name: string;
+  head_district_assign: number | ""; // user ID or empty string for null
+  date_establish: string; // ISO 8601 date string
+  district_region: string;
+  district_province: string;
+  district_municipal: string;
+  headquarters_address: string;
+}
 
+interface Unassigned {
+  id: number
+  full_name: string
+}
 
+interface UnassignedResponse {
+  message: string
+  data: Unassigned[]
+}
 export const userApi = createApi({
   reducerPath: "userApi",
-  tagTypes: ["Users"],
+  tagTypes: ["Users", "DISTRICT"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -104,7 +122,6 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["Users"],
     }),
-
     getUserCount: builder.query<Stats, void>({
       query: () => "/stats/user-counts",
       keepUnusedDataFor: 60,
@@ -117,7 +134,6 @@ export const userApi = createApi({
     getChurchCount: builder.query<Stats, void>({
       query: () => "/stats/churches-count",
       keepUnusedDataFor: 60,
-
     }),
     postRegisterUser: builder.mutation<void, Partial<User>>({
       query: (data) => ({
@@ -137,6 +153,19 @@ export const userApi = createApi({
     getUserDetails: builder.query<UserDataResponse, void>({
       query: () => "/user/me",
     }),
+    postNewDistrict: builder.mutation<void, Partial<DistrictDetails>>({
+      query: (data) => ({
+        url: "/district/create",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["DISTRICT"],
+    }),
+    getUnassignedUser: builder.query<UnassignedResponse, void>({
+      query: () => "/district/unassigned-users",
+      keepUnusedDataFor: 60,
+      providesTags: ["DISTRICT"],
+    }),
   }),
 });
 
@@ -148,5 +177,7 @@ export const {
   useGetFormSubmissionCountQuery,
   useGetChurchCountQuery,
   usePostRemoveUserMutation,
-  useGetUserDetailsQuery
+  useGetUserDetailsQuery,
+  usePostNewDistrictMutation,
+  useGetUnassignedUserQuery
 } = userApi;

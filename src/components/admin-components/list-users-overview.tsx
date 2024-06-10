@@ -195,7 +195,7 @@ const handleRemoveUser = async (id: number) => {
         }}
       >
         {memoizedFilteredRows.length <= 0 ? (
-          <h1 className="m-auto font-bold text-2xl">No Pending Accounts</h1>
+          <h1 className="m-auto font-bold text-2xl dark:text-white">No Pending Accounts</h1>
         ) : (
           <>
             <DataGrid

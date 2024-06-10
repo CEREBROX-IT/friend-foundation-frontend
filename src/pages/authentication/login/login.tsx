@@ -169,19 +169,19 @@ const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
                 </p>
               )}
             </div>
-            {isLoading ? (
+            {/* {isLoading ? (
               <div className="w-full mt-[15px]">
                 <LoadingAnimation message="Verifying, Please wait" />
               </div>
             ) : (
               ""
-            )}
+            )} */}
             {isError ? <p className="text-red-600 w-full text-sm">Invalid Credentials</p> : ""}
             <button
               type="submit"
               className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-full h-[45px]"
             >
-              SIGN IN
+              {isLoading ? <div className="flex w-full justify-center"><LoadingAnimation /></div>: "SIGN IN"}
             </button>
           </form>
 

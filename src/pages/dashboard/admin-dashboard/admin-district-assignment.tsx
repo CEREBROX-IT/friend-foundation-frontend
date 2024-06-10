@@ -2,7 +2,8 @@ import DistrictOverview from "../../../components/admin-components/district-over
 import Header from "../../../components/header";
 import { MenuItem, TextField } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
-
+import AddDistrictModal from "../../../components/admin-components/add-district-modal";
+import { useState } from "react";
 interface IFormInput {
   pastor_not_assigned: string;
   district_available: string;
@@ -12,15 +13,22 @@ const AdminDistrictAssignment = () => {
     register,
     handleSubmit,
     formState: { errors },
-    
   } = useForm<IFormInput>();
+  const [openNewDistrictModal, setOpenNewDistrictModal] = useState(false);
 
   const onSubmitHandle: SubmitHandler<IFormInput> = (data) => {
-    console.log(data)
-  }
+    console.log(data);
+  };
+
+  const handleOpenNewDistrictModal = () => setOpenNewDistrictModal(true);
+  const handleCloseOpenNewDistrictModal = () => setOpenNewDistrictModal(false);
   return (
     <div
-      className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto `}
+      className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark ${
+        openNewDistrictModal
+          ? "overflow-hidden max-h-screen "
+          : "overflow-y-auto"
+      }`}
     >
       <Header />
       <div className=" w-full h-[200px] bg-primary-light p-4 ">
@@ -93,7 +101,10 @@ const AdminDistrictAssignment = () => {
             </div>
           </div>
           <div className="flex flex-col md:flex-row gap-2 lg:gap-4  lg:absolute translate-y-5 mb-10">
-            <button className="bg-secondary-light py-2 px-7  text-white dark:bg-white  dark:text-black  rounded-md  hover:opacity-85">
+            <button
+              className="bg-secondary-light py-2 px-7  text-white dark:bg-white  dark:text-black  rounded-md  hover:opacity-85"
+              onClick={handleOpenNewDistrictModal}
+            >
               ADD NEW DISTRICT
             </button>
             <button className="bg-[#B378FF] py-2 px-7 text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">
@@ -108,6 +119,11 @@ const AdminDistrictAssignment = () => {
           © Copyright reserve Friend Foundation Management System 2024
         </p>
       </div>
+      {openNewDistrictModal && (
+        <AddDistrictModal
+          closeDistrictModal={handleCloseOpenNewDistrictModal}
+        />
+      )}
     </div>
   );
 };

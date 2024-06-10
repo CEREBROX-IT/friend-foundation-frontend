@@ -434,18 +434,18 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
               </p>
             )}
           </div>
-          <div className="w-full mt-[15px]">
-            {isLoading ? (
-              <LoadingAnimation message="Registering, please wait!" />
-            ) : (
-              ""
-            )}
-          </div>
+
           <button
             type="submit"
             className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-full h-[45px]"
           >
-            REGISTER
+            {isLoading ? (
+              <div className="flex justify-center">
+                <LoadingAnimation message="Registering, please wait!" />
+              </div>
+            ) : (
+              "REGISTER"
+            )}
           </button>
         </form>
       </div>
