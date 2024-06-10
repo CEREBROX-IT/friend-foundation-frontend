@@ -13,11 +13,12 @@ import HeadDistrictDashboard from "../pages/dashboard/head-district-dashboard/he
 import HeadDistrictChurchList from "../pages/dashboard/head-district-dashboard/head-district-church-list";
 import HeadDistrictFormSubmission from "../pages/dashboard/head-district-dashboard/head-district-form-submission";
 import UserProfile from "../components/user-profile";
-
-interface RoleProps{
-  role?: string
+import PendingLandingPage from "../components/pending-landing-page";
+import Header from "../components/header";
+interface RoleProps {
+  role?: string;
 }
-const Protected:FC<RoleProps> = ({role}) => {
+const Protected: FC<RoleProps> = ({ role }) => {
   return (
     <>
       {role === "Admin" && (
@@ -134,6 +135,14 @@ const Protected:FC<RoleProps> = ({role}) => {
                 }
               />
             </Routes>
+          </div>
+        </>
+      )}
+      {role === "Pending" && (
+        <>
+          <div className="flex flex-col bg-white min-h-[100vh]">
+            <Header />
+            <PendingLandingPage />
           </div>
         </>
       )}
