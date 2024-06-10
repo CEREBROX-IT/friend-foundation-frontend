@@ -18,6 +18,7 @@ interface User {
 interface DeleteUser {
   id: number
 }
+
 interface Stats {
   active_user: number | undefined;
   pending_user: number;
@@ -188,10 +189,17 @@ export const userApi = createApi({
       providesTags: ["DISTRICT"],
     }),
     postUpdateDistrict: builder.mutation<void, Partial<UpdateDistrictArgs>>({
-      query: ({data, id}) => ({
+      query: ({ data, id }) => ({
         url: `/district/update?id=${id}`,
         method: "PUT",
         body: data,
+      }),
+      invalidatesTags: ["DISTRICT"],
+    }),
+    postDeleteDistrict: builder.mutation<void, Partial<DeleteUser>>({
+      query: ({id}) => ({
+        url: `/district/delete?id=${id}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["DISTRICT"],
     }),
@@ -210,5 +218,6 @@ export const {
   usePostNewDistrictMutation,
   useGetUnassignedUserQuery,
   useGetDistrictListQuery,
-  usePostUpdateDistrictMutation
+  usePostUpdateDistrictMutation,
+  usePostDeleteDistrictMutation
 } = userApi;

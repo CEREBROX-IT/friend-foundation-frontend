@@ -1,13 +1,18 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useGetDistrictListQuery } from "../../redux/services/usersApi";
+import {
+  DataGrid,
+  GridToolbar,
+  GridRenderCellParams,
+  GridAlignment,
+} from "@mui/x-data-grid";
+import { useGetDistrictListQuery, usePostDeleteDistrictMutation } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
 
 const DistrictOverview: FC = () => {
   const { data: GetDistrictList, isLoading: LoadingDistrict } = useGetDistrictListQuery();
-
+  const [deleteDistrict] = usePostDeleteDistrictMutation()
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState(GetDistrictList ?? []);
   const { theme } = useContext(ThemeContext);
@@ -23,7 +28,6 @@ const DistrictOverview: FC = () => {
         return (
           row.union_conference.toLowerCase().includes(lowerCaseQuery) ||
           row.district_name.toLowerCase().includes(lowerCaseQuery) ||
-          row.head_district_full_name.toLowerCase().includes(lowerCaseQuery) ||
           row.district_region.toLowerCase().includes(lowerCaseQuery) ||
           row.district_province.toLowerCase().includes(lowerCaseQuery) ||
           row.district_municipal.toLowerCase().includes(lowerCaseQuery) ||
@@ -35,6 +39,10 @@ const DistrictOverview: FC = () => {
 
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
+
+  async function hanldeDelete(id: number){
+    await deleteDistrict({id: id}).unwrap().then((response) => console.log(response))
+  }
 
   //-----for the Table------
   const columns = [
@@ -73,6 +81,21 @@ const DistrictOverview: FC = () => {
       headerName: "Headquarters Address",
       flex: 1,
       minWidth: 170,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      sortable: false,
+      headerAlign: "center" as GridAlignment,
+      minWidth: 200,
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) => (
+        <div className="flex justify-evenly w-full">
+          <Button variant="contained" color="error" size="small" onClick={()=> hanldeDelete(params.row.id)}>
+            DELETE
+          </Button>
+        </div>
+      ),
     },
   ];
 
