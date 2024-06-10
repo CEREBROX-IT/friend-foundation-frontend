@@ -7,9 +7,12 @@ import MobileAdminSideBar from "./admin-components/mobile-admin-sidebar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Cookies } from "typescript-cookie";
+import { useGetUserDetailsQuery } from "../redux/services/usersApi";
 const Header = () => {
   const [OpenMenu, setOpenMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const {data: GetUserData} = useGetUserDetailsQuery()
+  
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -51,7 +54,7 @@ const Header = () => {
         </div>
         <div className="flex flex-row gap-2 items-center">
           <p className="hidden lg:block dark:text-white">
-            Hello! Peter Francis C. Robante
+            {GetUserData?.data.first_name} {GetUserData?.data.last_name}
           </p>
           <div
             className="rounded-[50%] bg-fifth-dark h-[40px] min-w-[40px] flex items-center cursor-pointer"

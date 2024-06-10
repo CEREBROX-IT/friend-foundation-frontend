@@ -28,6 +28,49 @@ interface Stats {
   pending_forms: number;
 }
 
+interface UserDetails {
+  first_name: string;
+  last_name: string;
+  email: string;
+  middle_name: string;
+  suffix: string;
+  age: number;
+  gender: string;
+  contact_no: string;
+  birth_date: string; // Date string in ISO format
+  salutation: string | null;
+  title: string;
+  role: string;
+  profile_display: string | null;
+  id: number;
+  user_id: number;
+  street: string | null;
+  barangay: string | null;
+  municipal: string | null;
+  province: string | null;
+  postal_code: string | null;
+  region: string | null;
+  country: string | null;
+  date_of_marriage: string | null;
+  spouse_first_name: string | null;
+  spouse_last_name: string | null;
+  spouse_middle_name: string | null;
+  spouse_contact: string | null;
+  father_first_name: string | null;
+  father_last_name: string | null;
+  father_middle_name: string | null;
+  father_suffix_name: string | null;
+  mother_first_name: string | null;
+  mother_last_name: string | null;
+  mother_middle_name: string | null;
+  mother_suffix_name: string | null;
+}
+
+interface UserDataResponse {
+  data: UserDetails;
+  message: string;
+}
+
 interface Approved {
   targetUserId: {};
 }
@@ -35,6 +78,8 @@ interface Approved {
 interface UserListResponse {
   data: User[];
 }
+
+
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -68,12 +113,11 @@ export const userApi = createApi({
     getFormSubmissionCount: builder.query<Stats, void>({
       query: () => "/stats/submission-counts",
       keepUnusedDataFor: 60,
-      providesTags: ["Users"],
     }),
     getChurchCount: builder.query<Stats, void>({
       query: () => "/stats/churches-count",
       keepUnusedDataFor: 60,
-      providesTags: ["Users"],
+
     }),
     postRegisterUser: builder.mutation<void, Partial<User>>({
       query: (data) => ({
@@ -87,9 +131,11 @@ export const userApi = createApi({
       query: ({ id }) => ({
         url: `/user/remove?id=${id}`,
         method: "PUT",
-       
       }),
       invalidatesTags: ["Users"],
+    }),
+    getUserDetails: builder.query<UserDataResponse, void>({
+      query: () => "/user/me",
     }),
   }),
 });
@@ -101,5 +147,6 @@ export const {
   useGetUserCountQuery,
   useGetFormSubmissionCountQuery,
   useGetChurchCountQuery,
-  usePostRemoveUserMutation
+  usePostRemoveUserMutation,
+  useGetUserDetailsQuery
 } = userApi;
