@@ -7,15 +7,17 @@ import AdminChurchAssignment from "../pages/dashboard/admin-dashboard/admin-chur
 import AdminAssignmentLogs from "../pages/dashboard/admin-dashboard/admin-assignment-logs";
 import AdminNotificationLogs from "../pages/dashboard/admin-dashboard/admin-notification-logs";
 import AdminFormManagement from "../pages/dashboard/admin-dashboard/admin-form-management";
-import { useState } from "react";
+import { FC } from "react";
 import HeadDistrictSidebar from "../components/head-district-components/head-district-sidebar";
 import HeadDistrictDashboard from "../pages/dashboard/head-district-dashboard/head-district-dashboard";
 import HeadDistrictChurchList from "../pages/dashboard/head-district-dashboard/head-district-church-list";
 import HeadDistrictFormSubmission from "../pages/dashboard/head-district-dashboard/head-district-form-submission";
 import UserProfile from "../components/user-profile";
 
-const Protected = () => {
-  const [role, setRole] = useState("Admin");
+interface RoleProps{
+  role?: string
+}
+const Protected:FC<RoleProps> = ({role}) => {
   return (
     <>
       {role === "Admin" && (
@@ -100,7 +102,7 @@ const Protected = () => {
           </div>
         </>
       )}
-      {role === "Head" && (
+      {role === "Head District" && (
         <>
           <div className="flex bg-white min-h-[100vh]">
             <Routes>

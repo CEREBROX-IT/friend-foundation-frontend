@@ -4,6 +4,7 @@ import { Cookies } from "typescript-cookie";
 
 interface DecodedToken {
   exp: number;
+  role: string 
   // Add other properties of your decoded token here
 }
 

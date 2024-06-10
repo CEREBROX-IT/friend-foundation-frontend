@@ -6,8 +6,9 @@ import JwtDecoder from "./utils/jwt-decoder";
 import { useEffect, useState } from "react";
 function App() {
   const token = JwtDecoder().isTokenValid;
+  const userData = JwtDecoder().decodedToken
   const [isLoading, setIsloading] = useState(true);
-
+console.log(userData)
   useEffect(() => {
     if (token) {
       setIsloading(false);
@@ -24,7 +25,7 @@ function App() {
       {isLoading ? undefined : (
         <ThemeProvider>
           <BrowserRouter>
-            {token ? <Protected /> : <Unprotected />}
+            {token ? <Protected role={userData?.role}/> : <Unprotected />}
           </BrowserRouter>
         </ThemeProvider>
       )}
