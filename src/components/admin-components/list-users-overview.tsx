@@ -11,17 +11,21 @@ import ThemeContext from "../ThemeContext";
 import {
   useGetUserListQuery,
   usePostApproveUserMutation,
+  usePostRemoveUserMutation
 } from "../../redux/services/usersApi";
+
 
 interface Approve {
   targetUserId: number
 }
+
 const ListUsersOverview: FC = () => {
   const { data: GetUserList } = useGetUserListQuery();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState(GetUserList ?? []);
   const { theme } = useContext(ThemeContext);
 const [approve] = usePostApproveUserMutation();
+const [removeUser] = usePostRemoveUserMutation()
   useEffect(() => {
     applyFilters();
   }, [searchQuery, GetUserList]);
@@ -44,10 +48,13 @@ const [approve] = usePostApproveUserMutation();
 
 const handleApprove = async (targetUserId: Approve) => {
   const value = { targetUserId: targetUserId };
-  await approve(value).unwrap().then((response) => {
-    console.log(response)
+  await approve(value).unwrap().then((response) => { console.log(response)
   })
 };
+
+const handleRemoveUser = async (id: number) => {
+  await removeUser({id}).unwrap().then((response) => console.log(response))
+}
   //-----for the Table------
   const columns = [
     {
@@ -95,7 +102,12 @@ const handleApprove = async (targetUserId: Approve) => {
           >
             Approved
           </Button>
-          <Button variant="contained" color="error" size="small">
+          <Button
+            variant="contained"
+            color="error"
+            size="small"
+            onClick={() => handleRemoveUser(params?.row.user_id)}
+          >
             Remove
           </Button>
         </div>

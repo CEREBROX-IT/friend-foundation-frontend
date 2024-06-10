@@ -15,6 +15,9 @@ interface User {
   role: string;
 }
 
+interface DeleteUser {
+  id: number
+}
 interface Stats {
   active_user: number | undefined;
   pending_user: number;
@@ -80,6 +83,14 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["Users"],
     }),
+    postRemoveUser: builder.mutation<void, Partial<DeleteUser>>({
+      query: ({ id }) => ({
+        url: `/user/remove?id=${id}`,
+        method: "PUT",
+       
+      }),
+      invalidatesTags: ["Users"],
+    }),
   }),
 });
 
@@ -90,4 +101,5 @@ export const {
   useGetUserCountQuery,
   useGetFormSubmissionCountQuery,
   useGetChurchCountQuery,
+  usePostRemoveUserMutation
 } = userApi;

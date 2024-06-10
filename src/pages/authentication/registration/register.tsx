@@ -55,7 +55,7 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
   return (
     <div
       data-aos="flip-left"
-      className="z-20 relative flex flex-col items-center w-[90%] md:w-[450px] bg-white py-4 px-10 rounded-[20px] max-h-[80vh] lg:max-h-[90vh]"
+      className="z-20 relative flex flex-col items-center w-[90%] md:w-[450px] bg-white py-4 px-10 rounded-[20px] max-h-[70vh]"
     >
       <img src={SampleLogo} className="w-[180px] mb-[20px]" alt="Logo" />
 
