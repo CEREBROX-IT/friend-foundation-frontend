@@ -1,33 +1,31 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
-import { AsigneeLogs } from "../../MockDataFiles/Mockdata";
-import { isWithinInterval, addDays } from "date-fns";
+import { DataGrid, GridToolbar, GridRenderCellParams, GridAlignment } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
+import { useGetChurchListQuery, usePostDeleteChurchMutation } from "../../redux/services/usersApi";
 
 const ChurchOverview: FC = () => {
-  const currentDate = new Date();
-  const threeDaysAgo = addDays(currentDate, -3);
+  const {data: ChurchList} = useGetChurchListQuery()
+  const [PostDeleteChurch] = usePostDeleteChurchMutation()
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(AsigneeLogs);
+  const [filteredRows, setFilteredRows] = useState(ChurchList ?? []);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     applyFilters();
-  }, [searchQuery]);
+  }, [searchQuery, ChurchList]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const filteredData = AsigneeLogs.filter((row) => {
+    const filteredData = ChurchList?.filter((row) => {
       return (
-        row.user_full_name.toLowerCase().includes(lowerCaseQuery) ||
-        row.title.toLowerCase().includes(lowerCaseQuery) ||
-        row.role.toLowerCase().includes(lowerCaseQuery) ||
-        row.previous_assign.toLowerCase().includes(lowerCaseQuery) ||
-        row.current_assign.toLowerCase().includes(lowerCaseQuery)
+        row.district_name.toLowerCase().includes(lowerCaseQuery) ||
+        row.church_name.toLowerCase().includes(lowerCaseQuery) ||
+        row.head_pastor_full_name.toLowerCase().includes(lowerCaseQuery) ||
+        row.church_address.toLowerCase().includes(lowerCaseQuery) 
       );
-    });
+    }) ?? [];
     setFilteredRows(filteredData);
   };
 
@@ -37,62 +35,61 @@ const ChurchOverview: FC = () => {
   //-----for the Table------
   const columns = [
     {
-      field: "user_full_name",
-      headerName: "FULL NAME",
-      flex: 1,
-      minWidth: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        const dateCreated = new Date(params.row.date);
-        const isNew = isWithinInterval(dateCreated, {
-          start: threeDaysAgo,
-          end: currentDate,
-        });
-        return (
-          <div className="relative flex items-center">
-            <span>{params.value}</span>
-            {isNew && (
-              <span
-                className="bg-[#3b82f6] text-[10px] rounded-[50px] px-2
-                         text-white justify-end mt-[-1rem] ml-1 min-h-[10px] min-w-[10px] end-0"
-              >
-                New
-              </span>
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      field: "title",
-      headerName: "TITLE",
+      field: "church_name",
+      headerName: "Church Name",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "role",
-      headerName: "ROLE",
+      field: "district_name",
+      headerName: "District Name",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "previous_assign",
-      headerName: "PREVIOUS ASSIGN",
+      field: "head_pastor_full_name",
+      headerName: "Pastor Name",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "church_date_establish",
+      headerName: "Church Establish",
       flex: 1,
       minWidth: 250,
     },
     {
-      field: "current_assign",
-      headerName: "CURRENT ASSIGN",
+      field: "church_address",
+      headerName: "Church Address",
       flex: 1,
       minWidth: 250,
     },
     {
-      field: "date",
-      headerName: "DATE",
+      field: "action",
+      headerName: "",
       flex: 1,
       minWidth: 170,
+      headerAlign: "center" as GridAlignment,
+      renderCell: (params: GridRenderCellParams) => (
+        <div className="flex justify-evenly w-full">
+          <Button
+            variant="contained"
+            color="error"
+            size="small"
+            onClick={() => deleteChurch(params.row.id)}
+          >
+            DELETE
+          </Button>
+        </div>
+      ),
     },
   ];
+
+  async function deleteChurch(id: number) {
+    await PostDeleteChurch({id: id}).unwrap().then((response) => {
+      console.log(response)
+    })
+  }
 
   return (
     <>

@@ -2,6 +2,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TFormInput } from "../../pages/dashboard/unassigned-dashboard/unassigned-dashboard";
 import { ChurchDetails } from "../../components/admin-components/add-churhc-modal";
 
+
+interface ChurchListResponse {
+  data: ChurchDetails[]
+}
 interface User {
   email: string;
   password: string;
@@ -120,7 +124,7 @@ interface UpdateDistrictArgs {
 
 export const userApi = createApi({
   reducerPath: "userApi",
-  tagTypes: ["Users", "DISTRICT"],
+  tagTypes: ["Users", "DISTRICT", "Church"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -219,6 +223,20 @@ export const userApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Church"],
+    }),
+    getChurchList: builder.query<ChurchDetails[], void>({
+      query: () => "/church/list",
+      keepUnusedDataFor: 60,
+      providesTags: ["Church"],
+      transformResponse: (response: ChurchListResponse) => response.data,
+    }),
+    postDeleteChurch: builder.mutation<void, Partial<ChurchDetails>>({
+      query: ({id}) => ({
+        url: `/church/delete?id=${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Church"],
     }),
   }),
 });
@@ -238,5 +256,7 @@ export const {
   usePostUpdateDistrictMutation,
   usePostDeleteDistrictMutation,
   usePostUpdateUserDetailsMutation,
-  usePostAddChurchMutation
+  usePostAddChurchMutation,
+  useGetChurchListQuery,
+  usePostDeleteChurchMutation
 } = userApi;
