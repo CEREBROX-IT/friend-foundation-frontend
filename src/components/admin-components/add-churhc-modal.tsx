@@ -12,14 +12,14 @@ import { IoMdCloseCircle } from "react-icons/io";
 import LoadingAnimation from "../loading-animation";
 
 export type ChurchDetails = {
-  id: number
-  district_id: number;
-  church_name: string;
-  pastor_assign: number;
-  church_date_establish: string;
-  church_address: string;
-  head_pastor_full_name: string;
-  district_name: string
+  id?: number
+  district_id?: number;
+  church_name?: string;
+  pastor_assign?: number;
+  church_date_establish?: string;
+  church_address?: string;
+  head_pastor_full_name?: string;
+  district_name?: string
 };
 
 interface NewDistrictModalProps {

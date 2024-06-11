@@ -34,9 +34,8 @@ const AdminDistrictAssignment = () => {
   );
 
   const onSubmitHandle: SubmitHandler<IFormInput> = async (data) => {
-    
     const filter = DistrictList?.filter((item) => item.id === data.id) || [];
-    
+
     const value = {
       union_conference: filter[0]?.union_conference,
       head_district_assign: data?.head_district_assign,
@@ -48,7 +47,6 @@ const AdminDistrictAssignment = () => {
       headquarters_address: filter[0]?.headquarters_address,
     };
 
-    
     await UpdateDistrict({ id: filter[0].id, data: value })
       .unwrap()
       .then((response) => console.log(response));
@@ -60,11 +58,7 @@ const AdminDistrictAssignment = () => {
   const handleCloseOpenNewDistrictModal = () => setOpenNewDistrictModal(false);
   return (
     <div
-      className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark ${
-        openNewDistrictModal
-          ? "overflow-hidden max-h-screen "
-          : "overflow-y-auto"
-      }`}
+      className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto`}
     >
       <Header />
       <div className=" w-full h-[200px] bg-primary-light p-4 ">
@@ -153,14 +147,12 @@ const AdminDistrictAssignment = () => {
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
           © Copyright reserve Friend Foundation Management System 2024
         </p>
-      </div>
-      
         {openNewDistrictModal && (
           <AddDistrictModal
             closeDistrictModal={handleCloseOpenNewDistrictModal}
           />
         )}
-      
+      </div>
     </div>
   );
 };

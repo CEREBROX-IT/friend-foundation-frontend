@@ -122,6 +122,11 @@ interface UpdateDistrictArgs {
   data: DistrictDetails;
 }
 
+interface UpdateChurchArgs {
+  id: number;
+  data: ChurchDetails;
+}
+
 export const userApi = createApi({
   reducerPath: "userApi",
   tagTypes: ["Users", "DISTRICT", "Church"],
@@ -187,7 +192,7 @@ export const userApi = createApi({
     getUnassignedUser: builder.query<UnassignedResponse, void>({
       query: () => "/district/unassigned-users",
       keepUnusedDataFor: 60,
-      providesTags: ["DISTRICT"],
+      providesTags: ["DISTRICT", "Church"],
     }),
     getDistrictList: builder.query<DistrictDetails[], void>({
       query: () => "/district/list",
@@ -232,9 +237,17 @@ export const userApi = createApi({
       transformResponse: (response: ChurchListResponse) => response.data,
     }),
     postDeleteChurch: builder.mutation<void, Partial<ChurchDetails>>({
-      query: ({id}) => ({
+      query: ({ id }) => ({
         url: `/church/delete?id=${id}`,
         method: "DELETE",
+      }),
+      invalidatesTags: ["Church"],
+    }),
+    postUpdateChurch: builder.mutation<void, Partial<UpdateChurchArgs>>({
+      query: ({ id, data }) => ({
+        url: `/church/update?id=${id}`,
+        method: "PUT",
+        body: data,
       }),
       invalidatesTags: ["Church"],
     }),
@@ -258,5 +271,6 @@ export const {
   usePostUpdateUserDetailsMutation,
   usePostAddChurchMutation,
   useGetChurchListQuery,
-  usePostDeleteChurchMutation
+  usePostDeleteChurchMutation,
+  usePostUpdateChurchMutation
 } = userApi;

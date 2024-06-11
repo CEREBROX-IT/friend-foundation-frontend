@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import {jwtDecode} from "jwt-decode";
 import { Cookies } from "typescript-cookie";
-
 interface DecodedToken {
   exp: number;
   role: string 
@@ -21,6 +20,7 @@ const JwtDecoder = () => {
         setDecodedToken(decoded);
 
         const isTokenExpired = decoded.exp < Date.now() / 1000;
+        
         setIsTokenValid(!isTokenExpired);
       } catch (error) {
         console.error("Error decoding token:", error);
