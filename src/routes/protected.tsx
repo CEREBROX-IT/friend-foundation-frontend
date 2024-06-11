@@ -148,7 +148,7 @@ const Protected: FC<RoleProps> = ({ role }) => {
           </div>
         </>
       )}
-      {role === "Unassigned" && (
+      {role === "Unassign" && (
         <div className="flex bg-white min-h-[100vh]">
           <Routes>
             <Route

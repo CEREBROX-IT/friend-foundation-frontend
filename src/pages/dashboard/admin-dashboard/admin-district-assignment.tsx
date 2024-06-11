@@ -34,11 +34,12 @@ const AdminDistrictAssignment = () => {
   );
 
   const onSubmitHandle: SubmitHandler<IFormInput> = async (data) => {
+    
     const filter = DistrictList?.filter((item) => item.id === data.id) || [];
-
+    
     const value = {
       union_conference: filter[0]?.union_conference,
-      head_district_assign: data.head_district_assign,
+      head_district_assign: data?.head_district_assign,
       district_name: filter[0]?.district_name,
       date_establish: filter[0]?.date_establish,
       district_region: filter[0]?.district_region,
@@ -47,6 +48,7 @@ const AdminDistrictAssignment = () => {
       headquarters_address: filter[0]?.headquarters_address,
     };
 
+    
     await UpdateDistrict({ id: filter[0].id, data: value })
       .unwrap()
       .then((response) => console.log(response));

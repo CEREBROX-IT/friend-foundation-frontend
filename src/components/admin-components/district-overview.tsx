@@ -12,6 +12,7 @@ import ThemeContext from "../ThemeContext";
 
 const DistrictOverview: FC = () => {
   const { data: GetDistrictList, isLoading: LoadingDistrict } = useGetDistrictListQuery();
+  
   const [deleteDistrict] = usePostDeleteDistrictMutation()
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState(GetDistrictList ?? []);

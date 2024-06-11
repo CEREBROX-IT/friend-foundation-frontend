@@ -5,6 +5,7 @@ import { useGetUserDetailsQuery } from "../../../redux/services/usersApi";
 import { useEffect } from "react";
 import JwtDecoder from "../../../utils/jwt-decoder";
 import { usePostUpdateUserDetailsMutation } from "../../../redux/services/usersApi";
+import LoadingAnimation from "../../../components/loading-animation";
 export type TFormInput = {
   id?: number;
   data: {
@@ -296,10 +297,9 @@ const country = [
 ];
 
 export default function UnassignedDashboard() {
-  const [updateProfile] = usePostUpdateUserDetailsMutation();
+  const [updateProfile, {isLoading}] = usePostUpdateUserDetailsMutation();
   const userData = JwtDecoder().decodedToken;
-  console.log(userData)
-  const id: number | undefined  = userData?.id;
+  const id: number | undefined = userData?.id;
   const {
     register,
     handleSubmit,
@@ -309,13 +309,9 @@ export default function UnassignedDashboard() {
   const { data: UserDetails } = useGetUserDetailsQuery();
 
   async function onSubmitHandler({ data }: TFormInput) {
-    // await updateProfile({ id: id, data: data })
-    //   .unwrap()
-    //   .then((response) => console.log(response));
-
-  
-    console.log(id)
-    // console.log(data)
+    await updateProfile({ id: id, data: data })
+      .unwrap()
+      .then((response) => console.log(response));
   }
 
   useEffect(() => {
@@ -451,7 +447,7 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-              <div className="lg:w-2/4 mt-[10px] ">
+              <div className="w-full mt-[10px] ">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
                   <span>Middle Name</span>
                 </div>
@@ -478,7 +474,7 @@ export default function UnassignedDashboard() {
               </div>
             </div>
             <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
-              <div className="lg:w-1/6 mt-[10px]">
+              <div className="w-full mt-[10px]">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
                   <span>Suffix</span>
                 </div>
@@ -506,7 +502,7 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-              <div className="lg:w-1/6 mt-[10px]">
+              <div className="w-full mt-[10px]">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
                   <span>Age</span>
                 </div>
@@ -531,13 +527,13 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-              <div className="lg:w-1/6 mt-[15px]">
+              <div className="w-full mt-[10px]">
                 <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
                   <span>Gender</span>
                 </div>
                 <TextField
                   type="text"
-                  select
+                  aria-readonly
                   error={errors?.data?.gender ? true : false}
                   {...register("data.gender", {
                     required: "Gender is required",
@@ -550,28 +546,21 @@ export default function UnassignedDashboard() {
                       borderRadius: "10px",
                     },
                   }}
-                >
-                  <MenuItem value="Male">
-                    <p className="text-slate-500 text-sm">Male</p>
-                  </MenuItem>
-                  <MenuItem value="Female">
-                    <p className="text-slate-500 text-sm">Female</p>
-                  </MenuItem>
-                </TextField>
+                ></TextField>
                 {errors.data?.gender && (
                   <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
                     {errors.data.gender.message}
                   </p>
                 )}
               </div>
-              <div className="lg:w-2/4 mt-[10px] ">
+              <div className="w-full mt-[10px] ">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
                   <span>Contact Number</span>
                 </div>
                 <TextField
                   type="text"
                   error={errors.data?.contact_no ? true : false}
-                  {...register("data.middle_name", {
+                  {...register("data.contact_no", {
                     required: "Contact Number is required",
                   })}
                   className="w-full bg-fourth-light"
@@ -589,7 +578,9 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-              <div className="lg:w-2/4 mt-[10px] ">
+            </div>
+            <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
+              <div className="w-full mt-[10px] ">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
                   <span>Birthday</span>
                 </div>
@@ -616,9 +607,7 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-            </div>
-            <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
-              <div className="lg:w-1/6 mt-[10px]">
+              <div className="w-full mt-[10px]">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
                   <span>Salutation</span>
                 </div>
@@ -671,42 +660,14 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-              <div className="w-full mt-[15px]">
-                <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                  <span>Street</span>
-                </div>
-                <TextField
-                  type="text"
-                  error={errors?.data?.street ? true : false}
-                  {...register("data.street", {
-                    required: "Street is required",
-                  })}
-                  className="w-full bg-fourth-light"
-                  InputProps={{
-                    sx: {
-                      height: "45px",
-                      lineHeight: "normal",
-                      borderRadius: "10px",
-                    },
-                  }}
-                />
-
-                {errors.data?.street && (
-                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                    {errors.data.street.message}
-                  </p>
-                )}
-              </div>
-              <div className="w-full mt-[10px] ">
+              <div className="w-full mt-[10px]">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
-                  <span>Barangay</span>
+                  <span>Date of Mirriage</span>
                 </div>
                 <TextField
-                  type="text"
-                  error={errors.data?.barangay ? true : false}
-                  {...register("data.barangay", {
-                    required: "Barangay is required",
-                  })}
+                  type="date"
+                  error={errors.data?.date_of_marriage ? true : false}
+                  {...register("data.date_of_marriage")}
                   className="w-full bg-fourth-light"
                   InputProps={{
                     sx: {
@@ -716,9 +677,9 @@ export default function UnassignedDashboard() {
                     },
                   }}
                 />
-                {errors.data?.barangay && (
+                {errors.data?.date_of_marriage && (
                   <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                    {errors.data.barangay.message}
+                    {errors.data.date_of_marriage.message}
                   </p>
                 )}
               </div>
@@ -774,31 +735,7 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-              <div className="lg:w-1/2 mt-[15px]">
-                <div className="flex flex-row px-1 text-[15px] mb-1">
-                  <span>Postal Code</span>
-                </div>
-                <TextField
-                  type="text"
-                  error={errors.data?.postal_code ? true : false}
-                  {...register("data.postal_code", {
-                    required: "Postal is required",
-                  })}
-                  className="w-full bg-fourth-light"
-                  InputProps={{
-                    sx: {
-                      height: "45px",
-                      lineHeight: "normal",
-                      borderRadius: "10px",
-                    },
-                  }}
-                />
-                {errors.data?.postal_code && (
-                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                    {errors.data.postal_code.message}
-                  </p>
-                )}
-              </div>
+
               <div className="w-full mt-[15px] ">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
                   <span>Region</span>
@@ -830,6 +767,7 @@ export default function UnassignedDashboard() {
                 </div>
                 <TextField
                   type="text"
+                  defaultValue={UserDetails?.data?.country}
                   select
                   error={errors?.data?.country ? true : false}
                   {...register("data.country", {
@@ -858,14 +796,16 @@ export default function UnassignedDashboard() {
               </div>
             </div>
             <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
-              <div className="w-full mt-[10px]">
+              <div className="lg:w-1/2 mt-[15px]">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
-                  <span>Date of Mirriage</span>
+                  <span>Postal Code</span>
                 </div>
                 <TextField
-                  type="date"
-                  error={errors.data?.date_of_marriage ? true : false}
-                  {...register("data.date_of_marriage")}
+                  type="text"
+                  error={errors.data?.postal_code ? true : false}
+                  {...register("data.postal_code", {
+                    required: "Postal is required",
+                  })}
                   className="w-full bg-fourth-light"
                   InputProps={{
                     sx: {
@@ -875,9 +815,60 @@ export default function UnassignedDashboard() {
                     },
                   }}
                 />
-                {errors.data?.date_of_marriage && (
+                {errors.data?.postal_code && (
                   <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                    {errors.data.date_of_marriage.message}
+                    {errors.data.postal_code.message}
+                  </p>
+                )}
+              </div>
+              <div className="w-full mt-[10px]">
+                <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+                  <span>Street</span>
+                </div>
+                <TextField
+                  type="text"
+                  error={errors?.data?.street ? true : false}
+                  {...register("data.street", {
+                    required: "Street is required",
+                  })}
+                  className="w-full bg-fourth-light"
+                  InputProps={{
+                    sx: {
+                      height: "45px",
+                      lineHeight: "normal",
+                      borderRadius: "10px",
+                    },
+                  }}
+                />
+
+                {errors.data?.street && (
+                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                    {errors.data.street.message}
+                  </p>
+                )}
+              </div>
+              <div className="w-full mt-[10px] ">
+                <div className="flex flex-row px-1 text-[15px] mb-1">
+                  <span>Barangay</span>
+                </div>
+                <TextField
+                  type="text"
+                  error={errors.data?.barangay ? true : false}
+                  {...register("data.barangay", {
+                    required: "Barangay is required",
+                  })}
+                  className="w-full bg-fourth-light"
+                  InputProps={{
+                    sx: {
+                      height: "45px",
+                      lineHeight: "normal",
+                      borderRadius: "10px",
+                    },
+                  }}
+                />
+                {errors.data?.barangay && (
+                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                    {errors.data.barangay.message}
                   </p>
                 )}
               </div>
@@ -904,30 +895,7 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-              <div className="w-full mt-[10px]">
-                <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                  <span>Spouse Lastname</span>
-                </div>
-                <TextField
-                  type="text"
-                  error={errors?.data?.spouse_last_name ? true : false}
-                  {...register("data.spouse_last_name")}
-                  className="w-full bg-fourth-light"
-                  InputProps={{
-                    sx: {
-                      height: "45px",
-                      lineHeight: "normal",
-                      borderRadius: "10px",
-                    },
-                  }}
-                />
 
-                {errors.data?.spouse_last_name && (
-                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                    {errors.data.spouse_last_name.message}
-                  </p>
-                )}
-              </div>
               <div className="w-full mt-[10px] ">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
                   <span>Spouse Middle Name</span>
@@ -954,6 +922,30 @@ export default function UnassignedDashboard() {
             </div>
             <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
               <div className="w-full mt-[10px]">
+                <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+                  <span>Spouse Lastname</span>
+                </div>
+                <TextField
+                  type="text"
+                  error={errors?.data?.spouse_last_name ? true : false}
+                  {...register("data.spouse_last_name")}
+                  className="w-full bg-fourth-light"
+                  InputProps={{
+                    sx: {
+                      height: "45px",
+                      lineHeight: "normal",
+                      borderRadius: "10px",
+                    },
+                  }}
+                />
+
+                {errors.data?.spouse_last_name && (
+                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                    {errors.data.spouse_last_name.message}
+                  </p>
+                )}
+              </div>
+              <div className="w-full mt-[10px]">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
                   <span>Spouse Contact</span>
                 </div>
@@ -976,29 +968,7 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-              <div className="w-full mt-[10px]">
-                <div className="flex flex-row px-1 text-[15px] mb-1">
-                  <span>Father First Name</span>
-                </div>
-                <TextField
-                  type="text"
-                  error={errors.data?.father_first_name ? true : false}
-                  {...register("data.father_first_name")}
-                  className="w-full bg-fourth-light"
-                  InputProps={{
-                    sx: {
-                      height: "45px",
-                      lineHeight: "normal",
-                      borderRadius: "10px",
-                    },
-                  }}
-                />
-                {errors.data?.father_first_name && (
-                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                    {errors.data.father_first_name.message}
-                  </p>
-                )}
-              </div>
+
               <div className="w-full mt-[10px]">
                 <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
                   <span>Father Lastname</span>
@@ -1043,6 +1013,29 @@ export default function UnassignedDashboard() {
                 {errors.data?.father_middle_name && (
                   <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
                     {errors.data.father_middle_name.message}
+                  </p>
+                )}
+              </div>
+              <div className="w-full mt-[10px]">
+                <div className="flex flex-row px-1 text-[15px] mb-1">
+                  <span>Father First Name</span>
+                </div>
+                <TextField
+                  type="text"
+                  error={errors.data?.father_first_name ? true : false}
+                  {...register("data.father_first_name")}
+                  className="w-full bg-fourth-light"
+                  InputProps={{
+                    sx: {
+                      height: "45px",
+                      lineHeight: "normal",
+                      borderRadius: "10px",
+                    },
+                  }}
+                />
+                {errors.data?.father_first_name && (
+                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                    {errors.data.father_first_name.message}
                   </p>
                 )}
               </div>
@@ -1094,6 +1087,30 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
+
+              <div className="w-full mt-[10px] ">
+                <div className="flex flex-row px-1 text-[15px] mb-1">
+                  <span>Mother Middle Name</span>
+                </div>
+                <TextField
+                  type="text"
+                  error={errors.data?.mother_middle_name ? true : false}
+                  {...register("data.mother_middle_name")}
+                  className="w-full bg-fourth-light"
+                  InputProps={{
+                    sx: {
+                      height: "45px",
+                      lineHeight: "normal",
+                      borderRadius: "10px",
+                    },
+                  }}
+                />
+                {errors.data?.mother_middle_name && (
+                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                    {errors.data.mother_middle_name.message}
+                  </p>
+                )}
+              </div>
               <div className="w-full mt-[10px]">
                 <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
                   <span>Mother Lastname</span>
@@ -1118,32 +1135,9 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-              <div className="w-full mt-[10px] ">
-                <div className="flex flex-row px-1 text-[15px] mb-1">
-                  <span>Mother Middle Name</span>
-                </div>
-                <TextField
-                  type="text"
-                  error={errors.data?.mother_middle_name ? true : false}
-                  {...register("data.mother_middle_name")}
-                  className="w-full bg-fourth-light"
-                  InputProps={{
-                    sx: {
-                      height: "45px",
-                      lineHeight: "normal",
-                      borderRadius: "10px",
-                    },
-                  }}
-                />
-                {errors.data?.mother_middle_name && (
-                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                    {errors.data.mother_middle_name.message}
-                  </p>
-                )}
-              </div>
               <div className="lg:w-2/3 mt-[10px] ">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
-                  <span>Mother Siffix </span>
+                  <span>Mother Suffix </span>
                 </div>
                 <TextField
                   type="text"
@@ -1166,8 +1160,14 @@ export default function UnassignedDashboard() {
               </div>
             </div>
             <div className="w-full flex mt-10 justify-end">
-              <button className="py-2 px-6 bg-secondary-light rounded-md text-white">
-                UPDATE PROFILE
+              <button className="py-2 px-6 bg-secondary-light rounded-md text-white min-w-[200px]">
+                {isLoading ? (
+                  <div className="flex w-full justify-center">
+                    <LoadingAnimation />
+                  </div>
+                ) : (
+                  "UPDATE PROFILE"
+                )}
               </button>
             </div>
           </form>

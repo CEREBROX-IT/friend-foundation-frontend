@@ -204,7 +204,7 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["DISTRICT"],
     }),
-    postUpdateUserDetails: builder.mutation<void, Partial<TFormInput>>({
+    postUpdateUserDetails: builder.mutation<TFormInput, Partial<TFormInput>>({
       query: ({ id, data }) => ({
         url: `/user/update?id=${id}`,
         method: "PUT",
