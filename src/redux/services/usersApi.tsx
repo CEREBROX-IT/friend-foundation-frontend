@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TFormInput } from "../../pages/dashboard/unassigned-dashboard/unassigned-dashboard";
+import { ChurchDetails } from "../../components/admin-components/add-churhc-modal";
+
 interface User {
   email: string;
   password: string;
@@ -208,7 +210,14 @@ export const userApi = createApi({
       query: ({ id, data }) => ({
         url: `/user/update?id=${id}`,
         method: "PUT",
-        body: data
+        body: data,
+      }),
+    }),
+    postAddChurch: builder.mutation<void, Partial<ChurchDetails>>({
+      query: (data) => ({
+        url: `/church/create`,
+        method: "POST",
+        body: data,
       }),
     }),
   }),
@@ -228,5 +237,6 @@ export const {
   useGetDistrictListQuery,
   usePostUpdateDistrictMutation,
   usePostDeleteDistrictMutation,
-  usePostUpdateUserDetailsMutation
+  usePostUpdateUserDetailsMutation,
+  usePostAddChurchMutation
 } = userApi;

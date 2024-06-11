@@ -2,12 +2,16 @@ import Header from "../../../components/header";
 import ChurchOverview from "../../../components/admin-components/church-overview";
 import { MenuItem, TextField } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+import AddChurchModal from "../../../components/admin-components/add-churhc-modal";
 
 interface IFormInput {
   pastor_not_assigned: string;
   district_available: string;
 }
 const AdminChurchAssignment = () => {
+    const [openModal, setOpenModal] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -17,6 +21,12 @@ const AdminChurchAssignment = () => {
   const onSubmitHandler: SubmitHandler<IFormInput> = (data) => {
     console.log(data);
   };
+
+    const handleOpen = () => {
+      setOpenModal(true);
+    };
+    const handleClose = () =>
+      setOpenModal(false);
   return (
     <div
       className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto `}
@@ -92,11 +102,11 @@ const AdminChurchAssignment = () => {
             </div>
           </div>
           <div className="flex flex-col md:flex-row gap-2 lg:gap-4  lg:absolute translate-y-5 mb-10">
-            <button className="bg-secondary-light py-2 px-7  text-white dark:bg-white  dark:text-black  rounded-md  hover:opacity-85">
-              ADD NEW DISTRICT
-            </button>
-            <button className="bg-[#B378FF] py-2 px-7 text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">
-              VACANT DISTRICT
+            <button
+              className="bg-secondary-light py-2 px-7  text-white dark:bg-white  dark:text-black  rounded-md  hover:opacity-85"
+              onClick={handleOpen}
+            >
+              ADD NEW CHURCH
             </button>
           </div>
           <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">
@@ -106,6 +116,7 @@ const AdminChurchAssignment = () => {
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
           © Copyright reserve Friend Foundation Management System 2024
         </p>
+        {openModal && <AddChurchModal closeModal={handleClose} />}
       </div>
     </div>
   );

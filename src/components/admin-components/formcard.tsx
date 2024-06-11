@@ -2,7 +2,7 @@
 
 const FormCard = () => {
   return (
-    <div className="flex flex-col justify-between min-h-[150px] w-full bg-fourth-light p-2 shadow-2xl shadow-fourth-light border-2">
+    <div className="flex flex-col justify-between min-h-[150px] w-full bg-fourth-light p-2 shadow-fourth-light border-2">
       <div className="flex justify-between">
         <div>
           <h1>TITLE</h1>
