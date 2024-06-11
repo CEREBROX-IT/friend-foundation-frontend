@@ -52,7 +52,9 @@ const AdminDistrictAssignment = () => {
       .then((response) => console.log(response));
   };
 
-  const handleOpenNewDistrictModal = () => setOpenNewDistrictModal(true);
+  const handleOpenNewDistrictModal = () => {
+    setOpenNewDistrictModal(true);
+  };
   const handleCloseOpenNewDistrictModal = () => setOpenNewDistrictModal(false);
   return (
     <div
@@ -125,7 +127,10 @@ const AdminDistrictAssignment = () => {
                   ))}
                 </TextField>
 
-                <button className=" bg-secondary-light py-2 lg:w-[400px] text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85" disabled={isDisabled}>
+                <button
+                  className=" bg-secondary-light py-2 lg:w-[400px] text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
+                  disabled={isDisabled}
+                >
                   ASSIGN PASTOR
                 </button>
               </form>
@@ -147,11 +152,13 @@ const AdminDistrictAssignment = () => {
           © Copyright reserve Friend Foundation Management System 2024
         </p>
       </div>
-      {openNewDistrictModal && (
-        <AddDistrictModal
-          closeDistrictModal={handleCloseOpenNewDistrictModal}
-        />
-      )}
+      
+        {openNewDistrictModal && (
+          <AddDistrictModal
+            closeDistrictModal={handleCloseOpenNewDistrictModal}
+          />
+        )}
+      
     </div>
   );
 };

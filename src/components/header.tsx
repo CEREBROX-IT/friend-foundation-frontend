@@ -9,8 +9,11 @@ import MenuItem from "@mui/material/MenuItem";
 import { Cookies } from "typescript-cookie";
 import { useGetUserDetailsQuery } from "../redux/services/usersApi";
 import { useNavigate } from "react-router-dom";
+import JwtDecoder from "../utils/jwt-decoder";
 const Header = () => {
   const navigate = useNavigate();
+  const userData = JwtDecoder().decodedToken;
+  const role = userData?.role;
   const [OpenMenu, setOpenMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { data: GetUserData } = useGetUserDetailsQuery();
@@ -24,8 +27,8 @@ const Header = () => {
   };
 
   const handleUserProfile = () => {
-    navigate("/user-profile")
-  }
+    navigate("/user-profile");
+  };
 
   const MenuHandler = () => {
     setOpenMenu(true);
@@ -89,9 +92,17 @@ const Header = () => {
               // },
             }}
           >
-            <MenuItem onClick={handleUserProfile}>User Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Settings</MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            {role === "Unassigned" ? (
+              <>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </>
+            ) : (
+              <>
+                <MenuItem onClick={handleUserProfile}>User Profile</MenuItem>
+                <MenuItem onClick={handleClose}>Settings</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </>
+            )}
           </Menu>
           <div className="rounded-[50%] bg-fourth-light dark:bg-fourth-dark h-[40px] min-w-[40px] flex items-center cursor-pointer">
             <img src={BellIcon} className="h-[35px] mx-auto" />

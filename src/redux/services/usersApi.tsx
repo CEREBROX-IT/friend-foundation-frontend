@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import { TFormInput } from "../../pages/dashboard/unassigned-dashboard/unassigned-dashboard";
 interface User {
   email: string;
   password: string;
@@ -70,6 +70,7 @@ interface UserDetails {
 interface UserDataResponse {
   data: UserDetails;
   message: string;
+  id: number
 }
 
 interface Approved {
@@ -197,11 +198,18 @@ export const userApi = createApi({
       invalidatesTags: ["DISTRICT"],
     }),
     postDeleteDistrict: builder.mutation<void, Partial<DeleteUser>>({
-      query: ({id}) => ({
+      query: ({ id }) => ({
         url: `/district/delete?id=${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["DISTRICT"],
+    }),
+    postUpdateUserDetails: builder.mutation<void, Partial<TFormInput>>({
+      query: ({ id, data }) => ({
+        url: `/user/update?id=${id}`,
+        method: "PUT",
+        body: data
+      }),
     }),
   }),
 });
@@ -219,5 +227,6 @@ export const {
   useGetUnassignedUserQuery,
   useGetDistrictListQuery,
   usePostUpdateDistrictMutation,
-  usePostDeleteDistrictMutation
+  usePostDeleteDistrictMutation,
+  usePostUpdateUserDetailsMutation
 } = userApi;

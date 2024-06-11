@@ -8,7 +8,7 @@ function App() {
   const token = JwtDecoder().isTokenValid;
   const userData = JwtDecoder().decodedToken
   const [isLoading, setIsloading] = useState(true);
-console.log(userData)
+  
   useEffect(() => {
     if (token) {
       setIsloading(false);

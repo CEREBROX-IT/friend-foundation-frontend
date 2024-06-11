@@ -15,6 +15,8 @@ import HeadDistrictFormSubmission from "../pages/dashboard/head-district-dashboa
 import UserProfile from "../components/user-profile";
 import PendingLandingPage from "../components/pending-landing-page";
 import Header from "../components/header";
+import UnAssginedSidebar from "../components/unassigned-components/unassigned-sidebar";
+import UnassignedDashboard from "../pages/dashboard/unassigned-dashboard/unassigned-dashboard";
 interface RoleProps {
   role?: string;
 }
@@ -145,6 +147,21 @@ const Protected: FC<RoleProps> = ({ role }) => {
             <PendingLandingPage />
           </div>
         </>
+      )}
+      {role === "Unassigned" && (
+        <div className="flex bg-white min-h-[100vh]">
+          <Routes>
+            <Route
+              path="/dashboard"
+              element={
+                <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
+                  <UnAssginedSidebar />
+                  <UnassignedDashboard />
+                </div>
+              }
+            />
+          </Routes>
+        </div>
       )}
     </>
   );
