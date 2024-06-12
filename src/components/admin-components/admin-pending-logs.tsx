@@ -1,12 +1,11 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useGetAssignedLogsQuery } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
 import { useNavigate } from "react-router-dom";
 const AdminPendingLogs: FC = () => {
-  const navigate = useNavigate();
   const { data: AssignedLogs } = useGetAssignedLogsQuery();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState(AssignedLogs || []);
