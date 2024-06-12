@@ -3,13 +3,11 @@ import Header from "../../../components/header";
 import AdminAddForm from "../../../components/admin-components/admin-add-form";
 import FormCard from "../../../components/admin-components/formcard";
 import { useGetFormStatusQuery } from "../../../redux/services/usersApi";
-
+import NoDataFound from "../../../../public/NoDataImage.png"
 
 const AdminFormManagement = () => {
-
-  
-  
-  const {data: FormStatus} = useGetFormStatusQuery()
+  const { data: FormStatus } = useGetFormStatusQuery();
+  console.log(FormStatus)
   const [openAddForm, setOpenAddForm] = useState(false);
 
   const handleOpenForm = () => setOpenAddForm(true);
@@ -50,16 +48,29 @@ const AdminFormManagement = () => {
             </button>
           </div>
           <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">
-            <div className="min-h-[80vh] bg-  p-4 ">
-              {FormStatus?.map((item) => (
-                <FormCard
-                  Title={item.form_title}
-                  Description={item.form_description}
-                  attachfile={item.attachment_file ? constructDownloadLink(item.attachment_file) : ""}
-                  status={item.active_status ? "ACTIVE" : "INACTIVE"}
-                  total={item.total}
-                />
-              ))}
+            <div className="flex justify-center items-center min-h-[80vh] bg-  p-4 ">
+              {FormStatus?.length === 0 ? (
+                <>
+                <img src={NoDataFound}  className="aspect-square w-[500px]"/>
+                </>
+              ) : (
+                <>
+                
+                  {FormStatus?.map((item) => (
+                    <FormCard
+                      Title={item.form_title}
+                      Description={item.form_description}
+                      attachfile={
+                        item.attachment_file
+                          ? constructDownloadLink(item.attachment_file)
+                          : ""
+                      }
+                      status={item.active_status ? "ACTIVE" : "INACTIVE"}
+                      total={item.total}
+                    />
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </div>
