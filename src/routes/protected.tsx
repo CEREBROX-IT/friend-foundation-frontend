@@ -17,6 +17,8 @@ import PendingLandingPage from "../components/pending-landing-page";
 import Header from "../components/header";
 import UnAssginedSidebar from "../components/unassigned-components/unassigned-sidebar";
 import UnassignedDashboard from "../pages/dashboard/unassigned-dashboard/unassigned-dashboard";
+import PastorDashboard from "../pages/dashboard/pastor-dashboard/pastor-dashboard";
+import PastorSideBar from "../components/head-pastor-components/pastor-sidebar";
 interface RoleProps {
   role?: string;
 }
@@ -163,7 +165,21 @@ const Protected: FC<RoleProps> = ({ role }) => {
           </Routes>
         </div>
       )}
-      {role === "Head Pastor" && <h1 className="flex min-h-screen justify-center items-center text-2xl">HEAD PASTOR UNDER DEVELOPMENT</h1>}
+      {role === "Head Pastor" && (
+        <div className="flex bg-white min-h-[100vh]">
+          <Routes>
+            <Route
+              path="/dashboard"
+              element={
+                <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
+                  <PastorSideBar />
+                  <PastorDashboard />
+                </div>
+              }
+            />
+          </Routes>
+        </div>
+      )}
     </>
   );
 };

@@ -1,7 +1,5 @@
 import { FC } from "react";
 import { FaFilePdf } from "react-icons/fa6";
-import { LuFileEdit } from "react-icons/lu";
-import { MdDelete } from "react-icons/md";
 
 interface CardsProps {
   Title: string;
@@ -10,11 +8,8 @@ interface CardsProps {
   status?: string;
   total: string;
   id: number;
-  handleDelete? : () => void
-  handleUpdate?: () => void
- 
+  clickcard : () => void
 }
-
 
 const FormCard: FC<CardsProps> = ({
   Title,
@@ -22,28 +17,17 @@ const FormCard: FC<CardsProps> = ({
   attachfile,
   status,
   total,
-  handleDelete,
-  handleUpdate
- 
+  clickcard
 }) => {
-
   return (
     <div className="flex flex-col w-full">
-      <div className="flex justify-evenly self-end w-32 h-10 bg-fourth-dark border-l-2 border-t-2 border-r-2">
-        <button onClick={handleDelete}>
-          <MdDelete className="text-white text-3xl" />
-        </button>
-        <button onClick={handleUpdate}>
-          <LuFileEdit className="text-white text-2xl" />
-        </button>
-      </div>
-      <div className="flex flex-col justify-between min-h-[200px] max-h-[150px] w-full bg-fourth-dark text-white p-2 shadow-fourth-light border-2 mb-4 overflow-y-auto">
+      <div className="flex flex-col justify-between cursor-pointer min-h-[200px] max-h-[150px] w-full bg-fourth-dark text-white p-2 shadow-fourth-light border-2 mb-4 overflow-y-auto" onClick={clickcard}>
         <div className="flex justify-between ">
           <div>
             <h1 className="font-bold">{Title}</h1>
             <h2 className=" lg:max-w-[500px] text-wrap">{Description}</h2>
           </div>
-          <h3 className="hidden md:block text-sm underline font-semibold">
+          <h3 className="hidden md:block text-sm underline font-semibold uppercase">
             STATUS : {status}
           </h3>
         </div>

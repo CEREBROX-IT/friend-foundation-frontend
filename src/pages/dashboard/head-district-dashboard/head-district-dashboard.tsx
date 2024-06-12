@@ -5,7 +5,10 @@ import ResultCards from "../../../components/result-cards";
 import DistrictOverview from "../../../components/head-district-components/district-dashboard-overview";
 import { useGetChurchCountQuery, useGetFormSubmissionCountQuery } from "../../../redux/services/usersApi";
 import LoadingAnimation2 from "../../../components/loading-animation2";
+import JwtDecoder from "../../../utils/jwt-decoder";
 const HeadDistrictDashboard = () => {
+    console.log(JwtDecoder().decodedToken);
+
   const { data: ChurchCount, isLoading: ChurchLoading } = useGetChurchCountQuery();
   const {data: FormSubmission, isLoading:FormSubmissionLoading} = useGetFormSubmissionCountQuery()
   return (

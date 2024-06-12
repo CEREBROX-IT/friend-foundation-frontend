@@ -90,6 +90,7 @@ interface UserListResponse {
 interface DistrictDetails {
   id?: number;
   union_conference: string;
+  district_id?: number;
   district_name: string;
   head_district_assign: number;
   date_establish: string;
@@ -104,6 +105,7 @@ interface DistrictDetails {
 
 interface DistrictList {
   data: DistrictDetails[];
+  id?: number;
 }
 
 interface Unassigned {
@@ -143,12 +145,25 @@ interface FormDetails {
   attachment_file: string;
   active_status: string;
   total: string;
-  id: number
+  id: number;
+}
+
+interface Form {
+  id: number;
+  form_title: string;
+  map: any
+  form_description: string;
+  attachment_file: string;
+  active_status: boolean;
+  date_created: string;
+  length: any
+  date_updated: string;
+  status: "pending" | "done" ; // Define possible status values
 }
 
 interface TDelete {
   id: number;
-};
+}
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -316,13 +331,24 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["Form"],
     }),
-    updateForm: builder.mutation<void, { id: number | undefined; formData: FormData }>({
+    updateForm: builder.mutation<
+      void,
+      { id: number | undefined; formData: FormData }
+    >({
       query: ({ id, formData }) => ({
         url: `/form/update?id=${id}`,
         method: "PUT",
         body: formData,
       }),
       invalidatesTags: ["Form"],
+    }),
+    getUnansweredForms: builder.query<Form, void>({
+      query: () => "/form/unanswered",
+      keepUnusedDataFor: 60,
+    }),
+    getAnsweredFormr: builder.query<Form, void>({
+      query: () => "/form/answered",
+      keepUnusedDataFor: 60,
     }),
   }),
 });
@@ -352,5 +378,7 @@ export const {
   useGetFormStatusQuery,
   usePostUploadProfileMutation,
   useDeleteFormMutation,
-  useUpdateFormMutation
+  useUpdateFormMutation,
+  useGetAnsweredFormrQuery,
+  useGetUnansweredFormsQuery
 } = userApi;
