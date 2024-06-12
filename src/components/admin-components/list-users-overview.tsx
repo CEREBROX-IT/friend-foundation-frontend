@@ -36,8 +36,7 @@ const [removeUser] = usePostRemoveUserMutation()
       GetUserList?.filter((row) => {
         return (
           (row.first_name.toLowerCase().includes(lowerCaseQuery) ||
-            row.title.toLowerCase().includes(lowerCaseQuery)) &&
-          row.role.toLowerCase() === "pending"
+            row.title.toLowerCase().includes(lowerCaseQuery))
         );
       }) ?? [];
     setFilteredRows(filteredData);
@@ -94,16 +93,17 @@ const handleRemoveUser = async (id: number) => {
       flex: 1,
       renderCell: (params: GridRenderCellParams) => (
         <div className="flex justify-evenly w-full">
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             size="small"
             onClick={() => handleApprove(params?.row.user_id)}
           >
             Approved
-          </Button>
+          </Button> */}
           <Button
             variant="contained"
+            className="hover:scale-105 duration-300 ease-in"
             color="error"
             size="small"
             onClick={() => handleRemoveUser(params?.row.user_id)}
