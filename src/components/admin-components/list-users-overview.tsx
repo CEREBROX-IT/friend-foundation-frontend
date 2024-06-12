@@ -58,14 +58,14 @@ const handleRemoveUser = async (id: number) => {
   const columns = [
     {
       field: "first_name",
-      headerName: "First Name",
+      headerName: "FIRST NAME",
       flex: 1,
       minWidth: 200,
-      type: "string", // Added type property
+      type: "string",
     },
     {
       field: "last_name",
-      headerName: "Last Name",
+      headerName: "LAST NAME",
       flex: 1,
       minWidth: 170,
       type: "string", // Added type property
@@ -79,28 +79,28 @@ const handleRemoveUser = async (id: number) => {
     },
     {
       field: "role",
-      headerName: "Role",
+      headerName: "ROLE",
       flex: 1,
       minWidth: 200,
       type: "string", // Added type property
     },
     {
       field: "actions",
-      headerName: "Actions",
+      headerName: "ACTIONS",
       sortable: false,
       headerAlign: "center" as GridAlignment,
       minWidth: 200,
       flex: 1,
       renderCell: (params: GridRenderCellParams) => (
         <div className="flex justify-evenly w-full">
-          {/* <Button
+          <Button
             variant="contained"
             color="primary"
             size="small"
             onClick={() => handleApprove(params?.row.user_id)}
           >
             Approved
-          </Button> */}
+          </Button>
           <Button
             variant="contained"
             className="hover:scale-105 duration-300 ease-in"
