@@ -1,13 +1,21 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar, GridRenderCellParams, GridAlignment } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbar,
+  GridRenderCellParams,
+  GridAlignment,
+} from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
-import { useGetChurchListQuery, usePostDeleteChurchMutation } from "../../redux/services/usersApi";
+import {
+  useGetChurchListQuery,
+  usePostDeleteChurchMutation,
+} from "../../redux/services/usersApi";
 
 const ChurchOverview: FC = () => {
-  const {data: ChurchList} = useGetChurchListQuery()
-  const [PostDeleteChurch] = usePostDeleteChurchMutation()
+  const { data: ChurchList } = useGetChurchListQuery();
+  const [PostDeleteChurch] = usePostDeleteChurchMutation();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState(ChurchList ?? []);
   const { theme } = useContext(ThemeContext);
@@ -18,14 +26,15 @@ const ChurchOverview: FC = () => {
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const filteredData = ChurchList?.filter((row) => {
-      return (
-        row.district_name.toLowerCase().includes(lowerCaseQuery) ||
-        row.church_name.toLowerCase().includes(lowerCaseQuery) ||
-        row.head_pastor_full_name.toLowerCase().includes(lowerCaseQuery) ||
-        row.church_address.toLowerCase().includes(lowerCaseQuery) 
-      );
-    }) ?? [];
+    const filteredData =
+      ChurchList?.filter((row) => {
+        return (
+          row.district_name?.toLowerCase().includes(lowerCaseQuery) ||
+          row.church_name?.toLowerCase().includes(lowerCaseQuery) ||
+          row.head_pastor_full_name?.toLowerCase().includes(lowerCaseQuery) ||
+          row.church_address?.toLowerCase().includes(lowerCaseQuery)
+        );
+      }) ?? [];
     setFilteredRows(filteredData);
   };
 
@@ -86,9 +95,11 @@ const ChurchOverview: FC = () => {
   ];
 
   async function deleteChurch(id: number) {
-    await PostDeleteChurch({id: id}).unwrap().then((response) => {
-      console.log(response)
-    })
+    await PostDeleteChurch({ id: id })
+      .unwrap()
+      .then((response) => {
+        console.log(response);
+      });
   }
 
   return (
@@ -176,20 +187,6 @@ const ChurchOverview: FC = () => {
           }}
         />
       </Box>
-      <Button
-        sx={{
-          alignItems: "center",
-          width: "100%",
-          background: "#60a5fa",
-          borderRadius: 0,
-          color: "white",
-          "&:hover": {
-            background: "#3b82f6",
-          },
-        }}
-      >
-        VIEW MORE
-      </Button>
     </>
   );
 };

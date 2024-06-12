@@ -4,9 +4,12 @@ import { FiSearch } from "react-icons/fi";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
 import { useGetUserListQuery } from "../../redux/services/usersApi";
+import { useNavigate } from "react-router-dom";
 
 const PendingUserOverview: FC = () => {
   const { data: GetUserList } = useGetUserListQuery();
+  console.log(GetUserList)
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState(GetUserList ?? []);
   const { theme } = useContext(ThemeContext);
@@ -15,18 +18,26 @@ const PendingUserOverview: FC = () => {
     applyFilters();
   }, [searchQuery, GetUserList]);
 
- const applyFilters = () => {
-   const lowerCaseQuery = searchQuery.toLowerCase();
-   const filteredData =
-     GetUserList?.filter((row) => {
-       return (
-         (row.first_name.toLowerCase().includes(lowerCaseQuery) ||
-           row.title.toLowerCase().includes(lowerCaseQuery)) &&
-         row.role.toLowerCase() === "pending"
-       );
-     }) ?? [];
-   setFilteredRows(filteredData);
- };
+  const applyFilters = () => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    const filteredData =
+      GetUserList?.filter((row) => {
+        // Filter by search query and pending status
+        return (
+          (row.first_name.toLowerCase().includes(lowerCaseQuery) ||
+            row.title.toLowerCase().includes(lowerCaseQuery)) &&
+          row.role.toLowerCase() === "pending"
+        );
+      }).filter((row) => {
+        // Filter by date within past two days
+        const currentDate = new Date();
+        const rowDate = new Date(row.date_created); 
+        const timeDiff = Math.abs(currentDate.getTime() - rowDate.getTime());
+        const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return diffDays <= 2;
+      }) ?? [];
+    setFilteredRows(filteredData);
+  };
 
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
@@ -59,7 +70,7 @@ const PendingUserOverview: FC = () => {
     <>
       <div className="flex flex-col md:flex-row justify-between dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
         <p className="text-[20px] font-semibold mb-2 md:mb-0">
-          Pending Accounts
+          Latest Pending Accounts
         </p>
         <div className="md:mt-0 lg:w-[400px] w-full">
           <FiSearch
@@ -130,18 +141,24 @@ const PendingUserOverview: FC = () => {
           },
         }}
       >
-        {memoizedFilteredRows.length <= 0 ? <h1 className="m-auto font-bold text-2xl">No Pending Accounts</h1>: <><DataGrid
-          rows={memoizedFilteredRows}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-          componentsProps={{
-            toolbar: {
-              printOptions: {
-                disableToolbarButton: true,
-              },
-            },
-          }}
-        /></>}
+        {memoizedFilteredRows.length <= 0 ? (
+          <h1 className="m-auto font-bold text-2xl">No Pending Accounts</h1>
+        ) : (
+          <>
+            <DataGrid
+              rows={memoizedFilteredRows}
+              columns={columns}
+              components={{ Toolbar: GridToolbar }}
+              componentsProps={{
+                toolbar: {
+                  printOptions: {
+                    disableToolbarButton: true,
+                  },
+                },
+              }}
+            />
+          </>
+        )}
       </Box>
       <Button
         sx={{
@@ -154,6 +171,7 @@ const PendingUserOverview: FC = () => {
             background: "#3b82f6",
           },
         }}
+        onClick={() => navigate("/dashboard/users")}
       >
         VIEW MORE
       </Button>

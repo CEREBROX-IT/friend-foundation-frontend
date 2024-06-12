@@ -98,8 +98,8 @@ const Header = () => {
               </>
             ) : (
               <>
-                <MenuItem onClick={handleUserProfile}>User Profile</MenuItem>
-                <MenuItem onClick={handleClose}>Settings</MenuItem>
+                <MenuItem onClick={handleUserProfile} disabled>User Profile</MenuItem>
+                <MenuItem onClick={handleClose} disabled>Settings</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </>
             )}

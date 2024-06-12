@@ -9,6 +9,7 @@ interface ChurchListResponse {
 interface User {
   email: string;
   password: string;
+  date_created: string
   first_name: string;
   last_name: string;
   middle_name: string;
@@ -127,6 +128,20 @@ interface UpdateChurchArgs {
   data: ChurchDetails;
 }
 
+interface AssingedLogs {
+  
+    user_full_name?: string;
+    previous_assign?: string;
+    current_assign?: string;
+    date_created: string
+  
+}
+
+interface AssignedLogsResponse {
+  data: AssingedLogs[]
+}
+
+
 export const userApi = createApi({
   reducerPath: "userApi",
   tagTypes: ["Users", "DISTRICT", "Church", "Form"],
@@ -168,7 +183,7 @@ export const userApi = createApi({
     getChurchCount: builder.query<Stats, void>({
       query: () => "/stats/churches-count",
       keepUnusedDataFor: 60,
-      providesTags: ['Church']
+      providesTags: ["Church"],
     }),
     postRegisterUser: builder.mutation<void, Partial<User>>({
       query: (data) => ({
@@ -176,7 +191,7 @@ export const userApi = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Users"],
+      invalidatesTags: ["Users", "DISTRICT", "Church"],
     }),
     postRemoveUser: builder.mutation<void, Partial<DeleteUser>>({
       query: ({ id }) => ({
@@ -265,6 +280,12 @@ export const userApi = createApi({
         body: data,
       }),
     }),
+    getAssignedLogs: builder.query<AssingedLogs[], void>({
+      query: () => "/assignee_logs/",
+      keepUnusedDataFor: 60,
+      transformResponse: (response: AssignedLogsResponse) => response.data,
+      providesTags: ["Church"]
+    }),
   }),
 });
 
@@ -288,5 +309,6 @@ export const {
   usePostDeleteChurchMutation,
   usePostUpdateChurchMutation,
   usePostCreateFormMutation,
-  useGetFormCountQuery
+  useGetFormCountQuery,
+  useGetAssignedLogsQuery
 } = userApi;

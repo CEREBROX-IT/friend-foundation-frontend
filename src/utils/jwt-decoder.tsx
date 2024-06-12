@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { Cookies } from "typescript-cookie";
+
 interface DecodedToken {
   exp: number;
-  role: string 
-  id:number
+  role: string;
+  id: number;
   // Add other properties of your decoded token here
 }
 
@@ -20,7 +21,12 @@ const JwtDecoder = () => {
         setDecodedToken(decoded);
 
         const isTokenExpired = decoded.exp < Date.now() / 1000;
-        
+
+        if (isTokenExpired) {
+          window.location.href = "/";
+          Cookies.remove("token");
+        }
+
         setIsTokenValid(!isTokenExpired);
       } catch (error) {
         console.error("Error decoding token:", error);

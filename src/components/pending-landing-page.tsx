@@ -8,7 +8,7 @@ export default function PendingLandingPage (){
               Something's missing.
             </p>
             <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
-             Please Contact the District Head to assign you, Thank You!
+             Please Contact the Administrator to assign you, Thank You!
             </p>
            
           </div>

@@ -1,33 +1,38 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
-import { AsigneeLogs } from "../../MockDataFiles/Mockdata";
-import { isWithinInterval, addDays } from "date-fns";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { useGetAssignedLogsQuery } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
-
+import { useNavigate } from "react-router-dom";
 const AssignmentLogsOverview: FC = () => {
-  const currentDate = new Date();
-  const threeDaysAgo = addDays(currentDate, -3);
+  const navigate = useNavigate()
+  const { data: AssignedLogs } = useGetAssignedLogsQuery();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(AsigneeLogs);
+  const [filteredRows, setFilteredRows] = useState(AssignedLogs || []);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     applyFilters();
-  }, [searchQuery]);
+  }, [searchQuery, AssignedLogs]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const filteredData = AsigneeLogs.filter((row) => {
-      return (
-        row.user_full_name.toLowerCase().includes(lowerCaseQuery) ||
-        row.title.toLowerCase().includes(lowerCaseQuery) ||
-        row.role.toLowerCase().includes(lowerCaseQuery) ||
-        row.previous_assign.toLowerCase().includes(lowerCaseQuery) ||
-        row.current_assign.toLowerCase().includes(lowerCaseQuery)
-      );
-    });
+    const filteredData =
+      AssignedLogs?.filter((row) => {
+        return (
+          row.user_full_name?.toLowerCase().includes(lowerCaseQuery) ||
+          row.current_assign?.toLowerCase().includes(lowerCaseQuery) ||
+          row.previous_assign?.toLowerCase().includes(lowerCaseQuery)
+        );
+      }).filter((row) => {
+        // Filter by date within past two days
+        const currentDate = new Date();
+        const rowDate = new Date(row.date_created);
+        const timeDiff = Math.abs(currentDate.getTime() - rowDate.getTime());
+        const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return diffDays <= 2;
+      }) ?? [];
     setFilteredRows(filteredData);
   };
 
@@ -41,57 +46,20 @@ const AssignmentLogsOverview: FC = () => {
       headerName: "FULL NAME",
       flex: 1,
       minWidth: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        const dateCreated = new Date(params.row.date);
-        const isNew = isWithinInterval(dateCreated, {
-          start: threeDaysAgo,
-          end: currentDate,
-        });
-        return (
-          <div className="relative flex items-center">
-            <span>{params.value}</span>
-            {isNew && (
-              <span
-                className="bg-[#3b82f6] text-[10px] rounded-[50px] px-2
-                         text-white justify-end mt-[-1rem] ml-1 min-h-[10px] min-w-[10px] end-0"
-              >
-                New
-              </span>
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      field: "title",
-      headerName: "TITLE",
-      flex: 1,
-      minWidth: 200,
-    },
-    {
-      field: "role",
-      headerName: "ROLE",
-      flex: 1,
-      minWidth: 200,
     },
     {
       field: "previous_assign",
-      headerName: "PREVIOUS ASSIGN",
+      headerName: "Previous Assign",
       flex: 1,
-      minWidth: 250,
+      minWidth: 200,
     },
     {
       field: "current_assign",
-      headerName: "CURRENT ASSIGN",
+      headerName: "Current Assign",
       flex: 1,
-      minWidth: 250,
+      minWidth: 200,
     },
-    {
-      field: "date",
-      headerName: "DATE",
-      flex: 1,
-      minWidth: 170,
-    },
+    
   ];
 
   return (
@@ -193,6 +161,7 @@ const AssignmentLogsOverview: FC = () => {
             background: "#3b82f6",
           },
         }}
+        onClick={() => navigate("/dashboard/church-district/assignment-logs")}
       >
         VIEW MORE
       </Button>

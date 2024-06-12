@@ -5,7 +5,7 @@ import NewUserModal from "../../../components/admin-components/new-user-modal";
 import { useGetUserListQuery } from "../../../redux/services/usersApi";
 const AdminUserList = () => {
   const [openNewUserModal, setOpenNewUserModal] = useState(false)
-  const {data: userData} = useGetUserListQuery()
+  // const {data: userData} = useGetUserListQuery()
   const handleOpenNewuserModal = () => setOpenNewUserModal(true)
   const hanldeCloseOpenNewUserModal = () => setOpenNewUserModal(false)
   return (

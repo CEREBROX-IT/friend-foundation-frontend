@@ -213,20 +213,7 @@ const handleRemoveUser = async (id: number) => {
           </>
         )}
       </Box>
-      <Button
-        sx={{
-          alignItems: "center",
-          width: "100%",
-          background: "#60a5fa",
-          borderRadius: 0,
-          color: "white",
-          "&:hover": {
-            background: "#3b82f6",
-          },
-        }}
-      >
-        VIEW MORE
-      </Button>
+      
     </>
   );
 };
