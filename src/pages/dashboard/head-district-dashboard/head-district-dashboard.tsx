@@ -19,14 +19,14 @@ const HeadDistrictDashboard = () => {
         </p>
       </div>
 
-      <div className="flex flex-wrap flex-row gap-4 px-4 mt-[-8.5rem]">
+      <div className="flex flex-wrap flex-row gap-4 px-4 mt-[-4.5rem]">
         <ResultCards
           title="No. of Churches"
           result={
             ChurchLoading ? <LoadingAnimation2 /> : ChurchCount?.total_churches
           }
           // incomplete={userCount?.pending_user}
-          description="Total Churches"
+          // description="Total Churches"
           icon={HiMiniUsers}
           navigation_path="/dashboard/church-list"
         />

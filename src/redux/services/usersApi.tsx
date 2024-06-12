@@ -92,8 +92,8 @@ interface DistrictDetails {
   id?: number;
   union_conference: string;
   district_name: string;
-  head_district_assign: number | ""; // user ID or empty string for null
-  date_establish: string; // ISO 8601 date string
+  head_district_assign: number | ""; 
+  date_establish: string; 
   head_district_full_name?: string
   district_region: string;
   district_province: string;
