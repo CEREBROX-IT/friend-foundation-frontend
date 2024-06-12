@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TFormInput } from "../../pages/dashboard/unassigned-dashboard/unassigned-dashboard";
 import { ChurchDetails } from "../../components/admin-components/add-churhc-modal";
-
+import { CreateFormInput } from "../../components/admin-components/admin-add-form";
 
 interface ChurchListResponse {
   data: ChurchDetails[]
@@ -129,7 +129,7 @@ interface UpdateChurchArgs {
 
 export const userApi = createApi({
   reducerPath: "userApi",
-  tagTypes: ["Users", "DISTRICT", "Church"],
+  tagTypes: ["Users", "DISTRICT", "Church", "Form"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -155,6 +155,12 @@ export const userApi = createApi({
       keepUnusedDataFor: 60,
       providesTags: ["Users"],
     }),
+    getFormCount: builder.query<Stats, void>({
+      query: () => "/stats/report-form-status/me",
+      keepUnusedDataFor: 60,
+      providesTags: ["Form"],
+    }),
+
     getFormSubmissionCount: builder.query<Stats, void>({
       query: () => "/stats/submission-counts",
       keepUnusedDataFor: 60,
@@ -162,6 +168,7 @@ export const userApi = createApi({
     getChurchCount: builder.query<Stats, void>({
       query: () => "/stats/churches-count",
       keepUnusedDataFor: 60,
+      providesTags: ['Church']
     }),
     postRegisterUser: builder.mutation<void, Partial<User>>({
       query: (data) => ({
@@ -251,6 +258,13 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["Church"],
     }),
+    postCreateForm: builder.mutation<void, Partial<CreateFormInput>>({
+      query: (data) => ({
+        url: `/form/create`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -272,5 +286,7 @@ export const {
   usePostAddChurchMutation,
   useGetChurchListQuery,
   usePostDeleteChurchMutation,
-  usePostUpdateChurchMutation
+  usePostUpdateChurchMutation,
+  usePostCreateFormMutation,
+  useGetFormCountQuery
 } = userApi;

@@ -78,53 +78,61 @@ const AdminDistrictAssignment = () => {
                 onSubmit={handleSubmit(onSubmitHandle)}
                 className="w-full flex flex-col lg:flex-row  justify-between  gap-2"
               >
-                <TextField
-                  type="text"
-                  placeholder="Pastor not assign"
-                  select
-                  error={errors.head_district_assign ? true : false}
-                  {...register("head_district_assign")}
-                  className="w-full bg-fourth-light rounded-[10px]"
-                  InputProps={{
-                    sx: {
-                      height: "45px",
-                      lineHeight: "normal",
-                      borderRadius: "10px",
-                    },
-                  }}
-                >
-                  {UnAssignedUsers?.data?.map((item) => (
-                    <MenuItem value={item.id}>
-                      <p className="text-slate-500 text-sm">{item.full_name}</p>
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  type="text"
-                  placeholder="District Available"
-                  select
-                  error={errors.id ? true : false}
-                  {...register("id")}
-                  className="w-full bg-fourth-light  rounded-[10px]"
-                  InputProps={{
-                    sx: {
-                      height: "45px",
-                      lineHeight: "normal",
-                      borderRadius: "10px",
-                    },
-                  }}
-                >
-                  {filter?.map((item) => (
-                    <MenuItem value={item.id}>
-                      <p className="text-slate-500 text-sm">
-                        {item.district_name}
-                      </p>
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <div className="flex flex-col w-full">
+                  <h1>Name</h1>
+                  <TextField
+                    type="text"
+                    placeholder="Pastor not assign"
+                    select
+                    error={errors.head_district_assign ? true : false}
+                    {...register("head_district_assign")}
+                    className="w-full bg-fourth-light rounded-[10px]"
+                    InputProps={{
+                      sx: {
+                        height: "45px",
+                        lineHeight: "normal",
+                        borderRadius: "10px",
+                      },
+                    }}
+                  >
+                    {UnAssignedUsers?.data?.map((item) => (
+                      <MenuItem value={item.id}>
+                        <p className="text-slate-500 text-sm">
+                          {item.full_name}
+                        </p>
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </div>
+                <div className="flex flex-col w-full">
+                  <h1>District Name</h1>
+                  <TextField
+                    type="text"
+                    placeholder="District Available"
+                    select
+                    error={errors.id ? true : false}
+                    {...register("id")}
+                    className="w-full bg-fourth-light  rounded-[10px]"
+                    InputProps={{
+                      sx: {
+                        height: "45px",
+                        lineHeight: "normal",
+                        borderRadius: "10px",
+                      },
+                    }}
+                  >
+                    {filter?.map((item) => (
+                      <MenuItem value={item.id}>
+                        <p className="text-slate-500 text-sm">
+                          {item.district_name}
+                        </p>
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </div>
 
                 <button
-                  className=" bg-secondary-light py-2 lg:w-[400px] text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
+                  className=" bg-secondary-light py-2 lg:w-[400px] max-h-[50px] lg:mt-6 text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
                   disabled={isDisabled}
                 >
                   ASSIGN PASTOR

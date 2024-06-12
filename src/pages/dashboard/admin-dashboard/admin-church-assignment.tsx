@@ -46,7 +46,7 @@ const AdminChurchAssignment = () => {
 
     await updateChurch({ id: filter[0]?.id, data: value })
       .unwrap()
-      .then((response) => {
+      .then(() => {
         reset();
       });
   };
@@ -77,53 +77,61 @@ const AdminChurchAssignment = () => {
                 onSubmit={handleSubmit(onSubmitHandler)}
                 className="w-full flex flex-col lg:flex-row  justify-between  gap-2"
               >
-                <TextField
-                  type="text"
-                  placeholder="Pastor not assign"
-                  select
-                  error={errors.pastor_assign ? true : false}
-                  {...register("pastor_assign")}
-                  className="w-full bg-fourth-light rounded-[10px]"
-                  InputProps={{
-                    sx: {
-                      height: "45px",
-                      lineHeight: "normal",
-                      borderRadius: "10px",
-                    },
-                  }}
-                >
-                  {Unassgined?.data?.map((item) => (
-                    <MenuItem value={item.id}>
-                      <p className="text-slate-500 text-sm">{item.full_name}</p>
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  type="text"
-                  placeholder="District Available"
-                  select
-                  error={errors.church_name ? true : false}
-                  {...register("church_name")}
-                  className="w-full bg-fourth-light  rounded-[10px]"
-                  InputProps={{
-                    sx: {
-                      height: "45px",
-                      lineHeight: "normal",
-                      borderRadius: "10px",
-                    },
-                  }}
-                >
-                  {ChurchList?.map((item) => (
-                    <MenuItem value={item.church_name}>
-                      <p className="text-slate-500 text-sm">
-                        {item.church_name}
-                      </p>
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <div className="flex flex-col w-full">
+                  <div>Pastor Name</div>
+                  <TextField
+                    type="text"
+                    placeholder="Pastor not assign"
+                    select
+                    error={errors.pastor_assign ? true : false}
+                    {...register("pastor_assign")}
+                    className="w-full bg-fourth-light rounded-[10px]"
+                    InputProps={{
+                      sx: {
+                        height: "45px",
+                        lineHeight: "normal",
+                        borderRadius: "10px",
+                      },
+                    }}
+                  >
+                    {Unassgined?.data?.map((item) => (
+                      <MenuItem value={item.id}>
+                        <p className="text-slate-500 text-sm">
+                          {item.full_name}
+                        </p>
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </div>
+                <div className="flex flex-col w-full">
+                  <h1>Church Name</h1>
+                  <TextField
+                    type="text"
+                    placeholder="District Available"
+                    select
+                    error={errors.church_name ? true : false}
+                    {...register("church_name")}
+                    className="w-full bg-fourth-light  rounded-[10px]"
+                    InputProps={{
+                      sx: {
+                        height: "45px",
+                        lineHeight: "normal",
+                        borderRadius: "10px",
+                      },
+                    }}
+                  >
+                    {ChurchList?.map((item) => (
+                      <MenuItem value={item.church_name}>
+                        <p className="text-slate-500 text-sm">
+                          {item.church_name}
+                        </p>
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </div>
 
                 <button
-                  className="bg-secondary-light py-2 px-7 lg:w-[400px] text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
+                  className="bg-[#B378FF] py-2 px-7 max-h-[50px] lg:mt-6  lg:w-[400px] text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
                   type="submit"
                   disabled={isDisabled}
                 >

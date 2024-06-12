@@ -1,14 +1,15 @@
-import {  FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField } from "@mui/material";
 import { IoMdCloseCircle } from "react-icons/io";
+import { usePostCreateFormMutation } from "../../redux/services/usersApi";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-interface IFormInput {
-  title: string;
-  description: string;
-  formFile: FileList;
+export interface CreateFormInput {
+  form_title: string;
+  form_description: string;
+  attachment_file: FileList;
 }
 
 interface NewUserModalProps {
@@ -20,19 +21,22 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<CreateFormInput>();
+  const [createForm] = usePostCreateFormMutation();
 
-   const onSubmitHandler: SubmitHandler<IFormInput> = (data) => {
-     console.log("Form Data:", data);
+  const onSubmitHandler: SubmitHandler<CreateFormInput> = async (data) => {
+    const formData = new FormData();
+    formData.append("form_title", data.form_title);
+    formData.append("form_description", data.form_description);
+    formData.append("attachment_file", data.attachment_file[0]);
 
-     // Check if formFile is present
-     if (data.formFile && data.formFile.length > 0) {
-       const file = data.formFile[0];
-       console.log("File:", file);
-     } else {
-       console.log("No file uploaded.");
-     }
-   };
+
+
+    
+    await createForm(formData)
+      .unwrap()
+      .then((response) => console.log(response));
+  };
 
   useEffect(() => {
     AOS.init({});
@@ -55,8 +59,8 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
             </div>
             <TextField
               type="text"
-              error={errors.title ? true : false}
-              {...register("title", {
+              error={errors.form_title ? true : false}
+              {...register("form_title", {
                 required: "Title is required",
               })}
               className="w-full bg-fourth-light rounded-[10px]"
@@ -68,9 +72,9 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
                 },
               }}
             />
-            {errors.title && (
+            {errors.form_title && (
               <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                {errors.title.message}
+                {errors.form_title.message}
               </p>
             )}
           </div>
@@ -80,25 +84,25 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
             </div>
             <TextField
               type="text"
-              error={errors.description ? true : false}
+              error={errors.form_description ? true : false}
               multiline
               minRows={2}
-              {...register("description", {
+              {...register("form_description", {
                 required: "Description is required",
               })}
               className="w-full bg-fourth-light rounded-[10px]"
             />
-            {errors.description && (
+            {errors.form_description && (
               <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                {errors.description.message}
+                {errors.form_description.message}
               </p>
             )}
           </div>
           <div className="w-full mt-[15px]">
             <TextField
               type="file"
-              error={errors.formFile ? true : false}
-              {...register("formFile", {
+              error={errors.attachment_file ? true : false}
+              {...register("attachment_file", {
                 required: "File is required",
                 validate: {
                   validFileType: (value: FileList) => {
@@ -120,9 +124,9 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
               className="w-full bg-fourth-light rounded-[10px]"
               InputLabelProps={{ shrink: true }}
             />
-            {errors.formFile && (
+            {errors.attachment_file && (
               <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                {errors.formFile.message}
+                {errors.attachment_file.message}
               </p>
             )}
           </div>

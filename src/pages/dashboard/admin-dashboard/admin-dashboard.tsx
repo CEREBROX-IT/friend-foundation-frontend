@@ -6,13 +6,14 @@ import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
 import SubmittedFormOverview from "../../../components/admin-components/submitted-forms-overview";
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
-import { useGetUserCountQuery, useGetFormSubmissionCountQuery, useGetChurchCountQuery } from "../../../redux/services/usersApi";
+import { useGetUserCountQuery, useGetFormSubmissionCountQuery, useGetChurchCountQuery, useGetFormCountQuery } from "../../../redux/services/usersApi";
 import LoadingAnimation2 from "../../../components/loading-animation2";
 const AdminDashboard: FC = () => {
 
   const {data: userCount, isLoading: UserLoading} = useGetUserCountQuery()
   const {data: FormSubmissionCount, isLoading: FormLoading} = useGetFormSubmissionCountQuery()
   const {data: ChurchCount, isLoading: ChurchLoading} = useGetChurchCountQuery()
+  const { data: FormCount, isLoading } = useGetFormCountQuery();
   return (
     <div className="relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto">
       <Header />
@@ -44,14 +45,20 @@ const AdminDashboard: FC = () => {
           icon={FaFile}
           navigation_path="/dashboard"
         />
-        {/* <ResultCards
+        <ResultCards
           title="No. of Reports Form"
-          // result="1,381"
-          // incomplete="463"
-          description="Pastors not assigned"
+          result={
+            isLoading ? (
+              <LoadingAnimation2 />
+            ) : (
+              FormCount?.completed_forms
+            )
+          }
+          incomplete={FormCount?.pending_forms}
+          description="Pending Forms"
           icon={FaUserTie}
           navigation_path="/dashboard"
-        /> */}
+        />
         <ResultCards
           title="No. of Church"
           result={

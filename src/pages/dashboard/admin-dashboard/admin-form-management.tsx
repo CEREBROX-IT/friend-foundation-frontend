@@ -2,7 +2,12 @@ import { useState } from "react";
 import Header from "../../../components/header";
 import AdminAddForm from "../../../components/admin-components/admin-add-form";
 import FormCard from "../../../components/admin-components/formcard";
+
+
+
 const AdminFormManagement = () => {
+ 
+
   const [openAddForm, setOpenAddForm] = useState(false);
 
   const handleOpenForm = () => setOpenAddForm(true);
