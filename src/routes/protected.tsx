@@ -163,6 +163,7 @@ const Protected: FC<RoleProps> = ({ role }) => {
           </Routes>
         </div>
       )}
+      {role === "Head Pastor" && <h1 className="flex min-h-screen justify-center items-center text-2xl">HEAD PASTOR UNDER DEVELOPMENT</h1>}
     </>
   );
 };

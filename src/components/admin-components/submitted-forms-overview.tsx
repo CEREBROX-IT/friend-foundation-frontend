@@ -6,7 +6,6 @@ import { FormSubmitted } from "../../MockDataFiles/Mockdata";
 import { isWithinInterval, addDays } from "date-fns";
 import ThemeContext from "../ThemeContext";
 
-
 const SubmittedFormOverview: FC = () => {
   const currentDate = new Date();
   const threeDaysAgo = addDays(currentDate, -3);
@@ -152,18 +151,24 @@ const SubmittedFormOverview: FC = () => {
           },
         }}
       >
-        <DataGrid
-          rows={filteredRows}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-          componentsProps={{
-            toolbar: {
-              printOptions: {
-                disableToolbarButton: true,
-              },
-            },
-          }}
-        />
+        {filteredRows.length > 0 ? (
+          <>
+            <DataGrid
+              rows={filteredRows}
+              columns={columns}
+              components={{ Toolbar: GridToolbar }}
+              componentsProps={{
+                toolbar: {
+                  printOptions: {
+                    disableToolbarButton: true,
+                  },
+                },
+              }}
+            />{"NO DATA AVAILABLE YET"}
+          </>
+        ) : (
+          ""
+        )}
       </Box>
 
       <Button
