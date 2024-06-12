@@ -9,7 +9,7 @@ import {
   useGetDistrictListQuery,
   usePostUpdateDistrictMutation,
 } from "../../../redux/services/usersApi";
-
+import LoadingAnimation from "../../../components/loading-animation";
 interface IFormInput {
   head_district_assign: number;
   id: number;
@@ -26,14 +26,15 @@ const AdminDistrictAssignment = () => {
   const isDisabled = !head_district_assign || !id;
 
   const [openNewDistrictModal, setOpenNewDistrictModal] = useState(false);
-  const [UpdateDistrict] = usePostUpdateDistrictMutation();
+  const [UpdateDistrict, { isLoading: UpdateLoading }] =
+    usePostUpdateDistrictMutation();
   const { data: UnAssignedUsers } = useGetUnassignedUserQuery();
   const { data: DistrictList } = useGetDistrictListQuery();
   const filter = DistrictList?.filter(
     (item) => item.head_district_assign === null
   );
 
-  console.log(filter)
+  console.log(filter);
   const onSubmitHandle: SubmitHandler<IFormInput> = async (data) => {
     const filter = DistrictList?.filter((item) => item.id === data.id) || [];
 
@@ -95,7 +96,11 @@ const AdminDistrictAssignment = () => {
                     }}
                   >
                     <MenuItem value="" disabled>
-                      <p className="text-slate-500 text-sm">Select Pastor</p>
+                      <p className="text-slate-500 text-sm">
+                        {UnAssignedUsers?.data.length === 0
+                          ? "No Pastor Available"
+                          : "Select Pastor"}
+                      </p>
                     </MenuItem>
                     {UnAssignedUsers?.data?.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
@@ -121,7 +126,11 @@ const AdminDistrictAssignment = () => {
                     }}
                   >
                     <MenuItem value="" disabled>
-                      <p className="text-slate-500 text-sm">{filter?.length === undefined ? "Select District" : "No District Available"}</p>
+                      <p className="text-slate-500 text-sm">
+                        {filter?.length === 0
+                          ? "No District Available"
+                          : "Select District"}
+                      </p>
                     </MenuItem>
                     {filter?.map((item) => (
                       <MenuItem value={item.id}>
@@ -137,7 +146,13 @@ const AdminDistrictAssignment = () => {
                   className=" bg-secondary-light py-2 lg:w-[250px] max-h-[50px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
                   disabled={isDisabled}
                 >
-                  ASSIGN PASTOR
+                  {UpdateLoading ? (
+                    <div className="w-full flex justify-center">
+                      <LoadingAnimation message="Assigning" />
+                    </div>
+                  ) : (
+                    "ASSIGN PASTOR"
+                  )}
                 </button>
               </form>
             </div>

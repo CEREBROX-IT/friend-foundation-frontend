@@ -43,7 +43,7 @@ const AddDistrictModal: FC<NewDistrictModalProps> = ({closeDistrictModal,}) => {
     <div className="absolute inset-0 flex flex-1 justify-center backdrop-brightness-50  z-20">
       <div className=" h-max pb-10  max-w-[350px] lg:min-w-[400px] w-96 dark:bg-fourth-dark dark:text-white  bg-white  rounded-[10px]  p-4 mx-4  ">
         <div className="flex justify-end" onClick={closeDistrictModal}>
-          <IoMdCloseCircle className="text-4xl cursor-pointer" />
+          <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
         </div>
 
         <img

@@ -68,7 +68,7 @@ const AdminChurchAssignment = () => {
 
       <div className="flex-1 w-full px-4 absolute translate-y-32">
         <div className="max-w-full bg-white p-4 rounded-[10px] dark:bg-fourth-dark ">
-          <p className="text-sm ml-2 mb-4 dark:text-white">
+          <p className="text-lg font-bold ml-2 mb-4 dark:text-white">
             Assign Pastor as Pastor Head
           </p>
           <div className="flex flex-col lg:flex-row justify-between gap-4 lg:items-center  mb-4 ">
@@ -77,23 +77,28 @@ const AdminChurchAssignment = () => {
                 onSubmit={handleSubmit(onSubmitHandler)}
                 className="w-full flex flex-col lg:flex-row  justify-between  gap-2"
               >
-                <div className="flex flex-col w-full">
-                  <div>Pastor Name</div>
+                <div className="flex flex-col md:flex-row  lg:w-1/2 gap-4">
                   <TextField
                     type="text"
-                    placeholder="Pastor not assign"
+                    label="Select One"
                     select
                     error={errors.pastor_assign ? true : false}
                     {...register("pastor_assign")}
                     className="w-full bg-fourth-light rounded-[10px]"
                     InputProps={{
                       sx: {
-                        height: "45px",
                         lineHeight: "normal",
                         borderRadius: "10px",
                       },
                     }}
                   >
+                    <MenuItem value="" disabled>
+                      <p className="text-slate-500 text-sm">
+                        {Unassgined?.data.length === 0
+                          ? "No Pastor Available"
+                          : "Select Pastor"}
+                      </p>
+                    </MenuItem>
                     {Unassgined?.data?.map((item) => (
                       <MenuItem value={item.id}>
                         <p className="text-slate-500 text-sm">
@@ -102,11 +107,10 @@ const AdminChurchAssignment = () => {
                       </MenuItem>
                     ))}
                   </TextField>
-                </div>
-                <div className="flex flex-col w-full">
-                  <h1>Church Name</h1>
+
                   <TextField
                     type="text"
+                    label="Select One"
                     placeholder="District Available"
                     select
                     error={errors.church_name ? true : false}
@@ -114,12 +118,18 @@ const AdminChurchAssignment = () => {
                     className="w-full bg-fourth-light  rounded-[10px]"
                     InputProps={{
                       sx: {
-                        height: "45px",
                         lineHeight: "normal",
                         borderRadius: "10px",
                       },
                     }}
                   >
+                    <MenuItem value="" disabled>
+                      <p className="text-slate-500 text-sm">
+                        {ChurchList?.length === 0
+                          ? "No Church Available"
+                          : "Select Church"}
+                      </p>
+                    </MenuItem>
                     {ChurchList?.map((item) => (
                       <MenuItem value={item.church_name}>
                         <p className="text-slate-500 text-sm">
@@ -131,7 +141,7 @@ const AdminChurchAssignment = () => {
                 </div>
 
                 <button
-                  className="bg-[#B378FF] py-2 px-7 max-h-[50px] lg:mt-6  lg:w-[400px] text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
+                  className="bg-[#B378FF] py-2 px-7 max-h-[50px]   lg:w-[200px] text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
                   type="submit"
                   disabled={isDisabled}
                 >

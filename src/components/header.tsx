@@ -69,7 +69,15 @@ const Header = () => {
             className="rounded-[50%] bg-fifth-dark h-[40px] min-w-[40px] flex items-center cursor-pointer"
             onClick={handleClick}
           >
-            <FaUser className="text-white my-auto mx-auto text-[20px]" />
+            <div className="text-white my-auto mx-auto h-10 w-10 aspect-square">
+              <img
+                src={
+                  import.meta.env.VITE_IMAGE +
+                  GetUserData?.data?.profile_display
+                }
+                 className="object-contain h-full w-full rounded-full"
+              />
+            </div>
           </div>
           <Menu
             id="demo-positioned-menu"
@@ -98,8 +106,12 @@ const Header = () => {
               </>
             ) : (
               <>
-                <MenuItem onClick={handleUserProfile} disabled>User Profile</MenuItem>
-                <MenuItem onClick={handleClose} disabled>Settings</MenuItem>
+                <MenuItem onClick={handleUserProfile} disabled>
+                  User Profile
+                </MenuItem>
+                <MenuItem onClick={handleClose} disabled>
+                  Settings
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </>
             )}

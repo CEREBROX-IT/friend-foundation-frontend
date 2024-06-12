@@ -38,17 +38,17 @@ const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
 
   const onSubmitHandler: SubmitHandler<ChurchDetails> = async (data) => {
     console.log(data)
-    await addChurch(data).unwrap().then((response) => {
-        console.log(response)
+    await addChurch(data).unwrap().then(() => {
+        
         closeModal()
     })
   };
 
   return (
     <div className="absolute inset-0 flex  flex-1 justify-center backdrop-brightness-50  ">
-      <div className=" max-h-[90vh] md:max-h-[100vh] max-w-[350px] lg:min-w-[400px] w-96 dark:bg-fourth-dark dark:text-white  bg-white  rounded-[10px]  p-4 mx-4 fixed top-0  ">
+      <div className=" max-h-[90vh] h-max pb-10 lg:min-w-[400px] w-96 dark:bg-fourth-dark dark:text-white  bg-white  rounded-[10px]  p-4 mx-4 fixed top-0  ">
         <div className="flex justify-end" onClick={closeModal}>
-          <IoMdCloseCircle className="text-4xl cursor-pointer" />
+          <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
         </div>
 
         <img
@@ -63,7 +63,7 @@ const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
         >
           <div className=" mt-[10px]">
             <div className="flex flex-row px-1 text-[15px] mb-1">
-              <span>District Name</span>
+              <span className="font-bold">DISTRICT NAME</span>
             </div>
             <TextField
               type="text"
@@ -93,7 +93,7 @@ const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
           </div>
           <div className="w-full mt-[10px] rounded-full ">
             <div className="flex flex-row px-1 text-[15px] mb-1">
-              <span>Church Name</span>
+              <span className="font-bold">CHURCH NAME</span>
             </div>
             <TextField
               type="text"
@@ -118,7 +118,7 @@ const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span>Pastor Assign (OPTIONAL)</span>
+              <span className="font-bold">PASTOR ASSIGN (OPTIONAL)</span>
             </div>
             <TextField
               type="text"
@@ -147,7 +147,7 @@ const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span>Church Established</span>
+              <span className="font-bold">CHURCH ESTABLISHED</span>
             </div>
             <TextField
               type="date"
@@ -173,7 +173,7 @@ const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
 
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span>Church Address</span>
+              <span className="font-bold">CHURCH ADDRESS</span>
             </div>
             <TextField
               type="text"

@@ -55,8 +55,8 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
   return (
     <div className="absolute inset-0 flex  flex-1 justify-center md:items-start backdrop-brightness-50  ">
       <div className=" h-max pb-10 max-w-[350px] lg:min-w-[400px] w-96 dark:bg-fourth-dark dark:text-white  bg-white  rounded-[10px]  p-4 mx-4 fixed top-0 ">
-        <div className="flex justify-end" onClick={closeUserModal}>
-          <IoMdCloseCircle className="text-4xl cursor-pointer" />
+        <div className="flex justify-end " onClick={closeUserModal}>
+          <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
         </div>
 
         <img
@@ -71,7 +71,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
         >
           <div className="w-full mt-[10px]">
             <div className="flex flex-row px-1 text-[15px] mb-1">
-              <span>Email Address</span>
+              <span className="font-bold">EMAIL ADDRESS</span>
             </div>
             <TextField
               type="email"
@@ -101,7 +101,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[10px] rounded-full ">
             <div className="flex flex-row px-1 text-[15px] mb-1">
-              <span>First Name</span>
+              <span className="font-bold uppercase">First Name</span>
             </div>
             <TextField
               type="text"
@@ -131,7 +131,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span>Last Name</span>
+              <span className="font-bold uppercase">Last Name</span>
             </div>
             <TextField
               type="text"
@@ -162,7 +162,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           <div className="flex gap-2">
             <div className="w-full mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                <span>Middle Name</span>
+                <span className="font-bold uppercase">Middle Name</span>
               </div>
               <TextField
                 type="text"
@@ -192,7 +192,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
             </div>
             <div className="w-1/3 mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                <span>Suffix</span>
+                <span className="font-bold uppercase">Suffix</span>
               </div>
               <TextField
                 type="text"
@@ -221,7 +221,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
             </div>
             <div className="w-1/3 mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                <span>Age</span>
+                <span className="font-bold uppercase">Age</span>
               </div>
               <TextField
                 type="number"
@@ -248,7 +248,9 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span>Title/Position (Ex. Pastor)</span>
+              <span className="font-bold uppercase">
+                Title/Position (Ex. Pastor)
+              </span>
             </div>
             <TextField
               type="text"
@@ -274,7 +276,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span>Contact Number</span>
+              <span className="font-bold uppercase">Contact Number</span>
             </div>
             <TextField
               type="number"
@@ -305,7 +307,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           <div className="flex w-full gap-2">
             <div className="w-full mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                <span>Birth Date</span>
+                <span className="font-bold uppercase">Birth Date</span>
               </div>
               <TextField
                 type="date"
@@ -331,7 +333,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
             </div>
             <div className="w-full mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                <span>Gender</span>
+                <span className="font-bold uppercase">Gender</span>
               </div>
               <TextField
                 type="text"
@@ -366,7 +368,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span>Password</span>
+              <span className="font-bold uppercase">Password</span>
             </div>
             <TextField
               type={showPassword ? "text" : "password"}
@@ -397,7 +399,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span>Confirm Password</span>
+              <span className="font-bold uppercase">Confirm Password</span>
             </div>
             <TextField
               type={showConfirmPassword ? "text" : "password"}

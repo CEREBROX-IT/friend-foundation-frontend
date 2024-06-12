@@ -41,6 +41,10 @@ const ChurchOverview: FC = () => {
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
+  const CustomCellRenderer: React.FC<{ value: string }> = ({ value }) => (
+    <h1 className="text-red-700">{value}</h1>
+  );
+
   //-----for the Table------
   const columns = [
     {
@@ -60,6 +64,12 @@ const ChurchOverview: FC = () => {
       headerName: "Pastor Name",
       flex: 1,
       minWidth: 200,
+      renderCell: (params: GridRenderCellParams) =>
+        params.row.head_pastor_full_name ? (
+          params.row.head_pastor_full_name
+        ) : (
+          <CustomCellRenderer value="No Pastor Assigned" />
+        ),
     },
     {
       field: "church_date_establish",

@@ -2,48 +2,54 @@ import { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField } from "@mui/material";
 import { IoMdCloseCircle } from "react-icons/io";
-import { usePostCreateFormMutation } from "../../redux/services/usersApi";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { useGetFormStatusQuery, useUpdateFormMutation } from "../../redux/services/usersApi";
 
 export interface CreateFormInput {
   form_title: string;
   form_description: string;
   attachment_file: FileList;
-  id?: number
 }
 
 interface NewUserModalProps {
   closeForm: () => void;
+  id?: number;
 }
 
-const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
+const AdminEditForm: FC<NewUserModalProps> = ({ closeForm, id }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    reset,
   } = useForm<CreateFormInput>();
-  const [createForm] = usePostCreateFormMutation();
 
-  const onSubmitHandler: SubmitHandler<CreateFormInput> = async (data) => {
-    const formData = new FormData();
-    formData.append("form_title", data.form_title);
-    formData.append("form_description", data.form_description);
-    formData.append("attachment_file", data.attachment_file[0]);
+  const { data: FormStatus } = useGetFormStatusQuery();
+  const [FormUpdate] = useUpdateFormMutation()
+  const FilterFormData = FormStatus?.filter((item) => item?.id === id);
+  
 
+  const updateForm: SubmitHandler<CreateFormInput> = async (data) => {
+     const formData = new FormData();
+     formData.append("form_title", data.form_title);
+     formData.append("form_description", data.form_description);
+     formData.append("attachment_file", data.attachment_file[0]);
 
-
-    
-    await createForm(formData)
-      .unwrap()
-      .then(() => {
+     await FormUpdate({id: id, formData: formData}).unwrap().then(() => {
         closeForm()
-      });
-  };
+     })
+  }
 
+
+  
   useEffect(() => {
-    AOS.init({});
-  }, []);
+    if (FilterFormData && FilterFormData.length > 0) {
+      setValue("form_title", FilterFormData[0].form_title);
+      reset({ form_title: FilterFormData[0]?.form_title });
+      setValue("form_description", FilterFormData[0].form_description);
+      reset({ form_description: FilterFormData[0]?.form_description });
+    }
+  }, [id]);
 
   return (
     <div className="absolute inset-0 flex justify-center items-center backdrop-brightness-50 overflow-y-hidden">
@@ -54,7 +60,7 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
 
         <form
           className="w-full flex flex-col items-center overflow-auto custom-scrollbar max-h-[450px]"
-          onSubmit={handleSubmit(onSubmitHandler)}
+          onSubmit={handleSubmit(updateForm)}
         >
           <div className="w-full mt-[10px] rounded-full">
             <div className="flex flex-row px-1 text-[15px] mb-1">
@@ -109,10 +115,9 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
               type="file"
               error={errors.attachment_file ? true : false}
               {...register("attachment_file", {
-                required: "File is required",
                 validate: {
                   validFileType: (value: FileList) => {
-                    if (!value) return true; // Let the required validation handle empty files
+                    if (!value || value.length === 0) return true; 
                     const allowedTypes = [
                       "application/pdf",
                       "application/msword",
@@ -141,7 +146,7 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
             type="submit"
             className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] self-end h-[45px]"
           >
-            ADD FORM
+            UPDATE FORM
           </button>
         </form>
       </div>
@@ -149,4 +154,4 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
   );
 };
 
-export default AdminAddForm;
+export default AdminEditForm;

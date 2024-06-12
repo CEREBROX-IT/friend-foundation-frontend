@@ -1,15 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { TFormInput } from "../../pages/dashboard/unassigned-dashboard/unassigned-dashboard";
 import { ChurchDetails } from "../../components/admin-components/add-churhc-modal";
-import { CreateFormInput } from "../../components/admin-components/admin-add-form";
 
 interface ChurchListResponse {
-  data: ChurchDetails[]
+  data: ChurchDetails[];
 }
 interface User {
   email: string;
   password: string;
-  date_created: string
+  date_created: string;
   first_name: string;
   last_name: string;
   middle_name: string;
@@ -23,7 +22,7 @@ interface User {
 }
 
 interface DeleteUser {
-  id: number
+  id: number;
 }
 
 interface Stats {
@@ -77,7 +76,7 @@ interface UserDetails {
 interface UserDataResponse {
   data: UserDetails;
   message: string;
-  id: number
+  id: number;
 }
 
 interface Approved {
@@ -92,9 +91,9 @@ interface DistrictDetails {
   id?: number;
   union_conference: string;
   district_name: string;
-  head_district_assign: number | ""; 
-  date_establish: string; 
-  head_district_full_name?: string
+  head_district_assign: number;
+  date_establish: string;
+  head_district_full_name?: string;
   district_region: string;
   district_province: string;
   district_municipal: string;
@@ -104,19 +103,18 @@ interface DistrictDetails {
 }
 
 interface DistrictList {
-  data: DistrictDetails[]
+  data: DistrictDetails[];
 }
 
 interface Unassigned {
-  id: number
-  full_name: string
+  id: number;
+  full_name: string;
 }
 
 interface UnassignedResponse {
-  message: string
-  data: Unassigned[]
+  message: string;
+  data: Unassigned[];
 }
-
 
 interface UpdateDistrictArgs {
   id: number;
@@ -129,16 +127,14 @@ interface UpdateChurchArgs {
 }
 
 interface AssingedLogs {
-  
-    user_full_name?: string;
-    previous_assign?: string;
-    current_assign?: string;
-    date_created: string
-  
+  user_full_name?: string;
+  previous_assign?: string;
+  current_assign?: string;
+  date_created: string;
 }
 
 interface AssignedLogsResponse {
-  data: AssingedLogs[]
+  data: AssingedLogs[];
 }
 
 interface FormDetails {
@@ -146,13 +142,17 @@ interface FormDetails {
   form_description: string;
   attachment_file: string;
   active_status: string;
-  total: string
+  total: string;
+  id: number
 }
 
+interface TDelete {
+  id: number;
+};
 
 export const userApi = createApi({
   reducerPath: "userApi",
-  tagTypes: ["Users", "DISTRICT", "Church", "Form"],
+  tagTypes: ["Users", "DISTRICT", "Church", "Form", "profile"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -210,6 +210,7 @@ export const userApi = createApi({
     }),
     getUserDetails: builder.query<UserDataResponse, void>({
       query: () => "/user/me",
+      providesTags: ["profile"],
     }),
     postNewDistrict: builder.mutation<void, Partial<DistrictDetails>>({
       query: (data) => ({
@@ -281,13 +282,13 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["Church"],
     }),
-    postCreateForm: builder.mutation<void, Partial<CreateFormInput>>({
+    postCreateForm: builder.mutation<void, FormData>({
       query: (data) => ({
         url: `/form/create`,
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ['Form']
+      invalidatesTags: ["Form"],
     }),
     getAssignedLogs: builder.query<AssingedLogs[], void>({
       query: () => "/assignee_logs/",
@@ -298,7 +299,30 @@ export const userApi = createApi({
     getFormStatus: builder.query<FormDetails[], void>({
       query: () => "/form/active-forms-stats",
       keepUnusedDataFor: 60,
-      providesTags: ['Form']
+      providesTags: ["Form"],
+    }),
+    postUploadProfile: builder.mutation<void, FormData>({
+      query: (data) => ({
+        url: `/user/update-profile-display/me`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["profile"],
+    }),
+    deleteForm: builder.mutation<void, TDelete>({
+      query: ({ id }) => ({
+        url: `/form/delete?id=${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Form"],
+    }),
+    updateForm: builder.mutation<void, { id: number | undefined; formData: FormData }>({
+      query: ({ id, formData }) => ({
+        url: `/form/update?id=${id}`,
+        method: "PUT",
+        body: formData,
+      }),
+      invalidatesTags: ["Form"],
     }),
   }),
 });
@@ -325,5 +349,8 @@ export const {
   usePostCreateFormMutation,
   useGetFormCountQuery,
   useGetAssignedLogsQuery,
-  useGetFormStatusQuery
+  useGetFormStatusQuery,
+  usePostUploadProfileMutation,
+  useDeleteFormMutation,
+  useUpdateFormMutation
 } = userApi;
