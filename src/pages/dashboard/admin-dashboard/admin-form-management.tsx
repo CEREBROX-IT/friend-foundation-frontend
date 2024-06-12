@@ -2,16 +2,24 @@ import { useState } from "react";
 import Header from "../../../components/header";
 import AdminAddForm from "../../../components/admin-components/admin-add-form";
 import FormCard from "../../../components/admin-components/formcard";
-
+import { useGetFormStatusQuery } from "../../../redux/services/usersApi";
 
 
 const AdminFormManagement = () => {
- 
 
+  
+  
+  const {data: FormStatus} = useGetFormStatusQuery()
   const [openAddForm, setOpenAddForm] = useState(false);
 
   const handleOpenForm = () => setOpenAddForm(true);
   const handleCloseForm = () => setOpenAddForm(false);
+
+  const constructDownloadLink = (relativePath: string) => {
+    // Replace 'baseURL' with your actual base URL where files are stored
+    const baseURL = "http://localhost:3000"; // Replace this with your base URL
+    return `${baseURL}/${relativePath}`;
+  };
   return (
     <div
       className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark ${
@@ -43,7 +51,15 @@ const AdminFormManagement = () => {
           </div>
           <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">
             <div className="min-h-[80vh] bg-  p-4 ">
-              <FormCard />
+              {FormStatus?.map((item) => (
+                <FormCard
+                  Title={item.form_title}
+                  Description={item.form_description}
+                  attachfile={item.attachment_file ? constructDownloadLink(item.attachment_file) : ""}
+                  status={item.active_status ? "ACTIVE" : "INACTIVE"}
+                  total={item.total}
+                />
+              ))}
             </div>
           </div>
         </div>

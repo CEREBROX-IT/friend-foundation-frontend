@@ -58,7 +58,7 @@ const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
         />
 
         <form
-          className="w-full flex flex-col overflow-auto custom-scrollbar max-h-[400px] "
+          className="w-full flex flex-col overflow-auto  custom-scrollbar max-h-[400px] "
           onSubmit={handleSubmit(onSubmitHandler)}
         >
           <div className=" mt-[10px]">

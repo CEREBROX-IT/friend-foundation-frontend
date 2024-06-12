@@ -2,17 +2,13 @@ import { useState } from "react";
 import Header from "../../../components/header";
 import ListUsersOverview from "../../../components/admin-components/list-users-overview";
 import NewUserModal from "../../../components/admin-components/new-user-modal";
-import { useGetUserListQuery } from "../../../redux/services/usersApi";
 const AdminUserList = () => {
   const [openNewUserModal, setOpenNewUserModal] = useState(false)
-  // const {data: userData} = useGetUserListQuery()
   const handleOpenNewuserModal = () => setOpenNewUserModal(true)
   const hanldeCloseOpenNewUserModal = () => setOpenNewUserModal(false)
   return (
     <div
-      className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark ${
-        openNewUserModal ? "overflow-hidden max-h-screen " : "overflow-y-auto"
-      }`}
+      className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-auto`}
     >
       <Header />
       <div className=" w-full h-[200px] bg-primary-light p-4 ">
@@ -36,11 +32,10 @@ const AdminUserList = () => {
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center dark:text-white">
           © Copyright reserve Friend Foundation Management System 2024
         </p>
+        {openNewUserModal && (
+          <NewUserModal closeUserModal={hanldeCloseOpenNewUserModal} />
+        )}
       </div>
-
-      {openNewUserModal && (
-        <NewUserModal closeUserModal={hanldeCloseOpenNewUserModal} />
-      )}
     </div>
   );
 };

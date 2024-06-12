@@ -35,7 +35,9 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
     
     await createForm(formData)
       .unwrap()
-      .then((response) => console.log(response));
+      .then((response) => {
+        closeForm(  )
+      });
   };
 
   useEffect(() => {

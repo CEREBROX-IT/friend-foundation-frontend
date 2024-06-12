@@ -141,6 +141,14 @@ interface AssignedLogsResponse {
   data: AssingedLogs[]
 }
 
+interface FormDetails {
+  form_title: string;
+  form_description: string;
+  attachment_file: string;
+  active_status: string;
+  total: string
+}
+
 
 export const userApi = createApi({
   reducerPath: "userApi",
@@ -279,12 +287,18 @@ export const userApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ['Form']
     }),
     getAssignedLogs: builder.query<AssingedLogs[], void>({
       query: () => "/assignee_logs/",
       keepUnusedDataFor: 60,
       transformResponse: (response: AssignedLogsResponse) => response.data,
-      providesTags: ["Church"]
+      providesTags: ["Church"],
+    }),
+    getFormStatus: builder.query<FormDetails[], void>({
+      query: () => "/form/active-forms-stats",
+      keepUnusedDataFor: 60,
+      providesTags: ['Form']
     }),
   }),
 });
@@ -310,5 +324,6 @@ export const {
   usePostUpdateChurchMutation,
   usePostCreateFormMutation,
   useGetFormCountQuery,
-  useGetAssignedLogsQuery
+  useGetAssignedLogsQuery,
+  useGetFormStatusQuery
 } = userApi;
