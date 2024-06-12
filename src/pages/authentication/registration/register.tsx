@@ -424,18 +424,18 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
             </p>
           )}
         </div>
-        <div className="w-full mt-[15px]">
-          {isLoading ? (
-            <LoadingAnimation message="Registering, please wait!" />
-          ) : (
-            ""
-          )}
-        </div>
+
         <button
           type="submit"
           className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-full h-[45px]"
         >
-          REGISTER
+          <div className="w-full flex justify-center">
+            {isLoading ? (
+              <LoadingAnimation message="Registering, please wait!" />
+            ) : (
+              "REGISTER"
+            )}
+          </div>
         </button>
       </form>
 

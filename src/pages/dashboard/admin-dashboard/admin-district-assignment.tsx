@@ -33,6 +33,7 @@ const AdminDistrictAssignment = () => {
     (item) => item.head_district_assign === null
   );
 
+  console.log(filter)
   const onSubmitHandle: SubmitHandler<IFormInput> = async (data) => {
     const filter = DistrictList?.filter((item) => item.id === data.id) || [];
 
@@ -69,7 +70,7 @@ const AdminDistrictAssignment = () => {
 
       <div className="flex-1 w-full px-4 absolute translate-y-32">
         <div className="max-w-full bg-white p-4 rounded-[10px] dark:bg-fourth-dark ">
-          <p className="text-sm ml-2 mb-4 dark:text-white">
+          <p className="text-lg font-bold ml-2 mb-4 dark:text-white ">
             Assign Pastor as District Head
           </p>
           <div className="flex flex-col lg:flex-row justify-between gap-4 lg:items-center  mb-4">
@@ -78,49 +79,50 @@ const AdminDistrictAssignment = () => {
                 onSubmit={handleSubmit(onSubmitHandle)}
                 className="w-full flex flex-col lg:flex-row  justify-between  gap-2"
               >
-                <div className="flex flex-col w-full">
-                  <h1>Name</h1>
+                <div className="flex flex-col md:flex-row  lg:w-1/2 gap-4">
                   <TextField
                     type="text"
-                    placeholder="Pastor not assign"
                     select
+                    label="Select One"
                     error={errors.head_district_assign ? true : false}
                     {...register("head_district_assign")}
                     className="w-full bg-fourth-light rounded-[10px]"
                     InputProps={{
                       sx: {
-                        height: "45px",
                         lineHeight: "normal",
                         borderRadius: "10px",
                       },
                     }}
                   >
+                    <MenuItem value="" disabled>
+                      <p className="text-slate-500 text-sm">Select Pastor</p>
+                    </MenuItem>
                     {UnAssignedUsers?.data?.map((item) => (
-                      <MenuItem value={item.id}>
+                      <MenuItem key={item.id} value={item.id}>
                         <p className="text-slate-500 text-sm">
                           {item.full_name}
                         </p>
                       </MenuItem>
                     ))}
                   </TextField>
-                </div>
-                <div className="flex flex-col w-full">
-                  <h1>District Name</h1>
+
                   <TextField
                     type="text"
-                    placeholder="District Available"
+                    label="Select One"
                     select
                     error={errors.id ? true : false}
                     {...register("id")}
                     className="w-full bg-fourth-light  rounded-[10px]"
                     InputProps={{
                       sx: {
-                        height: "45px",
                         lineHeight: "normal",
                         borderRadius: "10px",
                       },
                     }}
                   >
+                    <MenuItem value="" disabled>
+                      <p className="text-slate-500 text-sm">{filter?.length === undefined ? "Select District" : "No District Available"}</p>
+                    </MenuItem>
                     {filter?.map((item) => (
                       <MenuItem value={item.id}>
                         <p className="text-slate-500 text-sm">
@@ -132,7 +134,7 @@ const AdminDistrictAssignment = () => {
                 </div>
 
                 <button
-                  className=" bg-secondary-light py-2 lg:w-[400px] max-h-[50px] lg:mt-6 text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
+                  className=" bg-secondary-light py-2 lg:w-[250px] max-h-[50px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
                   disabled={isDisabled}
                 >
                   ASSIGN PASTOR
