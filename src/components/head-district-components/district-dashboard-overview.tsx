@@ -98,7 +98,7 @@ const DistrictOverview: FC = () => {
     <>
       <div className="flex flex-col md:flex-row justify-between dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
         <p className="text-[20px] font-semibold mb-2 md:mb-0">
-         WALA PANI SIYA DAPAT NI LIST OF PASTOR SUBMITTED FORM 
+         PASTOR SUBMITTED FORM 
         </p>
         <div className="md:mt-0 lg:w-[400px] w-full">
           <FiSearch

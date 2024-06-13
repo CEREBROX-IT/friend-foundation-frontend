@@ -1,52 +1,38 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
-  useGetAssignedLogsQuery,
-  useGetDistrictListQuery,
-  useGetChurchListQuery,
-} from "../../redux/services/usersApi";
+  DataGrid,
+  GridToolbar,
+  GridRenderCellParams,
+  GridAlignment,
+} from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
-import JwtDecoder from "../../utils/jwt-decoder";
-const DistrictChurchList: FC = () => {
-  const { data: AssignedLogs } = useGetAssignedLogsQuery();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(AssignedLogs || []);
-  const { theme } = useContext(ThemeContext);
-//   const user = JwtDecoder().decodedToken;
-//   const user_id = user?.id;
-//   const { data: DistrictQuery } = useGetDistrictListQuery();
-//   const { data: ChurchQuery } = useGetChurchListQuery();
-//   const filter = DistrictQuery?.filter(
-//     (item) => item?.head_district_assign === user_id
-//   );
+import {
+  useGetChurchListQuery,
 
-//   const churchFilter = filter?.filter(
-//     (item) => filter[0]?.id === item.district_id
-//   );
-//   console.log(churchFilter);
+} from "../../redux/services/usersApi";
+
+const DistrictChurchList: FC = () => {
+  const { data: ChurchList } = useGetChurchListQuery();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredRows, setFilteredRows] = useState(ChurchList ?? []);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     applyFilters();
-  }, [searchQuery, AssignedLogs]);
+  }, [searchQuery, ChurchList]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      AssignedLogs?.filter((row) => {
+      ChurchList?.filter((row) => {
         return (
-          row.user_full_name?.toLowerCase().includes(lowerCaseQuery) ||
-          row.current_assign?.toLowerCase().includes(lowerCaseQuery) ||
-          row.previous_assign?.toLowerCase().includes(lowerCaseQuery)
+          row.district_name?.toLowerCase().includes(lowerCaseQuery) ||
+          row.church_name?.toLowerCase().includes(lowerCaseQuery) ||
+          row.head_pastor_full_name?.toLowerCase().includes(lowerCaseQuery) ||
+          row.church_address?.toLowerCase().includes(lowerCaseQuery)
         );
-      }).filter((row) => {
-        // Filter by date within past two days
-        const currentDate = new Date();
-        const rowDate = new Date(row.date_created);
-        const timeDiff = Math.abs(currentDate.getTime() - rowDate.getTime());
-        const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        return diffDays <= 2;
       }) ?? [];
     setFilteredRows(filteredData);
   };
@@ -54,32 +40,57 @@ const DistrictChurchList: FC = () => {
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
+  const CustomCellRenderer: React.FC<{ value: string }> = ({ value }) => (
+    <h1 className="text-red-700">{value}</h1>
+  );
+
   //-----for the Table------
   const columns = [
     {
-      field: "user_full_name",
-      headerName: "FULL NAME",
+      field: "church_name",
+      headerName: "CHURCH NAME",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "previous_assign",
-      headerName: "Previous Assign",
+      field: "district_name",
+      headerName: "DISTRICT NAME",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "current_assign",
-      headerName: "Current Assign",
+      field: "head_pastor_full_name",
+      headerName: "PASTOR NAME",
       flex: 1,
       minWidth: 200,
+      renderCell: (params: GridRenderCellParams) =>
+        params.row.head_pastor_full_name ? (
+          params.row.head_pastor_full_name
+        ) : (
+          <CustomCellRenderer value="No Pastor Assigned" />
+        ),
     },
+    {
+      field: "church_date_establish",
+      headerName: "CHURCH ESTABLISH",
+      flex: 1,
+      minWidth: 250,
+    },
+    {
+      field: "church_address",
+      headerName: "CHURCH ADDRESS",
+      flex: 1,
+      minWidth: 250,
+    },
+    
   ];
+
+ 
 
   return (
     <>
-      <div className="flex flex-col md:flex-row justify-between dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
-        <div className="md:mt-0 lg:w-[400px] w-full">
+      <div className="flex flex-col md:flex-row justify-end dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
+        <div className="md:mt-0 max-w-[400px] w-full">
           <FiSearch
             size={20}
             className="absolute mt-[11px] right-50 font-black ml-3"

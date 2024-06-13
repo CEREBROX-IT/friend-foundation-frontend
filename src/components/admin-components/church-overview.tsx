@@ -85,7 +85,7 @@ const ChurchOverview: FC = () => {
     },
     {
       field: "action",
-      headerName: "",
+      headerName: "ACTION",
       flex: 1,
       minWidth: 170,
       headerAlign: "center" as GridAlignment,
