@@ -1,6 +1,9 @@
 export interface AuthLoginResponse {
     message: string
     token: string
+    data : {
+        error: string
+    }
 }
 
 export interface AuthLoginPayload {
@@ -8,7 +11,7 @@ export interface AuthLoginPayload {
     password: string
 }
 
-export interface RegisterUser {
+export interface RegisterUserPayload {
   email: string;
   password: string;
   confirm_password?: string
@@ -21,4 +24,8 @@ export interface RegisterUser {
   contact_no: string;
   birth_date: string; 
   title: string;
+}
+
+export interface ForgotPasswordPayload {
+    email: string
 }

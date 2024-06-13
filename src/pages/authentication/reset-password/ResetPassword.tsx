@@ -4,30 +4,32 @@ import SdaIcon from "../../../assets/white_sda_icon.webp";
 import SampleLogo from "../../../assets/authentication/sample_logo.webp";
 import TextField from "@mui/material/TextField";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { usePostForgotPasswordMutation } from "../../../redux/services/loginApi";
 import LoadingAnimation from "../../../components/loading-animation";
+import { ForgotPasswordPayload } from "../../../redux/type/Type";
+import { useAuthForgotPasswordMutation } from "../../../redux/services/AuthenticationApi";
+
 interface RegisterScreenProps {
   handleOpenRegister: () => void;
 }
 
-interface IFormInput {
-  email: string;
-}
 const ResetPassword: FC<RegisterScreenProps> = ({ handleOpenRegister }) => {
-  const [postResetPassword, { isLoading, isError, isSuccess }] =
-    usePostForgotPasswordMutation();
+  const [ForgotPassword, { isLoading, isError, isSuccess }] =
+    useAuthForgotPasswordMutation();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<ForgotPasswordPayload>();
 
-  const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
-    await postResetPassword(data)
+  const onSubmitHandler: SubmitHandler<ForgotPasswordPayload> = async (
+    data
+  ) => {
+    await ForgotPassword(data)
       .unwrap()
-      .then((response) => {
-        console.log(response);
+      .then(() => {
+        reset()
       });
   };
 
@@ -92,11 +94,6 @@ const ResetPassword: FC<RegisterScreenProps> = ({ handleOpenRegister }) => {
             )}
           </div>
           <div className="w-full mt-[15px]">
-            {isLoading ? (
-              <LoadingAnimation message="Verifying email, please wait!" />
-            ) : (
-              ""
-            )}
             {isError ? (
               <p className="text-sm text-red-600">Email doesn't exist</p>
             ) : (
@@ -104,7 +101,7 @@ const ResetPassword: FC<RegisterScreenProps> = ({ handleOpenRegister }) => {
             )}
             {isSuccess ? (
               <p className="text-sm font-bold">
-                Please check your gmail account, thank you!
+                Please check your email account, thank you.
               </p>
             ) : (
               ""
@@ -115,7 +112,14 @@ const ResetPassword: FC<RegisterScreenProps> = ({ handleOpenRegister }) => {
             type="submit"
             className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-full h-[45px]"
           >
-            Reset Password
+            {isLoading ? (
+              <div className="w-full flex justify-center">
+               
+                <LoadingAnimation message="Verifying email, please wait!" />
+              </div>
+            ) : (
+              "Reset Password"
+            )}
           </button>
         </form>
 

@@ -2,8 +2,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   AuthLoginResponse,
   AuthLoginPayload,
-  RegisterUser,
+  RegisterUserPayload,
+  ForgotPasswordPayload,
 } from "../type/Type";
+import { url } from "inspector";
 
 export const AuthenticationApi = createApi({
   reducerPath: "AuthenticationApi",
@@ -18,14 +20,22 @@ export const AuthenticationApi = createApi({
         body: credentials,
       }),
     }),
-    AuthRegister: builder.mutation<void, RegisterUser>({
+    AuthRegister: builder.mutation<void, RegisterUserPayload>({
       query: (data) => ({
         url: "/auth/register",
         method: "POST",
         body: data,
       }),
     }),
+    AuthForgotPassword: builder.mutation<void, ForgotPasswordPayload>({
+      query: (email) => ({
+        url: "/auth/forgot-password",
+        method: "POST",
+        body: email,
+      }),
+    }),
   }),
 });
 
-export const { useAuthLoginMutation, useAuthRegisterMutation } = AuthenticationApi;
+export const { useAuthLoginMutation, useAuthRegisterMutation, useAuthForgotPasswordMutation } =
+  AuthenticationApi;
