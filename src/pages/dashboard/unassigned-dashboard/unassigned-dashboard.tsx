@@ -424,7 +424,7 @@ export default function UnassignedDashboard() {
               </div>
             </form>
           </div>
-          <div className="shadow-md drop-shadow-lg shadow-black bg-white flex-1">
+          <div className=" shadow-black bg-white flex-1">
             <form
               onSubmit={handleSubmit(onSubmitHandler)}
               className="p-4 max-h-[80vh] overflow-auto custom-scrollbar"

@@ -10,6 +10,11 @@ import {
 import { useGetDistrictListQuery, usePostDeleteDistrictMutation } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
 import LoadingAnimation2 from "../loading-animation2";
+
+ const CustomCellRenderer: React.FC<{ value: string }> = ({ value }) => (
+   <h1 className="text-red-700">{value}</h1>
+ );
+
 const DistrictOverview: FC = () => {
   const { data: GetDistrictList, isLoading: LoadingDistrict } = useGetDistrictListQuery();
   
@@ -64,6 +69,12 @@ const DistrictOverview: FC = () => {
       headerName: "DISTRICT HEAD",
       flex: 1,
       minWidth: 200,
+      renderCell: (params: GridRenderCellParams) =>
+        params.row.head_district_full_name ? (
+          params.row.head_district_full_name
+        ) : (
+          <CustomCellRenderer value="No Pastor Assigned" />
+        ),
     },
     {
       field: "district_region",
@@ -92,7 +103,12 @@ const DistrictOverview: FC = () => {
       flex: 1,
       renderCell: (params: GridRenderCellParams) => (
         <div className="flex justify-evenly w-full">
-          <Button variant="contained" color="error" size="small" onClick={()=> hanldeDelete(params.row.id)}>
+          <Button
+            variant="contained"
+            color="error"
+            size="small"
+            onClick={() => hanldeDelete(params.row.id)}
+          >
             DELETE
           </Button>
         </div>

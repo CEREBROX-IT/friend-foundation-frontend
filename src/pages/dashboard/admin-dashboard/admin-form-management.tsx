@@ -8,6 +8,7 @@ import { useDeleteFormMutation } from "../../../redux/services/usersApi";
 import AdminEditForm from "../../../components/admin-components/admin-edit-form";
 import AdminSubmittedLogs from "../../../components/admin-components/admin-submitted-logs";
 import AdminPendingLogs from "../../../components/admin-components/admin-pending-logs";
+
 const AdminFormManagement = () => {
   const { data: FormStatus } = useGetFormStatusQuery();
   const [deleteForm] = useDeleteFormMutation();
@@ -47,29 +48,29 @@ const AdminFormManagement = () => {
       className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto`}
     >
       <Header />
-      <div className=" w-full h-[200px] bg-primary-light p-4 ">
+      <div className="w-full h-[200px] bg-primary-light p-4">
         <p className="text-sixth-light font-semibold text-[25px]">
           Form Management
         </p>
       </div>
 
       <div className="flex-1 w-full px-4 absolute translate-y-32">
-        <div className=" bg-white p-4 rounded-[10px] dark:bg-fourth-dark">
+        <div className="bg-white p-4 rounded-[10px] dark:bg-fourth-dark">
           <div className="flex gap-2 flex-wrap basis-4">
             <button
-              className="bg-secondary-light py-2 px-7 text-white dark:bg-white  dark:text-black font-bold  rounded-md lg:mb-4 hover:opacity-85"
+              className="bg-secondary-light py-2 px-7 text-white dark:bg-white dark:text-black font-bold rounded-md lg:mb-4 hover:opacity-85"
               onClick={handleOpenForm}
             >
               Create Form
             </button>
             <button
-              className="bg-primary-light py-2 px-7 text-white dark:bg-white  dark:text-black font-bold  rounded-md lg:mb-4 hover:opacity-85"
+              className="bg-primary-light py-2 px-7 text-white dark:bg-white dark:text-black font-bold rounded-md lg:mb-4 hover:opacity-85"
               onClick={() => setPage("Submitted Logs")}
             >
               Submitted Logs
             </button>
             <button
-              className="bg-fourth-dark py-2 px-7 text-white dark:bg-white  dark:text-black font-bold  rounded-md lg:mb-4 hover:opacity-85"
+              className="bg-fourth-dark py-2 px-7 text-white dark:bg-white dark:text-black font-bold rounded-md lg:mb-4 hover:opacity-85"
               onClick={() => setPage("Pending Logs")}
             >
               Pending Logs
@@ -80,33 +81,41 @@ const AdminFormManagement = () => {
           ) : page === "Pending Logs" ? (
             <AdminPendingLogs />
           ) : (
-            <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">
-              <div className="flex flex-col  justify-center  min-h-[80vh] lg:p-4">
+            <div className="bg-sixth-light dark:bg-sixth-dark shadow-lg rounded-[10px]">
+              <div className="flex flex-col items-center min-h-[80vh] lg:p-4">
                 {FormStatus?.length === 0 ? (
-                  <>
+                  <div className="w-full flex-1 flex justify-center items-center">
                     <img
                       src={NoDataFound}
                       className="aspect-square object-contain lg:w-72 select-none"
                     />
-                  </>
+                  </div>
                 ) : (
                   <>
-                    {FormStatus?.map((item) => (
-                      <FormCard
-                        Title={item.form_title}
-                        Description={item.form_description}
-                        attachfile={
-                          item.attachment_file
-                            ? constructDownloadLink(item.attachment_file)
-                            : ""
-                        }
-                        status={item.active_status ? "ACTIVE" : "INACTIVE"}
-                        total={item.total}
-                        id={item?.id}
-                        handleDelete={() => handleDelete(item.id)}
-                        handleUpdate={() => handleUpdate(item.id)}
-                      />
-                    ))}
+                    {FormStatus?.map((item) => {
+                      const formattedDeadline = item?.deadline
+                        ? item.deadline.split("T")[0]
+                        : "";
+
+                      return (
+                        <FormCard
+                          key={item.id} // Add a unique key prop to each FormCard
+                          Title={item.form_title}
+                          Description={item.form_description}
+                          attachfile={
+                            item.attachment_file
+                              ? constructDownloadLink(item.attachment_file)
+                              : ""
+                          }
+                          deadline={formattedDeadline}
+                          status={item.active_status ? "ACTIVE" : "INACTIVE"}
+                          total={item.total}
+                          id={item?.id}
+                          handleDelete={() => handleDelete(item.id)}
+                          handleUpdate={() => handleUpdate(item.id)}
+                        />
+                      );
+                    })}
                   </>
                 )}
               </div>

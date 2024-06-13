@@ -10,6 +10,7 @@ interface CardsProps {
   status?: string;
   total: string;
   id: number;
+  deadline: string
   handleDelete? : () => void
   handleUpdate?: () => void
  
@@ -23,13 +24,14 @@ const FormCard: FC<CardsProps> = ({
   status,
   total,
   handleDelete,
-  handleUpdate
+  handleUpdate,
+  deadline
  
 }) => {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="flex justify-evenly self-end w-32 h-10 bg-fourth-dark border-l-2 border-t-2 border-r-2">
+      <div className="flex justify-evenly self-end w-32 h-10 bg-primary-dark border-l-2 border-t-2 border-r-2">
         <button onClick={handleDelete}>
           <MdDelete className="text-white text-3xl" />
         </button>
@@ -37,7 +39,7 @@ const FormCard: FC<CardsProps> = ({
           <LuFileEdit className="text-white text-2xl" />
         </button>
       </div>
-      <div className="flex flex-col justify-between min-h-[200px] max-h-[150px] w-full bg-fourth-dark text-white p-2 shadow-fourth-light border-2 mb-4 overflow-y-auto">
+      <div className="flex flex-col justify-between  text-black min-h-[200px] max-h-[150px] w-full bg-fourth-light p-2 shadow-fourth-light border-2 mb-4 overflow-y-auto">
         <div className="flex justify-between ">
           <div>
             <h1 className="font-bold">{Title}</h1>
@@ -48,13 +50,14 @@ const FormCard: FC<CardsProps> = ({
           </h3>
         </div>
         <div className="flex justify-between">
-          <div className="flex items-center space-x-2 mb-2">
+          <div className="flex items-center space-x-2 mb-2 gap-2">
             {attachfile ? (
               <>
                 <a
                   href={attachfile}
                   download
                   className="flex items-center space-x-1"
+                  target="blank"
                 >
                   <FaFilePdf className="w-6 h-6" />{" "}
                   {/* Render the PDF file icon */}
@@ -64,6 +67,7 @@ const FormCard: FC<CardsProps> = ({
             ) : (
               ""
             )}
+            <p className="font-serif text-red-500">(Deadline <span>{deadline})</span></p>
           </div>
           <p className="hidden md:block text-sm">{total}</p>
         </div>

@@ -36,7 +36,7 @@ const [removeUser] = usePostRemoveUserMutation()
       GetUserList?.filter((row) => {
         return (
           (row.first_name.toLowerCase().includes(lowerCaseQuery) ||
-            row.title.toLowerCase().includes(lowerCaseQuery))
+            row.title.toLowerCase().includes(lowerCaseQuery))  && row.role !== "Admin"
         );
       }) ?? [];
     setFilteredRows(filteredData);

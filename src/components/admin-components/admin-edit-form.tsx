@@ -2,12 +2,16 @@ import { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField } from "@mui/material";
 import { IoMdCloseCircle } from "react-icons/io";
-import { useGetFormStatusQuery, useUpdateFormMutation } from "../../redux/services/usersApi";
+import {
+  useGetFormStatusQuery,
+  useUpdateFormMutation,
+} from "../../redux/services/usersApi";
 
 export interface CreateFormInput {
   form_title: string;
   form_description: string;
   attachment_file: FileList;
+  deadline: string;
 }
 
 interface NewUserModalProps {
@@ -25,23 +29,22 @@ const AdminEditForm: FC<NewUserModalProps> = ({ closeForm, id }) => {
   } = useForm<CreateFormInput>();
 
   const { data: FormStatus } = useGetFormStatusQuery();
-  const [FormUpdate] = useUpdateFormMutation()
+  const [FormUpdate] = useUpdateFormMutation();
   const FilterFormData = FormStatus?.filter((item) => item?.id === id);
-  
 
   const updateForm: SubmitHandler<CreateFormInput> = async (data) => {
-     const formData = new FormData();
-     formData.append("form_title", data.form_title);
-     formData.append("form_description", data.form_description);
-     formData.append("attachment_file", data.attachment_file[0]);
+    const formData = new FormData();
+    formData.append("form_title", data.form_title);
+    formData.append("form_description", data.form_description);
+    formData.append("attachment_file", data.attachment_file[0]);
+    formData.append("deadline", data.deadline);
+    await FormUpdate({ id: id, formData: formData })
+      .unwrap()
+      .then(() => {
+        closeForm();
+      });
+  };
 
-     await FormUpdate({id: id, formData: formData}).unwrap().then(() => {
-        closeForm()
-     })
-  }
-
-
-  
   useEffect(() => {
     if (FilterFormData && FilterFormData.length > 0) {
       setValue("form_title", FilterFormData[0].form_title);
@@ -109,6 +112,32 @@ const AdminEditForm: FC<NewUserModalProps> = ({ closeForm, id }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+              <span className="font-bold uppercase">Deadline</span>
+            </div>
+            <TextField
+              type="date"
+              placeholder="MM-DD-YY"
+              error={errors.deadline ? true : false}
+              {...register("deadline", {
+                required: "Deadline is required",
+              })}
+              className="w-full bg-fourth-light"
+              InputProps={{
+                sx: {
+                  height: "45px",
+                  lineHeight: "normal",
+                  borderRadius: "10px",
+                },
+              }}
+            />
+            {errors.deadline && (
+              <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                {errors.deadline.message}
+              </p>
+            )}
+          </div>
+          <div className="w-full mt-[15px]">
+            <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
               <span className="font-bold">ATTACHMENT</span>
             </div>
             <TextField
@@ -117,7 +146,7 @@ const AdminEditForm: FC<NewUserModalProps> = ({ closeForm, id }) => {
               {...register("attachment_file", {
                 validate: {
                   validFileType: (value: FileList) => {
-                    if (!value || value.length === 0) return true; 
+                    if (!value || value.length === 0) return true;
                     const allowedTypes = [
                       "application/pdf",
                       "application/msword",

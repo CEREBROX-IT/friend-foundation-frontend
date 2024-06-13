@@ -2,6 +2,8 @@ import { FC, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField } from "@mui/material";
 import { IoMdCloseCircle } from "react-icons/io";
+import { useGetChurchDistrictBelongQuery, useSubmitFormMutation } from "../../redux/services/usersApi";
+import { report } from "process";
 
 export interface CreateFormInput {
   report_form_id: number;
@@ -11,29 +13,30 @@ export interface CreateFormInput {
 }
 
 interface NewUserModalProps {
-  closeForm?: () => void;
+  closeForm: () => void;
+  id?: number
 }
 
-const Modal: FC<NewUserModalProps> = ({ closeForm }) => {
-
+const Modal: FC<NewUserModalProps> = ({ closeForm, id }) => {
+  const {data: ChurchDistrctData} = useGetChurchDistrictBelongQuery() 
+  const [submitForm] = useSubmitFormMutation()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CreateFormInput>();
 
-  //   const onSubmitHandler: SubmitHandler<CreateFormInput> = async (data) => {
-  //     const formData = new FormData();
-  //     formData.append("form_title", data.form_title);
-  //     formData.append("form_description", data.form_description);
-  //     formData.append("attachment_file", data.attachment_file[0]);
+    const onSubmitHandler: SubmitHandler<CreateFormInput> = async (data) => {
+       const formData = new FormData();
+       formData.append("report_form_id", id?.toString() || "")
+       formData.append("church_belong", ChurchDistrctData?.church_belong || "");
+       formData.append("district_belong", ChurchDistrctData?.district_belong || "");
+       formData.append("response_file", data.response_file[0]);
 
-  //     await createForm(formData)
-  //       .unwrap()
-  //       .then(() => {
-  //         closeForm();
-  //       });
-  //   };
+       await submitForm(formData).unwrap().then(() => {
+        closeForm()
+       })
+    };
 
   return (
     <div className="absolute inset-0 flex justify-center items-center backdrop-brightness-50 overflow-y-hidden">
@@ -44,7 +47,7 @@ const Modal: FC<NewUserModalProps> = ({ closeForm }) => {
 
         <form
           className="w-full flex flex-col items-center overflow-auto custom-scrollbar max-h-[450px]"
-          //   onSubmit={handleSubmit(onSubmitHandler)}
+            onSubmit={handleSubmit(onSubmitHandler)}
         >
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">

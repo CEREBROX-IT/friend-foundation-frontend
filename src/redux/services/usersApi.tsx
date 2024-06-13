@@ -145,29 +145,42 @@ interface FormDetails {
   attachment_file: string;
   active_status: string;
   total: string;
+  deadline: string;
   id: number;
 }
 
 interface Form {
   id: number;
   form_title: string;
-  map: any
+  map: any;
   form_description: string;
   attachment_file: string;
   active_status: boolean;
   date_created: string;
-  length: any
+  length: any;
   date_updated: string;
-  status: "pending" | "done" ; // Define possible status values
+  status: "pending" | "done"; // Define possible status values
 }
 
 interface TDelete {
   id: number;
 }
 
+interface ChurchDistrict {
+  district_belong: string;
+  church_belong: string;
+}
+
 export const userApi = createApi({
   reducerPath: "userApi",
-  tagTypes: ["Users", "DISTRICT", "Church", "Form", "profile"],
+  tagTypes: [
+    "Users",
+    "DISTRICT",
+    "Church",
+    "Form",
+    "profile",
+    "unansweredForm",
+  ],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -345,10 +358,23 @@ export const userApi = createApi({
     getUnansweredForms: builder.query<Form, void>({
       query: () => "/form/unanswered",
       keepUnusedDataFor: 60,
+      providesTags: ["unansweredForm"],
     }),
     getAnsweredFormr: builder.query<Form, void>({
       query: () => "/form/answered",
       keepUnusedDataFor: 60,
+    }),
+    getChurchDistrictBelong: builder.query<ChurchDistrict, void>({
+      query: () => "/form/user-church-details",
+      keepUnusedDataFor: 60,
+    }),
+    SubmitForm: builder.mutation<void, FormData>({
+      query: (formData) => ({
+        url: `/form/submit`,
+        method: "POST",
+        body: formData,
+      }),
+      invalidatesTags: ["unansweredForm"],
     }),
   }),
 });
@@ -380,5 +406,7 @@ export const {
   useDeleteFormMutation,
   useUpdateFormMutation,
   useGetAnsweredFormrQuery,
-  useGetUnansweredFormsQuery
+  useGetUnansweredFormsQuery,
+  useGetChurchDistrictBelongQuery,
+  useSubmitFormMutation,
 } = userApi;

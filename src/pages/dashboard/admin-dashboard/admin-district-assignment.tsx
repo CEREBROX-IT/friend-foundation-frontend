@@ -10,10 +10,13 @@ import {
   usePostUpdateDistrictMutation,
 } from "../../../redux/services/usersApi";
 import LoadingAnimation from "../../../components/loading-animation";
+
 interface IFormInput {
   head_district_assign: number;
   id: number;
 }
+
+ 
 const AdminDistrictAssignment = () => {
   const {
     register,

@@ -23,7 +23,7 @@ const ResultCards: FC<CardsProps> = ({
   return (
     <div
       className="relative md:flex-1 w-full md:min-w-[200px] lg:w-0 bg-sixth-light dark:bg-sixth-dark rounded-[10px] dark:text-white shadow-md p-4 cursor-pointer
-               border-b-[5px] border-sixth-light dark:border-sixth-dark hover:border-secondary-light dark:hover:border-secondary-dark hover:scale-105 duration-300"
+               border-b-[5px] border-sixth-light dark:border-sixth-dark hover:border-secondary-light dark:hover:border-secondary-dark hover:scale-[1.01] duration-300"
       onClick={() => {
         navigate(navigation_path);
       }}

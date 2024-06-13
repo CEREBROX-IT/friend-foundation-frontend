@@ -10,6 +10,7 @@ export interface CreateFormInput {
   form_title: string;
   form_description: string;
   attachment_file: FileList;
+  deadline: string
   id?: number
 }
 
@@ -30,7 +31,7 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
     formData.append("form_title", data.form_title);
     formData.append("form_description", data.form_description);
     formData.append("attachment_file", data.attachment_file[0]);
-
+    formData.append("deadline", data.deadline)
 
 
     
@@ -98,6 +99,32 @@ const AdminAddForm: FC<NewUserModalProps> = ({ closeForm }) => {
             {errors.form_description && (
               <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
                 {errors.form_description.message}
+              </p>
+            )}
+          </div>
+          <div className="w-full mt-[15px]">
+            <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+              <span className="font-bold uppercase">Deadline</span>
+            </div>
+            <TextField
+              type="date"
+              placeholder="MM-DD-YY"
+              error={errors.deadline ? true : false}
+              {...register("deadline", {
+                required: "Deadline is required",
+              })}
+              className="w-full bg-fourth-light"
+              InputProps={{
+                sx: {
+                  height: "45px",
+                  lineHeight: "normal",
+                  borderRadius: "10px",
+                },
+              }}
+            />
+            {errors.deadline && (
+              <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                {errors.deadline.message}
               </p>
             )}
           </div>
