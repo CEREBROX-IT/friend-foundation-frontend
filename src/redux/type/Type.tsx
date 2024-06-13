@@ -29,3 +29,23 @@ export interface RegisterUserPayload {
 export interface ForgotPasswordPayload {
     email: string
 }
+
+export interface ChurchResponse {
+  message: string;
+  data: {
+    id: number;
+    district_id: number;
+    district_name: string;
+    church_name: string;
+    pastor_assign: number;
+    head_pastor_full_name: string;
+    church_date_establish: string;
+    church_address: string;
+    date_updated: string;
+    date_created: string;
+  }[];
+}
+
+export interface ChurchPayload {
+    
+}

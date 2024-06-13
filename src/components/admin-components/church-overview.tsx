@@ -8,44 +8,42 @@ import {
   GridAlignment,
 } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
-import {
-  useGetChurchListAdminQuery,
-  usePostDeleteChurchMutation,
-} from "../../redux/services/usersApi";
+import { usePostDeleteChurchMutation } from "../../redux/services/usersApi";
+import { useFetchChurchListAdminQuery } from "../../redux/services/ChurchApi";
+import { ChurchResponse } from "../../redux/type/Type";
 
 const ChurchOverview: FC = () => {
-  const { data: ChurchList } = useGetChurchListAdminQuery();
+  const { data: ChurchListAdmin } = useFetchChurchListAdminQuery();
+  console.log(ChurchListAdmin)
   const [PostDeleteChurch] = usePostDeleteChurchMutation();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(ChurchList ?? []);
+  const [filteredRows, setFilteredRows] = useState<ChurchResponse["data"]>([]);
   const { theme } = useContext(ThemeContext);
-
-  useEffect(() => {
-    applyFilters();
-  }, [searchQuery, ChurchList]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      ChurchList?.filter((row) => {
-        return (
-          row.district_name?.toLowerCase().includes(lowerCaseQuery) ||
-          row.church_name?.toLowerCase().includes(lowerCaseQuery) ||
-          row.head_pastor_full_name?.toLowerCase().includes(lowerCaseQuery) ||
-          row.church_address?.toLowerCase().includes(lowerCaseQuery)
-        );
-      }) ?? [];
+      ChurchListAdmin?.data?.filter((row) =>
+        Object.values(row).some(
+          (value) =>
+            typeof value === "string" &&
+            value.toLowerCase().includes(lowerCaseQuery)
+        )
+      ) ?? [];
+
     setFilteredRows(filteredData);
   };
 
-  // Memoize the filtered rows to prevent unnecessary re-renders
+  useEffect(() => {
+    applyFilters();
+  }, [searchQuery, ChurchListAdmin]);
+
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
   const CustomCellRenderer: React.FC<{ value: string }> = ({ value }) => (
     <h1 className="text-red-700">{value}</h1>
   );
 
-  //-----for the Table------
   const columns = [
     {
       field: "church_name",
@@ -82,6 +80,18 @@ const ChurchOverview: FC = () => {
       headerName: "Church Address",
       flex: 1,
       minWidth: 250,
+    },
+    {
+      field: "date_created",
+      headerName: "DATE CREATE",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "date_updated",
+      headerName: "DATE UPDATED",
+      flex: 1,
+      minWidth: 200,
     },
     {
       field: "action",

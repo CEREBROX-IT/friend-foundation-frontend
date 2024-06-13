@@ -5,12 +5,12 @@ import {
   RegisterUserPayload,
   ForgotPasswordPayload,
 } from "../type/Type";
-import { url } from "inspector";
 
 export const AuthenticationApi = createApi({
   reducerPath: "AuthenticationApi",
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
+    credentials: "include"
   }),
   endpoints: (builder) => ({
     AuthLogin: builder.mutation<AuthLoginResponse, AuthLoginPayload>({
