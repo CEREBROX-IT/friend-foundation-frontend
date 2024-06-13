@@ -5,7 +5,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import AddChurchModal from "../../../components/admin-components/add-churhc-modal";
 import {
-  useGetChurchListQuery,
+  useGetChurchListAdminQuery,
+  useGetUnassignedChurchQuery,
   useGetUnassignedUserQuery,
   usePostUpdateChurchMutation,
 } from "../../../redux/services/usersApi";
@@ -16,10 +17,11 @@ interface IFormInput {
 }
 const AdminChurchAssignment = () => {
   const [openModal, setOpenModal] = useState(false);
-  const { data: ChurchList } = useGetChurchListQuery();
+  const { data: ChurchList } = useGetChurchListAdminQuery();
+  const { data: UnAssignedChurch } = useGetUnassignedChurchQuery()
   const { data: Unassgined } = useGetUnassignedUserQuery();
   const [updateChurch] = usePostUpdateChurchMutation();
-
+  
   const {
     register,
     handleSubmit,
@@ -35,19 +37,22 @@ const AdminChurchAssignment = () => {
   const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
     const filter =
       ChurchList?.filter((item) => item.church_name === data.church_name) || [];
-
+    console.log(filter)
     const value = {
-      district_id: filter[0]?.id, //automatic na mo add sa name sa distrtict
+      district_id: filter[0]?.district_id, //automatic na mo add sa name sa distrtict
       church_name: filter[0]?.church_name,
       pastor_assign: data.pastor_assign, //automatic na mo add sa full name sa user || "" for null value
       church_date_establish: filter[0]?.church_date_establish,
       church_address: filter[0].church_address,
     };
 
+    console.log(value)
+
     await updateChurch({ id: filter[0]?.id, data: value })
       .unwrap()
-      .then(() => {
+      .then((response) => {
         reset();
+        console.log(response);
       });
   };
 
@@ -125,15 +130,15 @@ const AdminChurchAssignment = () => {
                   >
                     <MenuItem value="" disabled>
                       <p className="text-slate-500 text-sm">
-                        {ChurchList?.length === 0
+                        {UnAssignedChurch?.data.length === 0
                           ? "No Church Available"
                           : "Select Church"}
                       </p>
                     </MenuItem>
-                    {ChurchList?.map((item) => (
-                      <MenuItem value={item.church_name}>
+                    {UnAssignedChurch?.data?.map((item) => (
+                      <MenuItem value={item}>
                         <p className="text-slate-500 text-sm">
-                          {item.church_name}
+                          {item}
                         </p>
                       </MenuItem>
                     ))}

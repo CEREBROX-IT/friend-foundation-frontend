@@ -33,6 +33,7 @@ interface Stats {
   total_churches: number;
   completed_forms: number;
   pending_forms: number;
+  head_pastors: number
 }
 
 interface UserDetails {
@@ -171,6 +172,46 @@ interface ChurchDistrict {
   church_belong: string;
 }
 
+interface LackingReportForm {
+  [index: number]: string;
+}
+
+interface UserResponse {
+  user_id: number;
+  user_full_name: string;
+  district_belong: string;
+  church_belong: string;
+  status: string;
+  lacking_report_form: LackingReportForm;
+}
+
+interface UnassignedChurch {
+  [index: number] : string
+}
+
+interface UnassignResponse {
+  message: string;
+  data: UnassignedChurch;
+}
+
+interface FormLog {
+  id: number | undefined;
+  report_form_id: number | undefined;
+  user_id: number | undefined;
+  district_belong: string | undefined;
+  church_belong: string | undefined;
+  response_file: string | undefined;
+  date_completed: string | undefined;
+  form_title: string | undefined;
+  form_description: string | undefined;
+  submitted_by: string | undefined;
+  email: string | undefined;
+  data: []
+}
+
+interface FormLogResponse {
+  data?: FormLog 
+}
 export const userApi = createApi({
   reducerPath: "userApi",
   tagTypes: [
@@ -251,7 +292,7 @@ export const userApi = createApi({
     getUnassignedUser: builder.query<UnassignedResponse, void>({
       query: () => "/district/unassigned-users",
       keepUnusedDataFor: 60,
-      providesTags: ["DISTRICT", "Church"],
+      providesTags: ["DISTRICT", "Church", "Users"],
     }),
     getDistrictList: builder.query<DistrictDetails[], void>({
       query: () => "/district/list",
@@ -291,6 +332,12 @@ export const userApi = createApi({
     }),
     getChurchList: builder.query<ChurchDetails[], void>({
       query: () => "/church/list",
+      keepUnusedDataFor: 60,
+      providesTags: ["Church"],
+      transformResponse: (response: ChurchListResponse) => response.data,
+    }),
+    getChurchListAdmin: builder.query<ChurchDetails[], void>({
+      query: () => "/church/list/Admin",
       keepUnusedDataFor: 60,
       providesTags: ["Church"],
       transformResponse: (response: ChurchListResponse) => response.data,
@@ -374,7 +421,27 @@ export const userApi = createApi({
         method: "POST",
         body: formData,
       }),
-      invalidatesTags: ["unansweredForm"],
+      invalidatesTags: ["unansweredForm", "Form"],
+    }),
+    getHeadPastorCount: builder.query<Stats, void>({
+      query: () => "/stats/head-pastor-count",
+      keepUnusedDataFor: 60,
+      providesTags: ["Form"],
+    }),
+    getIncompleteForm: builder.query<UserResponse[], void>({
+      query: () => "/form/incomplete",
+      keepUnusedDataFor: 60,
+      providesTags: ["Form"],
+    }),
+    getUnassignedChurch: builder.query<UnassignResponse[], void>({
+      query: () => "/church/unassigned",
+      keepUnusedDataFor: 60,
+      providesTags: ["Church"],
+    }),
+    getFormLog: builder.query<FormLogResponse[], void>({
+      query: () => "/form/submitted-forms-logs",
+      keepUnusedDataFor: 60,
+      providesTags: ["Form"],
     }),
   }),
 });
@@ -409,4 +476,9 @@ export const {
   useGetUnansweredFormsQuery,
   useGetChurchDistrictBelongQuery,
   useSubmitFormMutation,
+  useGetChurchListAdminQuery,
+  useGetHeadPastorCountQuery,
+  useGetIncompleteFormQuery,
+  useGetUnassignedChurchQuery,
+  useGetFormLogQuery
 } = userApi;

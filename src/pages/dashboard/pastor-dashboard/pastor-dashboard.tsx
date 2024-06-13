@@ -55,7 +55,7 @@ const PastorDashboard = () => {
           navigation_path=""
         />
         <ResultCards
-          title="Form Submission"
+          title="No. of Pending Forms"
           result={
             FormLoading ? <LoadingAnimation2 /> : FormCount?.pending_forms
           }
@@ -109,7 +109,7 @@ const PastorDashboard = () => {
       <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
         © Copyright reserve Friend Foundation Management System 2024
       </p>
-      {openModal && <Modal closeForm={handleCloseCard} id={selectedId}/>}
+      {openModal && <Modal closeForm={handleCloseCard} id={selectedId} />}
     </div>
   );
 };

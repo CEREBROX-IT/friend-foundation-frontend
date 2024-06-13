@@ -1,35 +1,30 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useGetAssignedLogsQuery } from "../../redux/services/usersApi";
+import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
+import { useGetIncompleteFormQuery } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
 const AdminPendingLogs: FC = () => {
-  const { data: AssignedLogs } = useGetAssignedLogsQuery();
+  const { data: IncompleteForm } = useGetIncompleteFormQuery();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(AssignedLogs || []);
+  const [filteredRows, setFilteredRows] = useState(IncompleteForm || []);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     applyFilters();
-  }, [searchQuery, AssignedLogs]);
+  }, [searchQuery, IncompleteForm]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      AssignedLogs?.filter((row) => {
+      IncompleteForm?.filter((row) => {
         return (
           row.user_full_name?.toLowerCase().includes(lowerCaseQuery) ||
-          row.current_assign?.toLowerCase().includes(lowerCaseQuery) ||
-          row.previous_assign?.toLowerCase().includes(lowerCaseQuery)
+          row.district_belong?.toLowerCase().includes(lowerCaseQuery) ||
+          row.church_belong?.toLowerCase().includes(lowerCaseQuery) ||
+          row.status?.toLowerCase().includes(lowerCaseQuery) ||
+          row.lacking_report_form
         );
-      }).filter((row) => {
-        // Filter by date within past two days
-        const currentDate = new Date();
-        const rowDate = new Date(row.date_created);
-        const timeDiff = Math.abs(currentDate.getTime() - rowDate.getTime());
-        const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        return diffDays <= 2;
       }) ?? [];
     setFilteredRows(filteredData);
   };
@@ -46,16 +41,35 @@ const AdminPendingLogs: FC = () => {
       minWidth: 200,
     },
     {
-      field: "previous_assign",
-      headerName: "Previous Assign",
+      field: "district_belong",
+      headerName: "DISTRICT BELONG",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "current_assign",
-      headerName: "Current Assign",
+      field: "church_belong",
+      headerName: "CHURCH BELONG",
       flex: 1,
       minWidth: 200,
+    },
+    {
+      field: "lacking_report_form",
+      headerName: "LACKING REPORT FORM",
+      flex: 1,
+      minWidth: 200,
+      renderCell: (params: GridRenderCellParams) => (
+        <div style={{ whiteSpace: "pre-wrap" }}>{params.value.join("\n")}</div>
+      ),
+    },
+
+    {
+      field: "status",
+      headerName: "STATUS",
+      flex: 1,
+      minWidth: 200,
+      renderCell: (params: GridRenderCellParams) =>
+        params.row.status === "Lacking" ? "Incomplete" : params.row.status
+         
     },
   ];
 
@@ -135,6 +149,7 @@ const AdminPendingLogs: FC = () => {
         <DataGrid
           rows={memoizedFilteredRows}
           columns={columns}
+          getRowId={(row) => row.user_id}
           components={{ Toolbar: GridToolbar }}
           componentsProps={{
             toolbar: {

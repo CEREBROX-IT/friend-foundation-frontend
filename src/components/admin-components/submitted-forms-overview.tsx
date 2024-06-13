@@ -1,87 +1,129 @@
-import { FC, useState, useEffect, useContext } from "react";
-import { Box, Button } from "@mui/material";
+import { FC, useState, useEffect, useContext, useMemo } from "react";
+import { Box } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
 import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
-import { FormSubmitted } from "../../MockDataFiles/Mockdata";
-import { isWithinInterval, addDays } from "date-fns";
+import { useGetFormLogQuery } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
+import { FaFilePdf } from "react-icons/fa6";
 
 const SubmittedFormOverview: FC = () => {
-  const currentDate = new Date();
-  const threeDaysAgo = addDays(currentDate, -3);
+  const { data: FormLog } = useGetFormLogQuery();
+  console.log(FormLog?.data);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(FormSubmitted);
+  const [filteredRows, setFilteredRows] = useState(FormLog?.data || []);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     applyFilters();
-  }, [searchQuery]);
+  }, [searchQuery, FormLog?.data]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const filteredData = FormSubmitted.filter((row) => {
-      return (
-        row.user_full_name.toLowerCase().includes(lowerCaseQuery) ||
-        row.district_id.toLowerCase().includes(lowerCaseQuery) ||
-        row.church_id.toLowerCase().includes(lowerCaseQuery)
-      );
-    });
+    const filteredData =
+      FormLog?.data
+        ?.filter((row) => {
+          return (
+            row.district_belong?.toLowerCase().includes(lowerCaseQuery) ||
+            row.church_belong?.toLowerCase().includes(lowerCaseQuery) ||
+            row.response_file?.toLowerCase().includes(lowerCaseQuery) ||
+            row.date_completed?.toLowerCase().includes(lowerCaseQuery) ||
+            row.form_title?.toLowerCase().includes(lowerCaseQuery) ||
+            row.form_description?.toLowerCase().includes(lowerCaseQuery) ||
+            row.submitted_by?.toLowerCase().includes(lowerCaseQuery) ||
+            row.email?.toLowerCase().includes(lowerCaseQuery)
+          );
+        })
+        .filter((row) => {
+          // Filter by date within past two days
+          const currentDate = new Date();
+          const rowDate = new Date(row.date_completed);
+          const timeDiff = Math.abs(currentDate.getTime() - rowDate.getTime());
+          const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+          return diffDays <= 2;
+        }) ?? [];
     setFilteredRows(filteredData);
   };
 
+  // Memoize the filtered rows to prevent unnecessary re-renders
+  const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
+
+  const constructDownloadLink = (relativePath: string) => {
+    // Replace 'baseURL' with your actual base URL where files are stored
+    const baseURL = "http://localhost:3000"; // Replace this with your base URL
+    return `${baseURL}/${relativePath}`;
+  };
+  //-----for the Table------
   const columns = [
     {
-      field: "user_full_name",
+      field: "submitted_by",
       headerName: "FULL NAME",
       flex: 1,
       minWidth: 200,
+    },
+    {
+      field: "email",
+      headerName: "EMAIL",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "form_title",
+      headerName: "FORM TITLE",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "form_description",
+      headerName: "FORM DESCRIPTION",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "response_file",
+      headerName: "ATTACHMENT",
+      flex: 1,
+      minWidth: 200,
       renderCell: (params: GridRenderCellParams) => {
-        const dateCreated = new Date(params.row.date);
-        const isNew = isWithinInterval(dateCreated, {
-          start: threeDaysAgo,
-          end: currentDate,
-        });
-        return (
-          <div className="relative flex items-center">
-            <span>{params.value}</span>
-            {isNew && (
-              <span
-                className="bg-[#3b82f6] text-[10px] rounded-[50px] px-2
-                         text-white justify-end mt-[-1rem] ml-1 min-h-[10px] min-w-[10px] end-0"
-              >
-                New
+        const url = constructDownloadLink(params.row.response_file);
+
+        if (params.row.response_file === "") {
+          return "No Attachment";
+        } else {
+          return (
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              <FaFilePdf className="w-6 h-6 inline-block" />
+              <span className="font-bold inline-block">
+                Download Attachment
               </span>
-            )}
-          </div>
-        );
+            </a>
+          );
+        }
       },
     },
     {
-      field: "district_id",
-      headerName: "DISTRICT ID NO.",
+      field: "church_belong",
+      headerName: "CHURCH BELONG",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "church_id",
-      headerName: "CHURCH ID NO.",
+      field: "district_belong",
+      headerName: "DISTRICT BELONG",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "date",
-      headerName: "DATE",
+      field: "date_completed",
+      headerName: "DATE COMPLETED",
       flex: 1,
-      minWidth: 170,
+      minWidth: 200,
     },
   ];
 
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
-        <p className="text-[20px] font-semibold mb-2 md:mb-0">
-          Latest Form Submitted
-        </p>
+        <p className="text-[20px] font-semibold mb-2 md:mb-0">Submitted Logs</p>
         <div className="md:mt-0 lg:w-[400px] w-full">
           <FiSearch
             size={20}
@@ -151,40 +193,19 @@ const SubmittedFormOverview: FC = () => {
           },
         }}
       >
-        {filteredRows.length > 0 ? (
-          <>
-            <DataGrid
-              rows={filteredRows}
-              columns={columns}
-              components={{ Toolbar: GridToolbar }}
-              componentsProps={{
-                toolbar: {
-                  printOptions: {
-                    disableToolbarButton: true,
-                  },
-                },
-              }}
-            />{"NO DATA AVAILABLE YET"}
-          </>
-        ) : (
-          ""
-        )}
+        <DataGrid
+          rows={memoizedFilteredRows}
+          columns={columns}
+          components={{ Toolbar: GridToolbar }}
+          componentsProps={{
+            toolbar: {
+              printOptions: {
+                disableToolbarButton: true,
+              },
+            },
+          }}
+        />
       </Box>
-
-      <Button
-        sx={{
-          alignItems: "center",
-          width: "100%",
-          background: "#60a5fa",
-          borderRadius: 0,
-          color: "white",
-          "&:hover": {
-            background: "#3b82f6",
-          },
-        }}
-      >
-        VIEW MORE
-      </Button>
     </>
   );
 };

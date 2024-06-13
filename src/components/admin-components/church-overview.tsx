@@ -9,12 +9,12 @@ import {
 } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
 import {
-  useGetChurchListQuery,
+  useGetChurchListAdminQuery,
   usePostDeleteChurchMutation,
 } from "../../redux/services/usersApi";
 
 const ChurchOverview: FC = () => {
-  const { data: ChurchList } = useGetChurchListQuery();
+  const { data: ChurchList } = useGetChurchListAdminQuery();
   const [PostDeleteChurch] = usePostDeleteChurchMutation();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState(ChurchList ?? []);

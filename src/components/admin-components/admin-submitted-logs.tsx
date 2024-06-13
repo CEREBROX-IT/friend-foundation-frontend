@@ -1,35 +1,36 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useGetAssignedLogsQuery } from "../../redux/services/usersApi";
+import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
+import { useGetFormLogQuery } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
+import { FaFilePdf } from "react-icons/fa6";
+
 const AdminSubmittedLogs: FC = () => {
-  const { data: AssignedLogs } = useGetAssignedLogsQuery();
+  const { data: FormLog } = useGetFormLogQuery();
+  console.log(FormLog?.data);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(AssignedLogs || []);
+  const [filteredRows, setFilteredRows] = useState(FormLog?.data || []);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     applyFilters();
-  }, [searchQuery, AssignedLogs]);
+  }, [searchQuery, FormLog?.data]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      AssignedLogs?.filter((row) => {
+      FormLog?.data?.filter((row) => {
         return (
-          row.user_full_name?.toLowerCase().includes(lowerCaseQuery) ||
-          row.current_assign?.toLowerCase().includes(lowerCaseQuery) ||
-          row.previous_assign?.toLowerCase().includes(lowerCaseQuery)
+          row.district_belong?.toLowerCase().includes(lowerCaseQuery) ||
+          row.church_belong?.toLowerCase().includes(lowerCaseQuery) ||
+          row.response_file?.toLowerCase().includes(lowerCaseQuery) ||
+          row.date_completed?.toLowerCase().includes(lowerCaseQuery) ||
+          row.form_title?.toLowerCase().includes(lowerCaseQuery) ||
+          row.form_description?.toLowerCase().includes(lowerCaseQuery) ||
+          row.submitted_by?.toLowerCase().includes(lowerCaseQuery) ||
+          row.email?.toLowerCase().includes(lowerCaseQuery)
         );
-      }).filter((row) => {
-        // Filter by date within past two days
-        const currentDate = new Date();
-        const rowDate = new Date(row.date_created);
-        const timeDiff = Math.abs(currentDate.getTime() - rowDate.getTime());
-        const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        return diffDays <= 2;
       }) ?? [];
     setFilteredRows(filteredData);
   };
@@ -37,23 +38,74 @@ const AdminSubmittedLogs: FC = () => {
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
+  const constructDownloadLink = (relativePath: string) => {
+    // Replace 'baseURL' with your actual base URL where files are stored
+    const baseURL = "http://localhost:3000"; // Replace this with your base URL
+    return `${baseURL}/${relativePath}`;
+  };
   //-----for the Table------
   const columns = [
     {
-      field: "user_full_name",
+      field: "submitted_by",
       headerName: "FULL NAME",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "previous_assign",
-      headerName: "Previous Assign",
+      field: "email",
+      headerName: "EMAIL",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "current_assign",
-      headerName: "Current Assign",
+      field: "form_title",
+      headerName: "FORM TITLE",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "form_description",
+      headerName: "FORM DESCRIPTION",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "response_file",
+      headerName: "ATTACHMENT",
+      flex: 1,
+      minWidth: 200,
+      renderCell: (params: GridRenderCellParams) => {
+        const url = constructDownloadLink(params.row.response_file);
+
+        if (params.row.response_file === "") {
+          return "No Attachment";
+        } else {
+          return (
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              <FaFilePdf className="w-6 h-6 inline-block" />
+              <span className="font-bold inline-block">
+                Download Attachment
+              </span>
+            </a>
+          );
+        }
+      },
+    },
+    {
+      field: "church_belong",
+      headerName: "CHURCH BELONG",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "district_belong",
+      headerName: "DISTRICT BELONG",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "date_completed",
+      headerName: "DATE COMPLETED",
       flex: 1,
       minWidth: 200,
     },
@@ -62,9 +114,7 @@ const AdminSubmittedLogs: FC = () => {
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
-        <p className="text-[20px] font-semibold mb-2 md:mb-0">
-          Submitted Logs
-        </p>
+        <p className="text-[20px] font-semibold mb-2 md:mb-0">Submitted Logs</p>
         <div className="md:mt-0 lg:w-[400px] w-full">
           <FiSearch
             size={20}
@@ -147,7 +197,6 @@ const AdminSubmittedLogs: FC = () => {
           }}
         />
       </Box>
-    
     </>
   );
 };
