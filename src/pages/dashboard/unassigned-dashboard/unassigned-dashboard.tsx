@@ -371,26 +371,26 @@ export default function UnassignedDashboard() {
   }
 
   return (
-    <div className="relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark ">
+    <div className="relative flex flex-col  w-full bg-fourth-light dark:bg-fourth-dark ">
       <Header />
-      <div className="bg-fourth-light p-4 flex-1 mx-auto">
-        <div className="flex flex-col gap-4 lg:flex-row bg-white  p-4 shadow-md drop-shadow-sm shadow-black max-h-full overflow-auto">
-          <div className="shadow-md drop-shadow-lg shadow-black  max-w-[386px] h-max p-4">
+      <div className="bg-fourth-light p-4 flex-1 w-full mx-auto">
+        <div className="flex flex-col gap-4 lg:flex-row   p-4  overflow-auto ">
+          <div className="bg-white p-4 ">
             <form
               onChange={SubmitProfile(ProfileUpload)}
-              className="inline-block "
+              className="inline-block w-full"
             >
-              <div className="flex flex-col justify-between items-center  w-full  h-72 mr-10 relative">
-                <div className=" h-32 w-32 p-2 mt-10 rounded-full">
+              <div className="flex flex-col justify-between items-center  w-full gap-10">
+                <div className=" w-60 h-60 p-2 mt-10 rounded-full border-2 border-black">
                   <img
                     src={
                       import.meta.env.VITE_IMAGE +
                       UserDetails?.data?.profile_display
                     }
-                    className="h-full w-full rounded-full"
+                    className="h-full w-full rounded-full object-contain"
                   />
                 </div>
-                <div className="w-full mt-[15px] ">
+                <div className="w-full  ">
                   <TextField
                     type="file"
                     // error={errors.profile_display ? true : false}
@@ -424,7 +424,7 @@ export default function UnassignedDashboard() {
               </div>
             </form>
           </div>
-          <div className="shadow-md drop-shadow-lg shadow-black ">
+          <div className="shadow-md drop-shadow-lg shadow-black bg-white flex-1">
             <form
               onSubmit={handleSubmit(onSubmitHandler)}
               className="p-4 max-h-[80vh] overflow-auto custom-scrollbar"

@@ -8,8 +8,7 @@ const HeadDistrictChurchList = () => {
       <Header />
       <div className=" w-full h-[200px] bg-primary-light p-4 ">
         <p className="text-sixth-light font-semibold text-[25px]">
-          CHURCH LIST
-        </p>
+WALA PANI CHURCH UNDER THIS DISTRICT DAPAT NI SIYA        </p>
       </div>
 
       <div className="flex-1 w-full px-4 absolute translate-y-32">
