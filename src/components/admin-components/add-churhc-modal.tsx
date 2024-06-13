@@ -5,11 +5,11 @@ import { TextField, MenuItem } from "@mui/material";
 import {
   useGetUnassignedUserQuery,
   useGetDistrictListQuery,
-  usePostAddChurchMutation,
 } from "../../redux/services/usersApi";
+import { useCreateChurchMutation } from "../../redux/services/ChurchApi";
 import { IoMdCloseCircle } from "react-icons/io";
-
 import LoadingAnimation from "../loading-animation";
+import { ChurchPayload } from "../../redux/type/Type";
 
 export type ChurchDetails = {
   id?: number
@@ -29,19 +29,20 @@ interface NewDistrictModalProps {
 const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
   const { data: Unassigned } = useGetUnassignedUserQuery();
   const { data: DistrictList } = useGetDistrictListQuery();
-  const [addChurch, { isLoading }] = usePostAddChurchMutation();
+  const [CreateChurch, {isLoading}] = useCreateChurchMutation() 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ChurchDetails>();
+  } = useForm<ChurchPayload>();
 
-  const onSubmitHandler: SubmitHandler<ChurchDetails> = async (data) => {
-    console.log(data)
-    await addChurch(data).unwrap().then(() => {
-        
-        closeModal()
-    })
+  const onSubmitHandler: SubmitHandler<ChurchPayload> = async (data) => {
+    console.log(data);
+    await CreateChurch(data)
+      .unwrap()
+      .then(() => {
+        closeModal();
+      });
   };
 
   return (

@@ -47,5 +47,9 @@ export interface ChurchResponse {
 }
 
 export interface ChurchPayload {
-    
+  district_id: number ; 
+  church_name: string;
+  pastor_assign: number ; 
+  church_date_establish: string;
+  church_address: string;
 }
