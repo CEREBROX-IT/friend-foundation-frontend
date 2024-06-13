@@ -21,7 +21,7 @@ const AdminFormManagement = () => {
 
   const constructDownloadLink = (relativePath: string) => {
     // Replace 'baseURL' with your actual base URL where files are stored
-    const baseURL = "http://localhost:3000"; // Replace this with your base URL
+    const baseURL = import.meta.env.VITE_IMAGE; // Replace this with your base URL
     return `${baseURL}/${relativePath}`;
   };
 
