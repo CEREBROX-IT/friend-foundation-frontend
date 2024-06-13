@@ -3,26 +3,12 @@ import SampleLogo from "../../../assets/authentication/sample_logo.webp";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { MenuItem, TextField, InputAdornment, IconButton } from "@mui/material";
 import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
-import { usePostRegisterUserMutation } from "../../../redux/services/usersApi";
 import LoadingAnimation from "../../../components/loading-animation";
+import { RegisterUser } from "../../../redux/type/Type";
+import { useAuthRegisterMutation } from "../../../redux/services/AuthenticationApi";
 
 interface RegisterScreenProps {
   handleBackToLogin: () => void;
-}
-
-interface IFormInput {
-  first_name: string;
-  last_name: string;
-  middle_name: string;
-  suffix: string;
-  age: number;
-  title: string;
-  contact_no: number;
-  birth_date: string;
-  gender: string;
-  password: string;
-  confirm_password: string;
-  email: string;
 }
 
 const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
@@ -32,24 +18,20 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
     formState: { errors },
     reset,
     getValues,
-  } = useForm<IFormInput>();
+  } = useForm<RegisterUser>();
+  const [Register, {isLoading}] = useAuthRegisterMutation()
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [postRegister, { isLoading }] = usePostRegisterUserMutation();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowConfirmPassowrd = () =>
     setShowConfirmPassword((prevValue) => !prevValue);
 
-  const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
-    await postRegister(data)
-      .unwrap()
-      .then((response) => {
-        console.log(response);
-        handleBackToLogin();
-        reset();
-      })
-      .catch((error) => console.log(error));
+  const onSubmitHandler: SubmitHandler<RegisterUser> = async (data) => {
+    await Register(data).unwrap().then(() => {
+      handleBackToLogin()
+      reset()
+    })
   };
 
   return (
@@ -162,13 +144,7 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
               type="text"
               placeholder="middle name"
               error={errors.middle_name ? true : false}
-              {...register("middle_name", {
-                required: "Middle Name is required",
-                pattern: {
-                  value: /^[A-Za-z]+$/,
-                  message: "Invalid Middle Name",
-                },
-              })}
+              {...register("middle_name")}
               className="w-full bg-fourth-light"
               InputProps={{
                 sx: {
@@ -279,6 +255,14 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
               pattern: {
                 value: /^[0-9]+$/,
                 message: "Invalid Contact Number",
+              },
+              minLength: {
+                value: 11,
+                message: "Contact Number must be exactly 11 digits",
+              },
+              maxLength: {
+                value: 11,
+                message: "Contact Number must be exactly 11 digits",
               },
             })}
             className="w-full bg-fourth-light"
