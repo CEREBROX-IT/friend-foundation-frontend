@@ -53,3 +53,11 @@ export interface ChurchPayload {
   church_date_establish: string;
   church_address: string;
 }
+
+export interface UnAssignedUserResponse {
+    message: string
+    data: {
+        id: number
+        full_name: string
+    }[]
+}

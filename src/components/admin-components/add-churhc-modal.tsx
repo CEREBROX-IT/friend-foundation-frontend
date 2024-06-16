@@ -3,10 +3,11 @@ import SampleLogo from "../../assets/authentication/sample_logo.webp";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField, MenuItem } from "@mui/material";
 import {
-  useGetUnassignedUserQuery,
+  
   useGetDistrictListQuery,
 } from "../../redux/services/usersApi";
 import { useCreateChurchMutation } from "../../redux/services/ChurchApi";
+import { useFetchUnassignedUserQuery } from "../../redux/services/UserApi";
 import { IoMdCloseCircle } from "react-icons/io";
 import LoadingAnimation from "../loading-animation";
 import { ChurchPayload } from "../../redux/type/Type";
@@ -27,7 +28,7 @@ interface NewDistrictModalProps {
 }
 
 const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
-  const { data: Unassigned } = useGetUnassignedUserQuery();
+  const { data: Unassigned } = useFetchUnassignedUserQuery();
   const { data: DistrictList } = useGetDistrictListQuery();
   const [CreateChurch, {isLoading}] = useCreateChurchMutation() 
   const {
