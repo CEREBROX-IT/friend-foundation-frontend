@@ -6,11 +6,13 @@ import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
 import SubmittedFormOverview from "../../../components/admin-components/submitted-forms-overview";
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
-import { useGetUserCountQuery, useGetFormSubmissionCountQuery, useGetChurchCountQuery, useGetHeadPastorCountQuery } from "../../../redux/services/usersApi";
+import {  useGetFormSubmissionCountQuery, useGetChurchCountQuery, useGetHeadPastorCountQuery } from "../../../redux/services/usersApi";
 import LoadingAnimation2 from "../../../components/loading-animation2";
+import { useFetchNoOfUserQuery } from "../../../redux/services/StatsApi";
 const AdminDashboard: FC = () => {
 
-  const {data: userCount, isLoading: UserLoading} = useGetUserCountQuery()
+  const {data: UserCount, isLoading: UserLoading} = useFetchNoOfUserQuery()
+  console.log(UserCount)
   const {data: FormSubmissionCount, isLoading: FormLoading} = useGetFormSubmissionCountQuery()
   const {data: ChurchCount, isLoading: ChurchLoading} = useGetChurchCountQuery()
   const { data: PastorCount, isLoading } = useGetHeadPastorCountQuery();
@@ -25,8 +27,8 @@ const AdminDashboard: FC = () => {
       <div className="flex flex-wrap flex-row gap-4 px-4 mt-[-7.5rem]">
         <ResultCards
           title="No. of Users"
-          result={UserLoading ? <LoadingAnimation2 /> : userCount?.active_user}
-          incomplete={userCount?.pending_user}
+          result={UserLoading ? <LoadingAnimation2 /> : UserCount?.active_user}
+          incomplete={UserCount?.pending_user}
           description="Pending User"
           icon={HiMiniUsers}
           navigation_path="/dashboard/users"

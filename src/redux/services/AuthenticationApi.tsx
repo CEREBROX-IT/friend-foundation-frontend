@@ -5,12 +5,13 @@ import {
   RegisterUserPayload,
   ForgotPasswordPayload,
 } from "../type/Type";
+import { StatsApi } from "./StatsApi";
 
 export const AuthenticationApi = createApi({
   reducerPath: "AuthenticationApi",
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
-    credentials: "include"
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     AuthLogin: builder.mutation<AuthLoginResponse, AuthLoginPayload>({
@@ -26,6 +27,15 @@ export const AuthenticationApi = createApi({
         method: "POST",
         body: data,
       }),
+      async onQueryStarted(data, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(StatsApi.util.invalidateTags(["User"]));
+         
+        } catch (error) {
+          console.error("Error creating User:", error);
+        }
+      },
     }),
     AuthForgotPassword: builder.mutation<void, ForgotPasswordPayload>({
       query: (email) => ({
@@ -33,6 +43,7 @@ export const AuthenticationApi = createApi({
         method: "POST",
         body: email,
       }),
+      
     }),
   }),
 });

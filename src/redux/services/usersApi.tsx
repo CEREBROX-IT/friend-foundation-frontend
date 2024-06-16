@@ -234,14 +234,6 @@ export const userApi = createApi({
       keepUnusedDataFor: 60,
       providesTags: ["Users"],
     }),
-    postApproveUser: builder.mutation<void, Partial<Approved>>({
-      query: (data) => ({
-        url: "/user/approve",
-        method: "PATCH",
-        body: data,
-      }),
-      invalidatesTags: ["Users"],
-    }),
     getUserCount: builder.query<Stats, void>({
       query: () => "/stats/user-counts",
       keepUnusedDataFor: 60,
@@ -448,7 +440,6 @@ export const userApi = createApi({
 
 export const {
   useGetUserListQuery,
-  usePostApproveUserMutation,
   usePostRegisterUserMutation,
   useGetUserCountQuery,
   useGetFormSubmissionCountQuery,

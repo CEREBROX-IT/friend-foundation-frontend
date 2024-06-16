@@ -10,21 +10,19 @@ import {
 import ThemeContext from "../ThemeContext";
 import {
   useGetUserListQuery,
-  usePostApproveUserMutation,
   usePostRemoveUserMutation
 } from "../../redux/services/usersApi";
+import { ApproveUserPayload } from "../../redux/type/Type";
+import { useApproveUserMutation } from "../../redux/services/UserApi";
 
 
-interface Approve {
-  targetUserId: number
-}
 
 const ListUsersOverview: FC = () => {
   const { data: GetUserList } = useGetUserListQuery();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState(GetUserList ?? []);
   const { theme } = useContext(ThemeContext);
-const [approve] = usePostApproveUserMutation();
+const [approve] = useApproveUserMutation();
 const [removeUser] = usePostRemoveUserMutation()
   useEffect(() => {
     applyFilters();
@@ -45,7 +43,7 @@ const [removeUser] = usePostRemoveUserMutation()
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
-const handleApprove = async (targetUserId: Approve) => {
+const handleApprove = async (targetUserId: number) => {
   const value = { targetUserId: targetUserId };
   await approve(value).unwrap().then((response) => { console.log(response)
   })

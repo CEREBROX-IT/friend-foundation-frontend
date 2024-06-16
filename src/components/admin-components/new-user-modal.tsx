@@ -4,22 +4,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { MenuItem, TextField, InputAdornment, IconButton } from "@mui/material";
 import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
 import { IoMdCloseCircle } from "react-icons/io";
-import { usePostRegisterUserMutation } from "../../redux/services/usersApi";
+import { useAuthRegisterMutation } from "../../redux/services/AuthenticationApi";
 import LoadingAnimation from "../loading-animation";
-interface IFormInput {
-  first_name: string;
-  last_name: string;
-  middle_name: string;
-  suffix: string;
-  age: number;
-  title: string;
-  contact_no: number;
-  birth_date: string;
-  gender: string;
-  password: string;
-  confirm_password: string;
-  email: string;
-}
+import { RegisterUserPayload } from "../../redux/type/Type";
 
 interface NewUserModalProps {
   closeUserModal: () => void
@@ -31,17 +18,17 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
     handleSubmit,
     formState: { errors },
     getValues,
-  } = useForm<IFormInput>();
+  } = useForm<RegisterUserPayload>();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowConfirmPassowrd = () => setShowConfirmPassword((prevValue) => !prevValue);
-  const [postRegister, {isLoading}] = usePostRegisterUserMutation()
+  const [CreateUser, {isLoading}] = useAuthRegisterMutation()
 
-  const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
-    await postRegister(data)
+  const onSubmitHandler: SubmitHandler<RegisterUserPayload> = async (data) => {
+    await CreateUser(data)
       .unwrap()
       .then((response) => {
         console.log(response);

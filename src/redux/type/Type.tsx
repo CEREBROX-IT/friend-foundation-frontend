@@ -61,3 +61,12 @@ export interface UnAssignedUserResponse {
         full_name: string
     }[]
 }
+
+export interface NumberOfUsers {
+  active_user: number
+  pending_user: number
+}
+
+export interface ApproveUserPayload {
+  targetUserId: number
+}
