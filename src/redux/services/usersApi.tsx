@@ -229,49 +229,23 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
   
-    getUnansweredForms: builder.query<Form, void>({
-      query: () => "/form/unanswered",
-      keepUnusedDataFor: 60,
-      providesTags: ["unansweredForm"],
-    }),
-    getAnsweredFormr: builder.query<Form, void>({
-      query: () => "/form/answered",
-      keepUnusedDataFor: 60,
-    }),
     getChurchDistrictBelong: builder.query<ChurchDistrict, void>({
       query: () => "/form/user-church-details",
       keepUnusedDataFor: 60,
     }),
 
-    getHeadPastorCount: builder.query<Stats, void>({
-      query: () => "/stats/head-pastor-count",
-      keepUnusedDataFor: 60,
-      providesTags: ["Form"],
-    }),
     getIncompleteForm: builder.query<UserResponse[], void>({
       query: () => "/form/incomplete",
       keepUnusedDataFor: 60,
       providesTags: ["Form"],
     }),
-    getUnassignedChurch: builder.query<UnassignResponse[], void>({
-      query: () => "/church/unassigned",
-      keepUnusedDataFor: 60,
-      providesTags: ["Church"],
-    }),
-    getFormLog: builder.query<FormLogResponse[], void>({
-      query: () => "/form/submitted-forms-logs",
-      keepUnusedDataFor: 60,
-      providesTags: ["Form"],
-    }),
+
+   
   }),
 });
 
 export const {
-  useGetAnsweredFormrQuery,
-  useGetUnansweredFormsQuery,
   useGetChurchDistrictBelongQuery,
-  useGetHeadPastorCountQuery,
   useGetIncompleteFormQuery,
-  useGetUnassignedChurchQuery,
-  useGetFormLogQuery
+  
 } = userApi;

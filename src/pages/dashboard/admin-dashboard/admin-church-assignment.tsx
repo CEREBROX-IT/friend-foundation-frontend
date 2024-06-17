@@ -4,11 +4,9 @@ import { MenuItem, TextField } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import AddChurchModal from "../../../components/admin-components/add-churhc-modal";
-import {
-  useGetUnassignedChurchQuery,
-} from "../../../redux/services/usersApi";
+
 import { useFetchUnassignedUserQuery } from "../../../redux/services/UserApi";
-import { useFetchChurchListAdminQuery, useUpdateChurchMutation } from "../../../redux/services/ChurchApi";
+import { useFetchChurchListAdminQuery, useUpdateChurchMutation, useFetchUnassginedChurchQuery } from "../../../redux/services/ChurchApi";
 interface IFormInput {
   pastor_assign: number;
   church_name: string;
@@ -16,7 +14,7 @@ interface IFormInput {
 const AdminChurchAssignment = () => {
   const [openModal, setOpenModal] = useState(false);
   const { data: ChurchList } = useFetchChurchListAdminQuery();
-  const { data: UnAssignedChurch } = useGetUnassignedChurchQuery()
+  const { data: UnAssignedChurch } = useFetchUnassginedChurchQuery();
   const { data: Unassgined } = useFetchUnassignedUserQuery();
   const [updateChurch] = useUpdateChurchMutation();
   
@@ -133,7 +131,7 @@ const AdminChurchAssignment = () => {
                           : "Select Church"}
                       </p>
                     </MenuItem>
-                    {UnAssignedChurch?.data?.map((item) => (
+                    {UnAssignedChurch?.data?.map((item: any) => (
                       <MenuItem value={item}>
                         <p className="text-slate-500 text-sm">
                           {item}

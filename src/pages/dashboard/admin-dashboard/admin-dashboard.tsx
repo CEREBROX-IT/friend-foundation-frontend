@@ -3,18 +3,16 @@ import Header from "../../../components/header";
 import ResultCards from "../../../components/result-cards";
 import { HiMiniUsers } from "react-icons/hi2";
 import { FaUserTie, FaChurch } from "react-icons/fa6";
-import SubmittedFormOverview from "../../../components/admin-components/submitted-forms-overview";
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
-import { useGetHeadPastorCountQuery } from "../../../redux/services/usersApi";
 import LoadingAnimation2 from "../../../components/loading-animation2";
-import { useFetchNoOfUserQuery,  useFetchNoChurchCountQuery } from "../../../redux/services/StatsApi";
+import { useFetchNoOfUserQuery,  useFetchNoChurchCountQuery, useFetchNoHeadPastorCountQuery } from "../../../redux/services/StatsApi";
 const AdminDashboard: FC = () => {
 
   const {data: UserCount, isLoading: UserLoading} = useFetchNoOfUserQuery()
   // const {data: FormSubmissionCount, isLoading: FormLoading} = useFetchNoFormSubmissionQuery()
   const {data: ChurchCount, isLoading: ChurchLoading} = useFetchNoChurchCountQuery()
-  const { data: PastorCount, isLoading } = useGetHeadPastorCountQuery();
+  const { data: PastorCount, isLoading } = useFetchNoHeadPastorCountQuery();
   return (
     <div className="relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto">
       <Header />
@@ -72,11 +70,6 @@ const AdminDashboard: FC = () => {
 
       {/* ============================ First Table ============================ */}
 
-      <div className="w-full p-4 mt-2">
-        <div className="bg-sixth-light dark:bg-sixth-dark shadow-lg rounded-[10px] custom-scrollbar">
-          <SubmittedFormOverview />
-        </div>
-      </div>
 
       <div className="w-full p-4 mt-2">
         <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">

@@ -4,6 +4,7 @@ import {
   ChurchResponse,
   HeadDistrictChurchListDetailsResponse,
   RemoveChurchPayload,
+  UnassignResponse,
   UpdateChurchPayload,
 } from "../type/Type";
 import { UserApi } from "./UserApi";
@@ -79,6 +80,11 @@ export const ChurchApi = createApi({
         }
       },
     }),
+    FetchUnassginedChurch: builder.query<UnassignResponse,void>({
+      query: () => "/church/unassigned",
+      keepUnusedDataFor: 60,
+      providesTags: ["Church"]
+    }),
   }),
 });
 
@@ -87,5 +93,6 @@ export const {
   useCreateChurchMutation,
   useFetchChurchListHeadDistrictQuery,
   useRemoveChurchMutation,
-  useUpdateChurchMutation
+  useUpdateChurchMutation,
+  useFetchUnassginedChurchQuery
 } = ChurchApi;

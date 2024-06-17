@@ -1,5 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { NumberOfUsers, FormsCountResponse, FormSubmissionCountResponse, ChurchCountResponse} from "../type/Type";
+import {
+  NumberOfUsers,
+  FormsCountResponse,
+  FormSubmissionCountResponse,
+  ChurchCountResponse,
+  HeadPastorCountResponse,
+} from "../type/Type";
 export const StatsApi = createApi({
   reducerPath: "StatsApi",
   tagTypes: ["CreateForm", "SubmitForm", "ChurchCount", "CreateUser"],
@@ -28,7 +34,17 @@ export const StatsApi = createApi({
       keepUnusedDataFor: 60,
       providesTags: ["ChurchCount"],
     }),
+    FetchNoHeadPastorCount: builder.query<HeadPastorCountResponse, void>({
+      query: () => "/stats/head-pastor-count",
+      keepUnusedDataFor: 60,
+    }),
   }),
 });
 
-export const {useFetchNoOfUserQuery, useFetchNoOfFormsQuery, useFetchNoFormSubmissionQuery, useFetchNoChurchCountQuery} = StatsApi
+export const {
+  useFetchNoOfUserQuery,
+  useFetchNoOfFormsQuery,
+  useFetchNoFormSubmissionQuery,
+  useFetchNoChurchCountQuery,
+  useFetchNoHeadPastorCountQuery
+} = StatsApi;

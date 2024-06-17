@@ -77,8 +77,9 @@ export const UserApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags:["UserProfile"]
+      invalidatesTags: ["UserProfile"],
     }),
+    
   }),
 });
 

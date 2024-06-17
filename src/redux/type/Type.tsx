@@ -347,3 +347,16 @@ export interface AssignedLogsDetailsResponse {
   message: string
   data: AssignedLogsDetails[]
 }
+
+export interface HeadPastorCountResponse {
+  head_pastors: number
+}
+
+
+
+export interface UnassignResponse {
+  message: string;
+  data: {
+    [index: number]: string;
+  }[];
+}
