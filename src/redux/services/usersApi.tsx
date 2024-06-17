@@ -229,24 +229,11 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
   
-    postCreateForm: builder.mutation<void, FormData>({
-      query: (data) => ({
-        url: `/form/create`,
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["Form"],
-    }),
     getAssignedLogs: builder.query<AssingedLogs[], void>({
       query: () => "/assignee_logs/",
       keepUnusedDataFor: 60,
       transformResponse: (response: AssignedLogsResponse) => response.data,
       providesTags: ["Church"],
-    }),
-    getFormStatus: builder.query<FormDetails[], void>({
-      query: () => "/form/active-forms-stats",
-      keepUnusedDataFor: 60,
-      providesTags: ["Form"],
     }),
     postUploadProfile: builder.mutation<void, FormData>({
       query: (data) => ({
@@ -255,24 +242,6 @@ export const userApi = createApi({
         body: data,
       }),
       invalidatesTags: ["profile"],
-    }),
-    deleteForm: builder.mutation<void, TDelete>({
-      query: ({ id }) => ({
-        url: `/form/delete?id=${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Form"],
-    }),
-    updateForm: builder.mutation<
-      void,
-      { id: number | undefined; formData: FormData }
-    >({
-      query: ({ id, formData }) => ({
-        url: `/form/update?id=${id}`,
-        method: "PUT",
-        body: formData,
-      }),
-      invalidatesTags: ["Form"],
     }),
     getUnansweredForms: builder.query<Form, void>({
       query: () => "/form/unanswered",
@@ -287,14 +256,7 @@ export const userApi = createApi({
       query: () => "/form/user-church-details",
       keepUnusedDataFor: 60,
     }),
-    SubmitForm: builder.mutation<void, FormData>({
-      query: (formData) => ({
-        url: `/form/submit`,
-        method: "POST",
-        body: formData,
-      }),
-      invalidatesTags: ["unansweredForm", "Form"],
-    }),
+
     getHeadPastorCount: builder.query<Stats, void>({
       query: () => "/stats/head-pastor-count",
       keepUnusedDataFor: 60,
@@ -319,16 +281,11 @@ export const userApi = createApi({
 });
 
 export const {
-  usePostCreateFormMutation,
   useGetAssignedLogsQuery,
-  useGetFormStatusQuery,
   usePostUploadProfileMutation,
-  useDeleteFormMutation,
-  useUpdateFormMutation,
   useGetAnsweredFormrQuery,
   useGetUnansweredFormsQuery,
   useGetChurchDistrictBelongQuery,
-  useSubmitFormMutation,
   useGetHeadPastorCountQuery,
   useGetIncompleteFormQuery,
   useGetUnassignedChurchQuery,
