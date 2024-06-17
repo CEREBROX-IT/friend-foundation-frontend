@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   CreateNewDistrictPayload,
   DistrictDetailsResponse,
+  UpdateDistrictPayload
 } from "../type/Type";
 import { UserApi } from "./UserApi";
 
@@ -33,9 +34,25 @@ export const DistrictApi = createApi({
     FetchDistrictList: builder.query<DistrictDetailsResponse, void>({
       query: () => "/district/list",
       keepUnusedDataFor: 60,
-      providesTags: ["DistrictList"]
+      providesTags: ["DistrictList"],
+    }),
+    UpdateDistrict: builder.mutation<void, UpdateDistrictPayload>({
+      query: ({ data, id }) => ({
+        url: `/district/update?id=${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["DistrictList"],
+      async onQueryStarted(_data, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(UserApi.util.invalidateTags(["User"]));
+        } catch (error) {
+          console.error(error);
+        }
+      },
     }),
   }),
 });
 
-export const { useCreateNewDistrictMutation, useFetchDistrictListQuery } = DistrictApi;
+export const { useCreateNewDistrictMutation, useFetchDistrictListQuery, useUpdateDistrictMutation  } = DistrictApi;

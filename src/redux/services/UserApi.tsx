@@ -21,7 +21,7 @@ export const UserApi = createApi({
         method: "PATCH",
         body: targetId,
       }),
-      invalidatesTags: ["ApproveUser"],
+      invalidatesTags: ["ApproveUser", "User"],
       async onQueryStarted(_targetId, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;

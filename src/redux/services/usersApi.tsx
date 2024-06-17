@@ -229,14 +229,6 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
   
-    postUpdateDistrict: builder.mutation<void, Partial<UpdateDistrictArgs>>({
-      query: ({ data, id }) => ({
-        url: `/district/update?id=${id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["DISTRICT"],
-    }),
     postDeleteDistrict: builder.mutation<void, Partial<DeleteUser>>({
       query: ({ id }) => ({
         url: `/district/delete?id=${id}`,
@@ -376,7 +368,6 @@ export const userApi = createApi({
 });
 
 export const {
-  usePostUpdateDistrictMutation,
   usePostDeleteDistrictMutation,
   usePostUpdateUserDetailsMutation,
   usePostAddChurchMutation,

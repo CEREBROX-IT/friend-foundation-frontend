@@ -250,3 +250,19 @@ export interface DistrictDetailsResponse {
   data: DistrictDetails[]
 }
 
+
+export interface UpdateDistrict {
+  union_conference: string;
+  district_name: string;
+  head_district_assign: number | "";
+  date_establish: string;
+  district_region: string;
+  district_province: string;
+  district_municipal: string;
+  headquarters_address: string;
+}
+
+export interface UpdateDistrictPayload {
+  id: number
+  data: UpdateDistrict
+}
