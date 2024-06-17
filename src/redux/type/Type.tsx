@@ -219,3 +219,13 @@ export interface UserProfileResponse {
     };
 }
 
+export interface CreateNewDistrictPayload {
+  union_conference: string;
+  district_name: string;
+  head_district_assign: number | ""
+  date_establish: string;
+  district_region: string;
+  district_province: string;
+  district_municipal: string;
+  headquarters_address: string;
+}

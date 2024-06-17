@@ -6,6 +6,7 @@ import { FormsApi } from "../services/FormsApi";
 import { ChurchApi } from "../services/ChurchApi";
 import { UserApi } from "../services/UserApi";
 import { StatsApi } from "../services/StatsApi";
+import { DistrictApi } from "../services/DistrictApi";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     [ChurchApi.reducerPath]: ChurchApi.reducer,
     [UserApi.reducerPath]: UserApi.reducer,
     [StatsApi.reducerPath]: StatsApi.reducer,
+    [DistrictApi.reducerPath]: DistrictApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -24,7 +26,8 @@ export const store = configureStore({
       FormsApi.middleware,
       AuthenticationApi.middleware,
       userApi.middleware,
-      StatsApi.middleware
+      StatsApi.middleware,
+      DistrictApi.middleware
     ),
 });
 
