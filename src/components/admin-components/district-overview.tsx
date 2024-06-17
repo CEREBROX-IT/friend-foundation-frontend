@@ -7,10 +7,9 @@ import {
   GridRenderCellParams,
   GridAlignment,
 } from "@mui/x-data-grid";
-import { usePostDeleteDistrictMutation } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
 import LoadingAnimation2 from "../loading-animation2";
-import { useFetchDistrictListQuery } from "../../redux/services/DistrictApi";
+import { useFetchDistrictListQuery, useRemoveDistrictMutation } from "../../redux/services/DistrictApi";
 import { DistrictDetails } from "../../redux/type/Type";
 
  const CustomCellRenderer: React.FC<{ value: string }> = ({ value }) => (
@@ -21,7 +20,7 @@ const DistrictOverview: FC = () => {
   const { data: GetDistrictList, isLoading: LoadingDistrict } =
     useFetchDistrictListQuery();
   
-  const [deleteDistrict] = usePostDeleteDistrictMutation()
+  const [deleteDistrict] = useRemoveDistrictMutation();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState<DistrictDetails[]>([]);
   const { theme } = useContext(ThemeContext);

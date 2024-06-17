@@ -266,3 +266,7 @@ export interface UpdateDistrictPayload {
   id: number
   data: UpdateDistrict
 }
+
+export interface RemoveDistrictPayload {
+   id: number
+}
