@@ -4,6 +4,7 @@ import {
   ChurchResponse,
   HeadDistrictChurchListDetailsResponse,
   RemoveChurchPayload,
+  UpdateChurchPayload,
 } from "../type/Type";
 import { UserApi } from "./UserApi";
 import { StatsApi } from "./StatsApi";
@@ -62,6 +63,22 @@ export const ChurchApi = createApi({
         }
       },
     }),
+    UpdateChurch: builder.mutation<void, UpdateChurchPayload>({
+      query: ({ data, id }) => ({
+        url: `/church/update?id=${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Church"],
+      async onQueryStarted(_data, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(UserApi.util.invalidateTags(["User"]));
+        } catch (error) {
+          console.error("Error creating church:", error);
+        }
+      },
+    }),
   }),
 });
 
@@ -69,5 +86,6 @@ export const {
   useFetchChurchListAdminQuery,
   useCreateChurchMutation,
   useFetchChurchListHeadDistrictQuery,
-  useRemoveChurchMutation
+  useRemoveChurchMutation,
+  useUpdateChurchMutation
 } = ChurchApi;

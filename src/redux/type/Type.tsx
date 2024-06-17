@@ -322,3 +322,14 @@ export interface HeadDistrictChurchListDetailsResponse {
 export interface RemoveChurchPayload {
   id: number
 }
+
+export interface UpdateChurchPayload {
+  id: number;
+  data: {
+    district_id: number; // automatic name addition for the district
+    church_name: string;
+    pastor_assign: number | string; // automatic full name addition for the user or "" for null
+    church_date_establish: string;
+    church_address: string;
+  };
+}

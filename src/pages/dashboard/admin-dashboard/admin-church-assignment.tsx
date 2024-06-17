@@ -6,10 +6,9 @@ import { useState } from "react";
 import AddChurchModal from "../../../components/admin-components/add-churhc-modal";
 import {
   useGetUnassignedChurchQuery,
-  usePostUpdateChurchMutation,
 } from "../../../redux/services/usersApi";
 import { useFetchUnassignedUserQuery } from "../../../redux/services/UserApi";
-import { useFetchChurchListAdminQuery } from "../../../redux/services/ChurchApi";
+import { useFetchChurchListAdminQuery, useUpdateChurchMutation } from "../../../redux/services/ChurchApi";
 interface IFormInput {
   pastor_assign: number;
   church_name: string;
@@ -19,7 +18,7 @@ const AdminChurchAssignment = () => {
   const { data: ChurchList } = useFetchChurchListAdminQuery();
   const { data: UnAssignedChurch } = useGetUnassignedChurchQuery()
   const { data: Unassgined } = useFetchUnassignedUserQuery();
-  const [updateChurch] = usePostUpdateChurchMutation();
+  const [updateChurch] = useUpdateChurchMutation();
   
   const {
     register,

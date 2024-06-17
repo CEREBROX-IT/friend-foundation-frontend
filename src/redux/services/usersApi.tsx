@@ -229,22 +229,6 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
   
-
-    postDeleteChurch: builder.mutation<void, Partial<ChurchDetails>>({
-      query: ({ id }) => ({
-        url: `/church/delete?id=${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Church"],
-    }),
-    postUpdateChurch: builder.mutation<void, Partial<UpdateChurchArgs>>({
-      query: ({ id, data }) => ({
-        url: `/church/update?id=${id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["Church"],
-    }),
     postCreateForm: builder.mutation<void, FormData>({
       query: (data) => ({
         url: `/form/create`,
@@ -335,8 +319,6 @@ export const userApi = createApi({
 });
 
 export const {
-  usePostDeleteChurchMutation,
-  usePostUpdateChurchMutation,
   usePostCreateFormMutation,
   useGetAssignedLogsQuery,
   useGetFormStatusQuery,
