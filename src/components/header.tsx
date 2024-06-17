@@ -9,6 +9,8 @@ import { Cookies } from "typescript-cookie";
 import { useNavigate } from "react-router-dom";
 import JwtDecoder from "../utils/jwt-decoder";
 import { useFetchUserProfileQuery } from "../redux/services/UserApi";
+import { FaRegUser } from "react-icons/fa";
+
 const Header = () => {
   const navigate = useNavigate();
   const userData = JwtDecoder().decodedToken;
@@ -16,7 +18,6 @@ const Header = () => {
   const [OpenMenu, setOpenMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { data: GetUserData } = useFetchUserProfileQuery();
-
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -70,13 +71,19 @@ const Header = () => {
             onClick={handleClick}
           >
             <div className="text-white my-auto mx-auto h-10 w-10 aspect-square">
-              <img
-                src={
-                  import.meta.env.VITE_IMAGE +
-                  GetUserData?.data?.profile_display
-                }
-                 className="object-contain h-full w-full rounded-full"
-              />
+              {GetUserData?.data.profile_display === null ? (
+                <>
+                  <FaRegUser className="text-2xl w-full mx-auto my-auto h-full p-2" />
+                </>
+              ) : (
+                <img
+                  src={
+                    import.meta.env.VITE_IMAGE +
+                    GetUserData?.data?.profile_display
+                  }
+                  className="object-contain h-full w-full rounded-full"
+                />
+              )}
             </div>
           </div>
           <Menu
