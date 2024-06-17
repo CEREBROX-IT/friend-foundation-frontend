@@ -87,6 +87,13 @@ const ListUsersOverview: FC = () => {
       type: "string", // Added type property
     },
     {
+      field: "date_created",
+      headerName: "DATE CREATED",
+      flex: 1,
+      minWidth: 200,
+      type: "string", // Added type property
+    },
+    {
       field: "actions",
       headerName: "ACTIONS",
       sortable: false,

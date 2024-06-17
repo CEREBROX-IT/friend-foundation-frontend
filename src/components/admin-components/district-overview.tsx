@@ -97,6 +97,12 @@ const DistrictOverview: FC = () => {
       minWidth: 170,
     },
     {
+      field: "date_created",
+      headerName: "DATE CREATED",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
       field: "actions",
       headerName: "ACTIONS",
       sortable: false,
