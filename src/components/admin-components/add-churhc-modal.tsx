@@ -2,10 +2,7 @@ import { FC } from "react";
 import SampleLogo from "../../assets/authentication/sample_logo.webp";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField, MenuItem } from "@mui/material";
-import {
-  
-  useGetDistrictListQuery,
-} from "../../redux/services/usersApi";
+import { useFetchDistrictListQuery } from "../../redux/services/DistrictApi";
 import { useCreateChurchMutation } from "../../redux/services/ChurchApi";
 import { useFetchUnassignedUserQuery } from "../../redux/services/UserApi";
 import { IoMdCloseCircle } from "react-icons/io";
@@ -13,14 +10,14 @@ import LoadingAnimation from "../loading-animation";
 import { ChurchPayload } from "../../redux/type/Type";
 
 export type ChurchDetails = {
-  id?: number
+  id?: number;
   district_id?: number;
   church_name?: string;
   pastor_assign?: number;
   church_date_establish?: string;
   church_address?: string;
   head_pastor_full_name?: string;
-  district_name?: string
+  district_name?: string;
 };
 
 interface NewDistrictModalProps {
@@ -29,7 +26,7 @@ interface NewDistrictModalProps {
 
 const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
   const { data: Unassigned } = useFetchUnassignedUserQuery();
-  const { data: DistrictList } = useGetDistrictListQuery();
+  const { data: DistrictList } = useFetchDistrictListQuery();
   const [CreateChurch, {isLoading}] = useCreateChurchMutation() 
   const {
     register,
@@ -38,7 +35,6 @@ const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
   } = useForm<ChurchPayload>();
 
   const onSubmitHandler: SubmitHandler<ChurchPayload> = async (data) => {
-    console.log(data);
     await CreateChurch(data)
       .unwrap()
       .then(() => {
@@ -83,7 +79,7 @@ const AddChurchModal: FC<NewDistrictModalProps> = ({ closeModal }) => {
                 },
               }}
             >
-              {DistrictList?.map((item) => (
+              {DistrictList?.data?.map((item) => (
                 <MenuItem value={item.id}>{item.district_name}</MenuItem>
               ))}
             </TextField>

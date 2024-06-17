@@ -1,8 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { CreateNewDistrictPayload } from "../type/Type";
+import {
+  CreateNewDistrictPayload,
+  DistrictDetailsResponse,
+} from "../type/Type";
 import { UserApi } from "./UserApi";
+
 export const DistrictApi = createApi({
   reducerPath: "DistrictApi",
+  tagTypes: ["DistrictList"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -15,6 +20,7 @@ export const DistrictApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["DistrictList"],
       async onQueryStarted(_data, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
@@ -24,7 +30,12 @@ export const DistrictApi = createApi({
         }
       },
     }),
+    FetchDistrictList: builder.query<DistrictDetailsResponse, void>({
+      query: () => "/district/list",
+      keepUnusedDataFor: 60,
+      providesTags: ["DistrictList"]
+    }),
   }),
 });
 
-export const {useCreateNewDistrictMutation} = DistrictApi;
+export const { useCreateNewDistrictMutation, useFetchDistrictListQuery } = DistrictApi;

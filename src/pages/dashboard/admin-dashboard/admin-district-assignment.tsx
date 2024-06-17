@@ -5,11 +5,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import AddDistrictModal from "../../../components/admin-components/add-district-modal";
 import { useState } from "react";
 import {
-  useGetUnassignedUserQuery,
-  useGetDistrictListQuery,
   usePostUpdateDistrictMutation,
 } from "../../../redux/services/usersApi";
 import LoadingAnimation from "../../../components/loading-animation";
+import { useFetchUnassignedUserQuery } from "../../../redux/services/UserApi";
+import { useFetchDistrictListQuery } from "../../../redux/services/DistrictApi";
 
 interface IFormInput {
   head_district_assign: number;
@@ -31,9 +31,9 @@ const AdminDistrictAssignment = () => {
   const [openNewDistrictModal, setOpenNewDistrictModal] = useState(false);
   const [UpdateDistrict, { isLoading: UpdateLoading }] =
     usePostUpdateDistrictMutation();
-  const { data: UnAssignedUsers } = useGetUnassignedUserQuery();
-  const { data: DistrictList } = useGetDistrictListQuery();
-  const filter = DistrictList?.filter(
+  const { data: UnAssignedUsers } = useFetchUnassignedUserQuery();
+  const { data: DistrictList } = useFetchDistrictListQuery();
+  const filter = DistrictList?.data.filter(
     (item) => item.head_district_assign === null
   );
 

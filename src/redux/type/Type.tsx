@@ -229,3 +229,24 @@ export interface CreateNewDistrictPayload {
   district_municipal: string;
   headquarters_address: string;
 }
+
+export interface DistrictDetails {
+  id: number;
+  union_conference: string;
+  district_name: string;
+  head_district_assign: number;
+  head_district_full_name: string;
+  date_establish: string;
+  district_region: string;
+  district_province: string;
+  district_municipal: string;
+  headquarters_address: string;
+  date_updated: string;
+  date_created: string;
+}
+
+export interface DistrictDetailsResponse {
+  message: string
+  data: DistrictDetails[]
+}
+

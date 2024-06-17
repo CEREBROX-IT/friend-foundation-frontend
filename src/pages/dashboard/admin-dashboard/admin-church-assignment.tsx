@@ -7,9 +7,9 @@ import AddChurchModal from "../../../components/admin-components/add-churhc-moda
 import {
   useGetChurchListAdminQuery,
   useGetUnassignedChurchQuery,
-  useGetUnassignedUserQuery,
   usePostUpdateChurchMutation,
 } from "../../../redux/services/usersApi";
+import { useFetchUnassignedUserQuery } from "../../../redux/services/UserApi";
 
 interface IFormInput {
   pastor_assign: number;
@@ -19,7 +19,7 @@ const AdminChurchAssignment = () => {
   const [openModal, setOpenModal] = useState(false);
   const { data: ChurchList } = useGetChurchListAdminQuery();
   const { data: UnAssignedChurch } = useGetUnassignedChurchQuery()
-  const { data: Unassgined } = useGetUnassignedUserQuery();
+  const { data: Unassgined } = useFetchUnassignedUserQuery();
   const [updateChurch] = usePostUpdateChurchMutation();
   
   const {
@@ -37,7 +37,7 @@ const AdminChurchAssignment = () => {
   const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
     const filter =
       ChurchList?.filter((item) => item.church_name === data.church_name) || [];
-    console.log(filter)
+    
     const value = {
       district_id: filter[0]?.district_id, //automatic na mo add sa name sa distrtict
       church_name: filter[0]?.church_name,

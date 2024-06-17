@@ -229,17 +229,6 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
   
-    getUnassignedUser: builder.query<UnassignedResponse, void>({
-      query: () => "/district/unassigned-users",
-      keepUnusedDataFor: 60,
-      providesTags: ["DISTRICT", "Church", "Users"],
-    }),
-    getDistrictList: builder.query<DistrictDetails[], void>({
-      query: () => "/district/list",
-      keepUnusedDataFor: 60,
-      transformResponse: (response: DistrictList) => response.data,
-      providesTags: ["DISTRICT"],
-    }),
     postUpdateDistrict: builder.mutation<void, Partial<UpdateDistrictArgs>>({
       query: ({ data, id }) => ({
         url: `/district/update?id=${id}`,
@@ -387,8 +376,6 @@ export const userApi = createApi({
 });
 
 export const {
-  useGetUnassignedUserQuery,
-  useGetDistrictListQuery,
   usePostUpdateDistrictMutation,
   usePostDeleteDistrictMutation,
   usePostUpdateUserDetailsMutation,
