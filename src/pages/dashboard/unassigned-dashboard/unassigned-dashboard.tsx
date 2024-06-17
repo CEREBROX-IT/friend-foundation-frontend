@@ -759,9 +759,7 @@ export default function UnassignedDashboard() {
                   <TextField
                     type="text"
                     error={errors?.data?.province ? true : false}
-                    {...register("data.province", {
-                      required: "Province is required",
-                    })}
+                    {...register("data.province")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -786,9 +784,7 @@ export default function UnassignedDashboard() {
                   <TextField
                     type="text"
                     error={errors.data?.region ? true : false}
-                    {...register("data.region", {
-                      required: "Region is required",
-                    })}
+                    {...register("data.region")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -815,9 +811,7 @@ export default function UnassignedDashboard() {
                     defaultValue={UserDetails?.data?.country}
                     select
                     error={errors?.data?.country ? true : false}
-                    {...register("data.country", {
-                      required: "Country is required",
-                    })}
+                    {...register("data.country")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -846,9 +840,7 @@ export default function UnassignedDashboard() {
                   <TextField
                     type="text"
                     error={errors.data?.postal_code ? true : false}
-                    {...register("data.postal_code", {
-                      required: "Postal is required",
-                    })}
+                    {...register("data.postal_code")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -871,9 +863,7 @@ export default function UnassignedDashboard() {
                   <TextField
                     type="text"
                     error={errors?.data?.street ? true : false}
-                    {...register("data.street", {
-                      required: "Street is required",
-                    })}
+                    {...register("data.street")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -899,9 +889,7 @@ export default function UnassignedDashboard() {
                   <TextField
                     type="text"
                     error={errors.data?.barangay ? true : false}
-                    {...register("data.barangay", {
-                      required: "Barangay is required",
-                    })}
+                    {...register("data.barangay")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {

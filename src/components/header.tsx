@@ -107,13 +107,13 @@ const Header = () => {
               // },
             }}
           >
-            {role === "Unassigned" ? (
+            {role === "Unassign" ? (
               <>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </>
             ) : (
               <>
-                <MenuItem onClick={handleUserProfile} disabled>
+                <MenuItem onClick={handleUserProfile}>
                   User Profile
                 </MenuItem>
                 <MenuItem onClick={handleClose} disabled>
