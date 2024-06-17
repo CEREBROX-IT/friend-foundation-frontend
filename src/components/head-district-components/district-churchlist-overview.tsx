@@ -1,22 +1,16 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import {
-  DataGrid,
-  GridToolbar,
-  GridRenderCellParams,
-  GridAlignment,
-} from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
-import {
-  useGetChurchListQuery,
-
-} from "../../redux/services/usersApi";
-
+import { useFetchChurchListHeadDistrictQuery } from "../../redux/services/ChurchApi";
+import { HeadDistrictChurchListDetails } from "../../redux/type/Type";
 const DistrictChurchList: FC = () => {
-  const { data: ChurchList } = useGetChurchListQuery();
+  const { data: ChurchList } = useFetchChurchListHeadDistrictQuery();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(ChurchList ?? []);
+  const [filteredRows, setFilteredRows] = useState<
+    HeadDistrictChurchListDetails[]
+  >([]);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -26,7 +20,7 @@ const DistrictChurchList: FC = () => {
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      ChurchList?.filter((row) => {
+      ChurchList?.data.filter((row) => {
         return (
           row.district_name?.toLowerCase().includes(lowerCaseQuery) ||
           row.church_name?.toLowerCase().includes(lowerCaseQuery) ||
@@ -82,10 +76,7 @@ const DistrictChurchList: FC = () => {
       flex: 1,
       minWidth: 250,
     },
-    
   ];
-
- 
 
   return (
     <>

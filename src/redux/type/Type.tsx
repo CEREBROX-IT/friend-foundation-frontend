@@ -71,70 +71,66 @@ export interface ApproveUserPayload {
   targetUserId: number;
 }
 
-
 export interface UserDetailsResponse {
-  message: string
-  data: UserDetails[]
+  message: string;
+  data: UserDetails[];
 }
 export interface UserDetails {
-  
-    first_name: string;
-    last_name: string;
-    email: string;
-    middle_name: string;
-    date_created: string
-    date_updated: string
-    suffix: string;
-    age: number;
-    gender: string;
-    contact_no: string;
-    birth_date: string;
-    salutation: string | null;
-    title: string;
-    role: string;
-    profile_display: string | null;
-    id: number;
-    user_id: number;
-    street: string | null;
-    barangay: string | null;
-    municipal: string | null;
-    province: string | null;
-    postal_code: string | null;
-    region: string | null;
-    country: string | null;
-    date_of_marriage: string | null;
-    spouse_first_name: string | null;
-    spouse_last_name: string | null;
-    spouse_middle_name: string | null;
-    spouse_contact: string | null;
-    father_first_name: string | null;
-    father_last_name: string | null;
-    father_middle_name: string | null;
-    father_suffix_name: string | null;
-    mother_first_name: string | null;
-    mother_last_name: string | null;
-    mother_middle_name: string | null;
-    mother_suffix_name: string | null;
-  
+  first_name: string;
+  last_name: string;
+  email: string;
+  middle_name: string;
+  date_created: string;
+  date_updated: string;
+  suffix: string;
+  age: number;
+  gender: string;
+  contact_no: string;
+  birth_date: string;
+  salutation: string | null;
+  title: string;
+  role: string;
+  profile_display: string | null;
+  id: number;
+  user_id: number;
+  street: string | null;
+  barangay: string | null;
+  municipal: string | null;
+  province: string | null;
+  postal_code: string | null;
+  region: string | null;
+  country: string | null;
+  date_of_marriage: string | null;
+  spouse_first_name: string | null;
+  spouse_last_name: string | null;
+  spouse_middle_name: string | null;
+  spouse_contact: string | null;
+  father_first_name: string | null;
+  father_last_name: string | null;
+  father_middle_name: string | null;
+  father_suffix_name: string | null;
+  mother_first_name: string | null;
+  mother_last_name: string | null;
+  mother_middle_name: string | null;
+  mother_suffix_name: string | null;
 }
-
 
 export interface FormsCountResponse {
   completed_forms: number;
-  pending_forms: number
+  pending_forms: number;
 }
 
 export interface FormSubmissionCountResponse {
   submitted_pastors: number;
-  not_submitted_pastors: number
+  not_submitted_pastors: number;
 }
 
 export interface ChurchCountResponse {
-  total_churches: number
+  total_churches: number;
 }
 
 export interface RemoveUser {
-  id: number
+  id: number;
 }
 
 export interface UnassignedPayload {
@@ -172,57 +168,55 @@ export interface UnassignedPayload {
     mother_middle_name?: string | null;
     mother_suffix_name?: string | null;
   };
-};
-
+}
 
 export interface UserProfileResponse {
- 
-    message: string;
-    data: {
-        first_name: string;
-        last_name: string;
-        email: string;
-        middle_name: string;
-        suffix: string;
-        age: number;
-        gender: string;
-        contact_no: string;
-        birth_date: string;
-        salutation: string | null;
-        title: string;
-        role: string;
-        profile_display: string | null;
-        date_created: string;
-        date_updated: string;
-        id: number;
-        user_id: number;
-        street: string | null;
-        barangay: string | null;
-        municipal: string | null;
-        province: string | null;
-        postal_code: string | null;
-        region: string | null;
-        country: string | null;
-        date_of_marriage: string | null;
-        spouse_first_name: string | null;
-        spouse_last_name: string | null;
-        spouse_middle_name: string | null;
-        spouse_contact: string | null;
-        father_first_name: string | null;
-        father_last_name: string | null;
-        father_middle_name: string | null;
-        father_suffix_name: string | null;
-        mother_first_name: string | null;
-        mother_last_name: string | null;
-        mother_middle_name: string | null;
-        mother_suffix_name: string | null;
-    };
+  message: string;
+  data: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    middle_name: string;
+    suffix: string;
+    age: number;
+    gender: string;
+    contact_no: string;
+    birth_date: string;
+    salutation: string | null;
+    title: string;
+    role: string;
+    profile_display: string | null;
+    date_created: string;
+    date_updated: string;
+    id: number;
+    user_id: number;
+    street: string | null;
+    barangay: string | null;
+    municipal: string | null;
+    province: string | null;
+    postal_code: string | null;
+    region: string | null;
+    country: string | null;
+    date_of_marriage: string | null;
+    spouse_first_name: string | null;
+    spouse_last_name: string | null;
+    spouse_middle_name: string | null;
+    spouse_contact: string | null;
+    father_first_name: string | null;
+    father_last_name: string | null;
+    father_middle_name: string | null;
+    father_suffix_name: string | null;
+    mother_first_name: string | null;
+    mother_last_name: string | null;
+    mother_middle_name: string | null;
+    mother_suffix_name: string | null;
+  };
 }
 
 export interface CreateNewDistrictPayload {
   union_conference: string;
   district_name: string;
-  head_district_assign: number | ""
+  head_district_assign: number | "";
   date_establish: string;
   district_region: string;
   district_province: string;
@@ -246,10 +240,9 @@ export interface DistrictDetails {
 }
 
 export interface DistrictDetailsResponse {
-  message: string
-  data: DistrictDetails[]
+  message: string;
+  data: DistrictDetails[];
 }
-
 
 export interface UpdateDistrict {
   union_conference: string;
@@ -263,12 +256,12 @@ export interface UpdateDistrict {
 }
 
 export interface UpdateDistrictPayload {
-  id: number
-  data: UpdateDistrict
+  id: number;
+  data: UpdateDistrict;
 }
 
 export interface RemoveDistrictPayload {
-   id: number
+  id: number;
 }
 
 export interface UpdateUserProfileDetailsPayload {
@@ -306,4 +299,26 @@ export interface UpdateUserProfileDetailsPayload {
     mother_middle_name?: string | null;
     mother_suffix_name?: string | null;
   };
-};
+}
+
+export interface HeadDistrictChurchListDetails {
+  id: number;
+  district_id: number;
+  district_name: string;
+  church_name: string;
+  pastor_assign: number;
+  head_pastor_full_name: string;
+  church_date_establish: string;
+  church_address: string;
+  date_updated: string;
+  date_created: string;
+}
+
+export interface HeadDistrictChurchListDetailsResponse {
+  message: string
+  data: HeadDistrictChurchListDetails[]
+}
+
+export interface RemoveChurchPayload {
+  id: number
+}

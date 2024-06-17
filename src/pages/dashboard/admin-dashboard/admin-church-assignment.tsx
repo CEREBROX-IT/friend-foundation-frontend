@@ -5,19 +5,18 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import AddChurchModal from "../../../components/admin-components/add-churhc-modal";
 import {
-  useGetChurchListAdminQuery,
   useGetUnassignedChurchQuery,
   usePostUpdateChurchMutation,
 } from "../../../redux/services/usersApi";
 import { useFetchUnassignedUserQuery } from "../../../redux/services/UserApi";
-
+import { useFetchChurchListAdminQuery } from "../../../redux/services/ChurchApi";
 interface IFormInput {
   pastor_assign: number;
   church_name: string;
 }
 const AdminChurchAssignment = () => {
   const [openModal, setOpenModal] = useState(false);
-  const { data: ChurchList } = useGetChurchListAdminQuery();
+  const { data: ChurchList } = useFetchChurchListAdminQuery();
   const { data: UnAssignedChurch } = useGetUnassignedChurchQuery()
   const { data: Unassgined } = useFetchUnassignedUserQuery();
   const [updateChurch] = usePostUpdateChurchMutation();
@@ -36,7 +35,7 @@ const AdminChurchAssignment = () => {
 
   const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
     const filter =
-      ChurchList?.filter((item) => item.church_name === data.church_name) || [];
+      ChurchList?.data.filter((item) => item.church_name === data.church_name) || [];
     
     const value = {
       district_id: filter[0]?.district_id, //automatic na mo add sa name sa distrtict

@@ -229,26 +229,7 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
   
-    postAddChurch: builder.mutation<void, Partial<ChurchDetails>>({
-      query: (data) => ({
-        url: `/church/create`,
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["Church"],
-    }),
-    getChurchList: builder.query<ChurchDetails[], void>({
-      query: () => "/church/list",
-      keepUnusedDataFor: 60,
-      providesTags: ["Church"],
-      transformResponse: (response: ChurchListResponse) => response.data,
-    }),
-    getChurchListAdmin: builder.query<ChurchDetails[], void>({
-      query: () => "/church/list/Admin",
-      keepUnusedDataFor: 60,
-      providesTags: ["Church"],
-      transformResponse: (response: ChurchListResponse) => response.data,
-    }),
+
     postDeleteChurch: builder.mutation<void, Partial<ChurchDetails>>({
       query: ({ id }) => ({
         url: `/church/delete?id=${id}`,
@@ -354,8 +335,6 @@ export const userApi = createApi({
 });
 
 export const {
-  usePostAddChurchMutation,
-  useGetChurchListQuery,
   usePostDeleteChurchMutation,
   usePostUpdateChurchMutation,
   usePostCreateFormMutation,
@@ -368,7 +347,6 @@ export const {
   useGetUnansweredFormsQuery,
   useGetChurchDistrictBelongQuery,
   useSubmitFormMutation,
-  useGetChurchListAdminQuery,
   useGetHeadPastorCountQuery,
   useGetIncompleteFormQuery,
   useGetUnassignedChurchQuery,

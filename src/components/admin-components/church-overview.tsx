@@ -8,14 +8,13 @@ import {
   GridAlignment,
 } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
-import { usePostDeleteChurchMutation } from "../../redux/services/usersApi";
-import { useFetchChurchListAdminQuery } from "../../redux/services/ChurchApi";
+import { useFetchChurchListAdminQuery, useRemoveChurchMutation} from "../../redux/services/ChurchApi";
 import { ChurchResponse } from "../../redux/type/Type";
 
 const ChurchOverview: FC = () => {
   const { data: ChurchListAdmin } = useFetchChurchListAdminQuery();
   console.log(ChurchListAdmin)
-  const [PostDeleteChurch] = usePostDeleteChurchMutation();
+  const [PostDeleteChurch] = useRemoveChurchMutation();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState<ChurchResponse["data"]>([]);
   const { theme } = useContext(ThemeContext);
@@ -47,19 +46,19 @@ const ChurchOverview: FC = () => {
   const columns = [
     {
       field: "church_name",
-      headerName: "Church Name",
+      headerName: "CHURCH NAME",
       flex: 1,
       minWidth: 200,
     },
     {
       field: "district_name",
-      headerName: "District Name",
+      headerName: "DISTRICT NAME",
       flex: 1,
       minWidth: 200,
     },
     {
       field: "head_pastor_full_name",
-      headerName: "Pastor Name",
+      headerName: "PASTOR NAME",
       flex: 1,
       minWidth: 200,
       renderCell: (params: GridRenderCellParams) =>
@@ -71,13 +70,13 @@ const ChurchOverview: FC = () => {
     },
     {
       field: "church_date_establish",
-      headerName: "Church Establish",
+      headerName: "CHURCH ESTABLISH",
       flex: 1,
       minWidth: 250,
     },
     {
       field: "church_address",
-      headerName: "Church Address",
+      headerName: "CHURCH ADDRESS",
       flex: 1,
       minWidth: 250,
     },
