@@ -117,3 +117,9 @@ export interface UserDetails {
     mother_suffix_name: string | null;
   
 }
+
+
+export interface FormsCountResponse {
+  completed_forms: number;
+  pending_forms: number
+}

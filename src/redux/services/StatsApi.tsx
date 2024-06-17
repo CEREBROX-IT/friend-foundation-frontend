@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { NumberOfUsers } from "../type/Type";
+import { NumberOfUsers, FormsCountResponse } from "../type/Type";
 export const StatsApi = createApi({
   reducerPath: "StatsApi",
-  tagTypes: ['User'],
+  tagTypes: ['User', "Form"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -13,7 +13,12 @@ export const StatsApi = createApi({
       keepUnusedDataFor: 60,
       providesTags: ["User"]
     }),
+    FetchNoOfForms: builder.query<FormsCountResponse, void>({
+      query: () => "/stats/report-form-status/me",
+      keepUnusedDataFor: 60,
+      providesTags: ["Form"]
+    })
   }),
 });
 
-export const {useFetchNoOfUserQuery} = StatsApi
+export const {useFetchNoOfUserQuery, useFetchNoOfFormsQuery} = StatsApi

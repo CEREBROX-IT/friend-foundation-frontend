@@ -228,13 +228,6 @@ export const userApi = createApi({
   }),
 
   endpoints: (builder) => ({
-
-    getFormCount: builder.query<Stats, void>({
-      query: () => "/stats/report-form-status/me",
-      keepUnusedDataFor: 60,
-      providesTags: ["Form"],
-    }),
-
     getFormSubmissionCount: builder.query<Stats, void>({
       query: () => "/stats/submission-counts",
       keepUnusedDataFor: 60,
@@ -243,14 +236,6 @@ export const userApi = createApi({
       query: () => "/stats/churches-count",
       keepUnusedDataFor: 60,
       providesTags: ["Church"],
-    }),
-    postRegisterUser: builder.mutation<void, Partial<User>>({
-      query: (data) => ({
-        url: "/auth/register",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["Users", "DISTRICT", "Church"],
     }),
     postRemoveUser: builder.mutation<void, Partial<DeleteUser>>({
       query: ({ id }) => ({
@@ -429,7 +414,6 @@ export const userApi = createApi({
 });
 
 export const {
-  usePostRegisterUserMutation,
   useGetFormSubmissionCountQuery,
   useGetChurchCountQuery,
   usePostRemoveUserMutation,
@@ -445,7 +429,6 @@ export const {
   usePostDeleteChurchMutation,
   usePostUpdateChurchMutation,
   usePostCreateFormMutation,
-  useGetFormCountQuery,
   useGetAssignedLogsQuery,
   useGetFormStatusQuery,
   usePostUploadProfileMutation,

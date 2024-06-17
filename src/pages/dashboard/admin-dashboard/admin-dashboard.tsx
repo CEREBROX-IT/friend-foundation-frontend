@@ -12,7 +12,6 @@ import { useFetchNoOfUserQuery } from "../../../redux/services/StatsApi";
 const AdminDashboard: FC = () => {
 
   const {data: UserCount, isLoading: UserLoading} = useFetchNoOfUserQuery()
-  console.log(UserCount)
   const {data: FormSubmissionCount, isLoading: FormLoading} = useGetFormSubmissionCountQuery()
   const {data: ChurchCount, isLoading: ChurchLoading} = useGetChurchCountQuery()
   const { data: PastorCount, isLoading } = useGetHeadPastorCountQuery();

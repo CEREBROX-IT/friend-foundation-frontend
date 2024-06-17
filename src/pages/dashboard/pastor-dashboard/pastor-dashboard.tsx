@@ -4,26 +4,26 @@ import { HiMiniUsers } from "react-icons/hi2";
 import ResultCards from "../../../components/result-cards";
 import LoadingAnimation2 from "../../../components/loading-animation2";
 import {
-  useGetAnsweredFormrQuery,
-  useGetUnansweredFormsQuery,
-  useGetFormCountQuery
+  useGetUnansweredFormsQuery
 } from "../../../redux/services/usersApi";
+import { useFetchNoOfFormsQuery } from "../../../redux/services/StatsApi";
 import NoDataFound from "../../../../public/NoDataImage.png";
 import FormCard from "../../../components/head-pastor-components/formcard";
 import { useState } from "react";
 import Modal from "../../../components/head-pastor-components/modal";
+
+
 const PastorDashboard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedId, setSelectedId] = useState<number>()
   const constructDownloadLink = (relativePath: string) => {
-    // Replace 'baseURL' with your actual base URL where files are stored
-    const baseURL = import.meta.env.VITE_ATTACHMENT; // Replace this with your base URL
+    const baseURL = import.meta.env.VITE_ATTACHMENT; 
     return `${baseURL}/${relativePath}`;
   };
 
   const { data: Unanswered} =
     useGetUnansweredFormsQuery();
-  const  {data: FormCount, isLoading: FormLoading} = useGetFormCountQuery()
+  const  {data: FormCount, isLoading: FormLoading} = useFetchNoOfFormsQuery()
 
   
 
