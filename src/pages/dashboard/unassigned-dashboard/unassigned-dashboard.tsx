@@ -2,10 +2,9 @@ import Header from "../../../components/header";
 import { TextField, MenuItem } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { useFetchUserProfileQuery, useUpdateUserDetailsMutation } from "../../../redux/services/UserApi";
+import { useFetchUserProfileQuery, useUpdateUserDetailsMutation, useUploadProfilePictureMutation } from "../../../redux/services/UserApi";
 import JwtDecoder from "../../../utils/jwt-decoder";
 import LoadingAnimation from "../../../components/loading-animation";
-import { usePostUploadProfileMutation } from "../../../redux/services/usersApi";
 import { UnassignedPayload } from "../../../redux/type/Type";
 
 
@@ -269,7 +268,7 @@ const country = [
 
 export default function UnassignedDashboard() {
   const [updateProfile, { isLoading }] = useUpdateUserDetailsMutation();
-  const [uploadProfile] = usePostUploadProfileMutation();
+  const [uploadProfile] = useUploadProfilePictureMutation();
   const userData = JwtDecoder().decodedToken;
   const id: number | undefined = userData?.id;
   const {
@@ -330,7 +329,6 @@ export default function UnassignedDashboard() {
   async function ProfileUpload(data: ProfileInput) {
     const formdata = new FormData();
     formdata.append("profile_display", data.profile_display[0]);
-
     await uploadProfile(formdata)
       .unwrap()
       .then((response) => console.log(response));
@@ -359,16 +357,14 @@ export default function UnassignedDashboard() {
                 <div className="w-full  ">
                   <TextField
                     type="file"
-                    // error={errors.profile_display ? true : false}
                     {...RegisterProfile("profile_display", {
                       validate: {
                         validFileType: (value: FileList) => {
-                          if (!value) return true; // Let the required validation handle empty files
+                          if (!value) return true; 
                           const allowedTypes = [
                             "image/jpeg",
                             "image/png",
                             "image/gif",
-                            // Add more image types if needed
                           ];
                           const isValid = Array.from(value).every((file) =>
                             allowedTypes.includes(file.type)

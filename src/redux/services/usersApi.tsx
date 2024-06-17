@@ -229,15 +229,6 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
   
-
-    postUploadProfile: builder.mutation<void, FormData>({
-      query: (data) => ({
-        url: `/user/update-profile-display/me`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["profile"],
-    }),
     getUnansweredForms: builder.query<Form, void>({
       query: () => "/form/unanswered",
       keepUnusedDataFor: 60,
@@ -276,7 +267,6 @@ export const userApi = createApi({
 });
 
 export const {
-  usePostUploadProfileMutation,
   useGetAnsweredFormrQuery,
   useGetUnansweredFormsQuery,
   useGetChurchDistrictBelongQuery,

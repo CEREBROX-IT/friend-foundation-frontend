@@ -64,12 +64,20 @@ export const UserApi = createApi({
       providesTags: ["UserProfile"],
     }),
     UpdateUserDetails: builder.mutation<void, UpdateUserProfileDetailsPayload>({
-      query: ({data, id}) => ({
+      query: ({ data, id }) => ({
         url: `/user/update?id=${id}`,
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["UserProfile"]
+      invalidatesTags: ["UserProfile"],
+    }),
+    UploadProfilePicture: builder.mutation<void, FormData>({
+      query: (data) => ({
+        url: `/user/update-profile-display/me`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags:["UserProfile"]
     }),
   }),
 });
@@ -80,5 +88,6 @@ export const {
   useFetchUsersQuery,
   useRemoveUserMutation,
   useFetchUserProfileQuery,
-  useUpdateUserDetailsMutation
+  useUpdateUserDetailsMutation,
+  useUploadProfilePictureMutation
 } = UserApi;
