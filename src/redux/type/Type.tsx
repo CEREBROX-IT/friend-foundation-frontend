@@ -132,3 +132,7 @@ export interface FormSubmissionCountResponse {
 export interface ChurchCountResponse {
   total_churches: number
 }
+
+export interface RemoveUser {
+  id: number
+}

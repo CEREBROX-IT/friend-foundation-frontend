@@ -32,7 +32,7 @@ export const AuthenticationApi = createApi({
         try {
           await queryFulfilled;
           dispatch(StatsApi.util.invalidateTags(["CreateUser"]));
-          dispatch(UserApi.util.invalidateTags(['User']))
+          dispatch(UserApi.util.invalidateTags(['User', "CreateUser"]))
          
         } catch (error) {
           console.error("Error creating User:", error);

@@ -8,10 +8,10 @@ import {
   GridAlignment,
 } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
-import { usePostRemoveUserMutation } from "../../redux/services/usersApi";
 import {
   useApproveUserMutation,
   useFetchUsersQuery,
+  useRemoveUserMutation
 } from "../../redux/services/UserApi";
 import { UserDetails } from "../../redux/type/Type";
 const ListUsersOverview: FC = () => {
@@ -20,7 +20,7 @@ const ListUsersOverview: FC = () => {
   const [filteredRows, setFilteredRows] = useState<UserDetails[]>([]);
   const { theme } = useContext(ThemeContext);
   const [approve] = useApproveUserMutation();
-  const [removeUser] = usePostRemoveUserMutation();
+  const [removeUser] = useRemoveUserMutation();
   useEffect(() => {
     applyFilters();
   }, [searchQuery, GetUserList]);
@@ -52,7 +52,7 @@ const ListUsersOverview: FC = () => {
   };
 
   const handleRemoveUser = async (id: number) => {
-    await removeUser({ id })
+    await removeUser({id})
       .unwrap()
       .then((response) => console.log(response));
   };

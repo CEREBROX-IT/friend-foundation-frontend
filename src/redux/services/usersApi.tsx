@@ -229,13 +229,6 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
    
-    postRemoveUser: builder.mutation<void, Partial<DeleteUser>>({
-      query: ({ id }) => ({
-        url: `/user/remove?id=${id}`,
-        method: "PUT",
-      }),
-      invalidatesTags: ["Users"],
-    }),
     getUserDetails: builder.query<UserDataResponse, void>({
       query: () => "/user/me",
       providesTags: ["profile"],
@@ -406,7 +399,6 @@ export const userApi = createApi({
 });
 
 export const {
-    usePostRemoveUserMutation,
   useGetUserDetailsQuery,
   usePostNewDistrictMutation,
   useGetUnassignedUserQuery,
