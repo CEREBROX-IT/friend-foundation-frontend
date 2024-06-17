@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TFormInput } from "../../pages/dashboard/unassigned-dashboard/unassigned-dashboard";
 import { ChurchDetails } from "../../components/admin-components/add-churhc-modal";
+import { UnassignedPayload } from "../type/Type";
 
 interface ChurchListResponse {
   data: ChurchDetails[];
@@ -228,11 +228,7 @@ export const userApi = createApi({
   }),
 
   endpoints: (builder) => ({
-   
-    getUserDetails: builder.query<UserDataResponse, void>({
-      query: () => "/user/me",
-      providesTags: ["profile"],
-    }),
+  
     postNewDistrict: builder.mutation<void, Partial<DistrictDetails>>({
       query: (data) => ({
         url: "/district/create",
@@ -267,7 +263,7 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["DISTRICT"],
     }),
-    postUpdateUserDetails: builder.mutation<TFormInput, Partial<TFormInput>>({
+    postUpdateUserDetails: builder.mutation<void, UnassignedPayload>({
       query: ({ id, data }) => ({
         url: `/user/update?id=${id}`,
         method: "PUT",
@@ -399,7 +395,6 @@ export const userApi = createApi({
 });
 
 export const {
-  useGetUserDetailsQuery,
   usePostNewDistrictMutation,
   useGetUnassignedUserQuery,
   useGetDistrictListQuery,

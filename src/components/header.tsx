@@ -2,21 +2,21 @@ import { useState } from "react";
 import SampleLogo from "../assets/ff_sample_logo.webp";
 import BellIcon from "../assets/notification_bell_icon.webp";
 import { IoMdMenu } from "react-icons/io";
-import { FaUser } from "react-icons/fa6";
 import MobileAdminSideBar from "./admin-components/mobile-admin-sidebar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Cookies } from "typescript-cookie";
-import { useGetUserDetailsQuery } from "../redux/services/usersApi";
 import { useNavigate } from "react-router-dom";
 import JwtDecoder from "../utils/jwt-decoder";
+import { useFetchUserProfileQuery } from "../redux/services/UserApi";
 const Header = () => {
   const navigate = useNavigate();
   const userData = JwtDecoder().decodedToken;
   const role = userData?.role;
   const [OpenMenu, setOpenMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { data: GetUserData } = useGetUserDetailsQuery();
+  const { data: GetUserData } = useFetchUserProfileQuery();
+
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

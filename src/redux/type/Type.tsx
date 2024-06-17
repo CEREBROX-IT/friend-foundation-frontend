@@ -136,3 +136,86 @@ export interface ChurchCountResponse {
 export interface RemoveUser {
   id: number
 }
+
+export interface UnassignedPayload {
+  id?: number;
+  data: {
+    email?: string | null;
+    first_name?: string | null;
+    last_name?: string | null;
+    middle_name?: string | null;
+    suffix?: string | null;
+    age?: number | null;
+    gender?: string | null;
+    contact_no?: string | null;
+    birth_date?: string | null;
+    salutation?: string | null;
+    title?: string | null;
+    street?: string | null;
+    barangay?: string | null;
+    municipal?: string | null;
+    province?: string | null;
+    postal_code?: string | null;
+    region?: string | null;
+    country?: string | null;
+    date_of_marriage?: string | null;
+    spouse_first_name?: string | null;
+    spouse_last_name?: string | null;
+    spouse_middle_name?: string | null;
+    spouse_contact?: string | null;
+    father_first_name?: string | null;
+    father_last_name?: string | null;
+    father_middle_name?: string | null;
+    father_suffix_name?: string | null;
+    mother_first_name?: string | null;
+    mother_last_name?: string | null;
+    mother_middle_name?: string | null;
+    mother_suffix_name?: string | null;
+  };
+};
+
+
+export interface UserProfileResponse {
+ 
+    message: string;
+    data: {
+        first_name: string;
+        last_name: string;
+        email: string;
+        middle_name: string;
+        suffix: string;
+        age: number;
+        gender: string;
+        contact_no: string;
+        birth_date: string;
+        salutation: string | null;
+        title: string;
+        role: string;
+        profile_display: string | null;
+        date_created: string;
+        date_updated: string;
+        id: number;
+        user_id: number;
+        street: string | null;
+        barangay: string | null;
+        municipal: string | null;
+        province: string | null;
+        postal_code: string | null;
+        region: string | null;
+        country: string | null;
+        date_of_marriage: string | null;
+        spouse_first_name: string | null;
+        spouse_last_name: string | null;
+        spouse_middle_name: string | null;
+        spouse_contact: string | null;
+        father_first_name: string | null;
+        father_last_name: string | null;
+        father_middle_name: string | null;
+        father_suffix_name: string | null;
+        mother_first_name: string | null;
+        mother_last_name: string | null;
+        mother_middle_name: string | null;
+        mother_suffix_name: string | null;
+    };
+}
+

@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { UnAssignedUserResponse, ApproveUserPayload, UserDetailsResponse, RemoveUser } from "../type/Type";
+import { UnAssignedUserResponse, ApproveUserPayload, UserDetailsResponse, RemoveUser, UserProfileResponse } from "../type/Type";
 import { StatsApi } from "./StatsApi";
 export const UserApi = createApi({
   reducerPath: "UserApi",
-  tagTypes: ["User", "CreateUser", "ApproveUser", "RemoveUsers"],
+  tagTypes: ["User", "CreateUser", "ApproveUser", "RemoveUsers", "UserProfile"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -51,8 +51,14 @@ export const UserApi = createApi({
         }
       },
     }),
+    FetchUserProfile: builder.query<UserProfileResponse, void>({
+      query : () => "/user/me",
+      keepUnusedDataFor: 120,
+      providesTags: ["UserProfile"]
+
+    })
   }),
 });
 
-export const { useFetchUnassignedUserQuery, useApproveUserMutation, useFetchUsersQuery, useRemoveUserMutation } =
+export const { useFetchUnassignedUserQuery, useApproveUserMutation, useFetchUsersQuery, useRemoveUserMutation, useFetchUserProfileQuery } =
   UserApi;

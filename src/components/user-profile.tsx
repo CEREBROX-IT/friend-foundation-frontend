@@ -1,12 +1,12 @@
 import Header from "./header";
-import { useGetUserDetailsQuery } from "../redux/services/usersApi";
 import { FaUser } from "react-icons/fa6";
 import { useEffect, useRef } from "react";
+import { useFetchUserProfileQuery } from "../redux/services/UserApi";
 
 const UserProfile = () => {
   const personalButtonRef = useRef<HTMLButtonElement>(null);
 
-  const { data: GetUserData } = useGetUserDetailsQuery();
+  const { data: GetUserData } = useFetchUserProfileQuery();
 
   useEffect(() => {
     if (personalButtonRef.current) {

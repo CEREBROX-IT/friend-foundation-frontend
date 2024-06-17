@@ -1,53 +1,20 @@
 import Header from "../../../components/header";
 import { TextField, MenuItem } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useGetUserDetailsQuery } from "../../../redux/services/usersApi";
 import { useEffect } from "react";
+import { useFetchUserProfileQuery } from "../../../redux/services/UserApi";
 import JwtDecoder from "../../../utils/jwt-decoder";
 import { usePostUpdateUserDetailsMutation } from "../../../redux/services/usersApi";
 import LoadingAnimation from "../../../components/loading-animation";
 import { usePostUploadProfileMutation } from "../../../redux/services/usersApi";
-export type TFormInput = {
-  id?: number;
-  data: {
-    email?: string | null;
-    first_name?: string | null;
-    last_name?: string | null;
-    middle_name?: string | null;
-    suffix?: string | null;
-    age?: number | null;
-    gender?: string | null;
-    contact_no?: string | null;
-    birth_date?: string | null;
-    salutation?: string | null;
-    title?: string | null;
-    street?: string | null;
-    barangay?: string | null;
-    municipal?: string | null;
-    province?: string | null;
-    postal_code?: string | null;
-    region?: string | null;
-    country?: string | null;
-    date_of_marriage?: string | null;
-    spouse_first_name?: string | null;
-    spouse_last_name?: string | null;
-    spouse_middle_name?: string | null;
-    spouse_contact?: string | null;
-    father_first_name?: string | null;
-    father_last_name?: string | null;
-    father_middle_name?: string | null;
-    father_suffix_name?: string | null;
-    mother_first_name?: string | null;
-    mother_last_name?: string | null;
-    mother_middle_name?: string | null;
-    mother_suffix_name?: string | null;
-  };
-};
+import { UnassignedPayload } from "../../../redux/type/Type";
+
 
 export type ProfileInput = {
   profile_display: FileList;
   buffer: any;
 };
+
 const country = [
   "Afghanistan",
   "Åland Islands",
@@ -311,15 +278,15 @@ export default function UnassignedDashboard() {
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<TFormInput>();
+  } = useForm<UnassignedPayload>();
 
   const { register: RegisterProfile, handleSubmit: SubmitProfile } =
     useForm<ProfileInput>();
 
-  const { data: UserDetails } = useGetUserDetailsQuery();
-  console.log(UserDetails);
+  const { data: UserDetails } = useFetchUserProfileQuery();
+  
 
-  async function onSubmitHandler({ data }: TFormInput) {
+  async function onSubmitHandler({ data }: UnassignedPayload) {
     await updateProfile({ id: id, data: data })
       .unwrap()
       .then((response) => console.log(response));
