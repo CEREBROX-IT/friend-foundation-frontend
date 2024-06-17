@@ -31,7 +31,7 @@ export const AuthenticationApi = createApi({
       async onQueryStarted(_data, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          dispatch(StatsApi.util.invalidateTags(["User"]));
+          dispatch(StatsApi.util.invalidateTags(["CreateUser"]));
           dispatch(UserApi.util.invalidateTags(['User']))
          
         } catch (error) {

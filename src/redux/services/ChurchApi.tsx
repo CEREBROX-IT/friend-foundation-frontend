@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ChurchPayload, ChurchResponse } from "../type/Type";
 import { UserApi } from "./UserApi";
+import { StatsApi } from "./StatsApi";
 
 export const ChurchApi = createApi({
   reducerPath: "ChurchApi",
@@ -24,11 +25,11 @@ export const ChurchApi = createApi({
       
       }),
       invalidatesTags: ["Church"],
-      async onQueryStarted(data, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_data, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
           dispatch(UserApi.util.invalidateTags(["User"]));
-          console.log("Invalidated");
+          dispatch(StatsApi.util.invalidateTags(['ChurchCount']))
         } catch (error) {
           console.error("Error creating church:", error);
         }

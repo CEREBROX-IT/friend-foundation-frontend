@@ -6,14 +6,14 @@ import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
 import SubmittedFormOverview from "../../../components/admin-components/submitted-forms-overview";
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
-import {  useGetChurchCountQuery, useGetHeadPastorCountQuery } from "../../../redux/services/usersApi";
+import { useGetHeadPastorCountQuery } from "../../../redux/services/usersApi";
 import LoadingAnimation2 from "../../../components/loading-animation2";
-import { useFetchNoOfUserQuery, useFetchNoFormSubmissionQuery } from "../../../redux/services/StatsApi";
+import { useFetchNoOfUserQuery, useFetchNoFormSubmissionQuery, useFetchNoChurchCountQuery } from "../../../redux/services/StatsApi";
 const AdminDashboard: FC = () => {
 
   const {data: UserCount, isLoading: UserLoading} = useFetchNoOfUserQuery()
   const {data: FormSubmissionCount, isLoading: FormLoading} = useFetchNoFormSubmissionQuery()
-  const {data: ChurchCount, isLoading: ChurchLoading} = useGetChurchCountQuery()
+  const {data: ChurchCount, isLoading: ChurchLoading} = useFetchNoChurchCountQuery()
   const { data: PastorCount, isLoading } = useGetHeadPastorCountQuery();
   return (
     <div className="relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto">

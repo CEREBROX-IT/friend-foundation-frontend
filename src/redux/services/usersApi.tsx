@@ -229,11 +229,6 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
    
-    getChurchCount: builder.query<Stats, void>({
-      query: () => "/stats/churches-count",
-      keepUnusedDataFor: 60,
-      providesTags: ["Church"],
-    }),
     postRemoveUser: builder.mutation<void, Partial<DeleteUser>>({
       query: ({ id }) => ({
         url: `/user/remove?id=${id}`,
@@ -411,9 +406,7 @@ export const userApi = createApi({
 });
 
 export const {
-  
-  useGetChurchCountQuery,
-  usePostRemoveUserMutation,
+    usePostRemoveUserMutation,
   useGetUserDetailsQuery,
   usePostNewDistrictMutation,
   useGetUnassignedUserQuery,

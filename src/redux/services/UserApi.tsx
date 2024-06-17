@@ -3,7 +3,7 @@ import { UnAssignedUserResponse, ApproveUserPayload, UserDetailsResponse } from 
 import { StatsApi } from "./StatsApi";
 export const UserApi = createApi({
   reducerPath: "UserApi",
-  tagTypes: ["User"],
+  tagTypes: ["User","CreateUser", "ApproveUser"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -21,10 +21,11 @@ export const UserApi = createApi({
         method: "PATCH",
         body: targetId,
       }),
+      invalidatesTags: ["ApproveUser"],
       async onQueryStarted(_targetId, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          dispatch(StatsApi.util.invalidateTags(["User"]));
+          dispatch(StatsApi.util.invalidateTags(["CreateUser"]));
         } catch (error) {
           console.error(error);
         }
@@ -33,7 +34,7 @@ export const UserApi = createApi({
     FetchUsers: builder.query<UserDetailsResponse, void>({
       query: () => "/user",
       keepUnusedDataFor: 60,
-      providesTags: ["User"],
+      providesTags: ["CreateUser", "ApproveUser"],
     }),
   }),
 });

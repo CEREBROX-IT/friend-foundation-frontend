@@ -128,3 +128,7 @@ export interface FormSubmissionCountResponse {
   submitted_pastors: number;
   not_submitted_pastors: number
 }
+
+export interface ChurchCountResponse {
+  total_churches: number
+}
