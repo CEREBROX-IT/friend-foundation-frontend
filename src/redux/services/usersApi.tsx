@@ -228,10 +228,7 @@ export const userApi = createApi({
   }),
 
   endpoints: (builder) => ({
-    getFormSubmissionCount: builder.query<Stats, void>({
-      query: () => "/stats/submission-counts",
-      keepUnusedDataFor: 60,
-    }),
+   
     getChurchCount: builder.query<Stats, void>({
       query: () => "/stats/churches-count",
       keepUnusedDataFor: 60,
@@ -414,7 +411,7 @@ export const userApi = createApi({
 });
 
 export const {
-  useGetFormSubmissionCountQuery,
+  
   useGetChurchCountQuery,
   usePostRemoveUserMutation,
   useGetUserDetailsQuery,

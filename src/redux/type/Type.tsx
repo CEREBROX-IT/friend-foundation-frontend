@@ -123,3 +123,8 @@ export interface FormsCountResponse {
   completed_forms: number;
   pending_forms: number
 }
+
+export interface FormSubmissionCountResponse {
+  submitted_pastors: number;
+  not_submitted_pastors: number
+}
