@@ -8,22 +8,19 @@ import {
   GridAlignment,
 } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
+import { usePostRemoveUserMutation } from "../../redux/services/usersApi";
 import {
-  useGetUserListQuery,
-  usePostRemoveUserMutation
-} from "../../redux/services/usersApi";
-import { ApproveUserPayload } from "../../redux/type/Type";
-import { useApproveUserMutation } from "../../redux/services/UserApi";
-
-
-
+  useApproveUserMutation,
+  useFetchUsersQuery,
+} from "../../redux/services/UserApi";
+import { UserDetails } from "../../redux/type/Type";
 const ListUsersOverview: FC = () => {
-  const { data: GetUserList } = useGetUserListQuery();
+  const { data: GetUserList } = useFetchUsersQuery();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(GetUserList ?? []);
+  const [filteredRows, setFilteredRows] = useState<UserDetails[]>([]);
   const { theme } = useContext(ThemeContext);
-const [approve] = useApproveUserMutation();
-const [removeUser] = usePostRemoveUserMutation()
+  const [approve] = useApproveUserMutation();
+  const [removeUser] = usePostRemoveUserMutation();
   useEffect(() => {
     applyFilters();
   }, [searchQuery, GetUserList]);
@@ -31,10 +28,11 @@ const [removeUser] = usePostRemoveUserMutation()
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      GetUserList?.filter((row) => {
+      GetUserList?.data.filter((row) => {
         return (
           (row.first_name.toLowerCase().includes(lowerCaseQuery) ||
-            row.title.toLowerCase().includes(lowerCaseQuery))  && row.role !== "Admin"
+            row.title.toLowerCase().includes(lowerCaseQuery)) &&
+          row.role !== "Admin"
         );
       }) ?? [];
     setFilteredRows(filteredData);
@@ -42,16 +40,22 @@ const [removeUser] = usePostRemoveUserMutation()
 
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
+  console.log(memoizedFilteredRows);
 
-const handleApprove = async (targetUserId: number) => {
-  const value = { targetUserId: targetUserId };
-  await approve(value).unwrap().then((response) => { console.log(response)
-  })
-};
+  const handleApprove = async (targetUserId: number) => {
+    const value = { targetUserId: targetUserId };
+    await approve(value)
+      .unwrap()
+      .then((response) => {
+        console.log(response);
+      });
+  };
 
-const handleRemoveUser = async (id: number) => {
-  await removeUser({id}).unwrap().then((response) => console.log(response))
-}
+  const handleRemoveUser = async (id: number) => {
+    await removeUser({ id })
+      .unwrap()
+      .then((response) => console.log(response));
+  };
   //-----for the Table------
   const columns = [
     {
@@ -193,7 +197,9 @@ const handleRemoveUser = async (id: number) => {
         }}
       >
         {memoizedFilteredRows.length <= 0 ? (
-          <h1 className="m-auto font-bold text-2xl dark:text-white">No Pending Accounts</h1>
+          <h1 className="m-auto font-bold text-2xl dark:text-white">
+            No Pending Accounts
+          </h1>
         ) : (
           <>
             <DataGrid
@@ -211,7 +217,6 @@ const handleRemoveUser = async (id: number) => {
           </>
         )}
       </Box>
-      
     </>
   );
 };

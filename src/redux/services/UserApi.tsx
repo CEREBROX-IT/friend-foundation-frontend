@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { UnAssignedUserResponse, ApproveUserPayload } from "../type/Type";
+import { UnAssignedUserResponse, ApproveUserPayload, UserDetailsResponse } from "../type/Type";
 import { StatsApi } from "./StatsApi";
 export const UserApi = createApi({
   reducerPath: "UserApi",
@@ -21,7 +21,7 @@ export const UserApi = createApi({
         method: "PATCH",
         body: targetId,
       }),
-      async onQueryStarted(targetId, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_targetId, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
           dispatch(StatsApi.util.invalidateTags(["User"]));
@@ -30,8 +30,13 @@ export const UserApi = createApi({
         }
       },
     }),
+    FetchUsers: builder.query<UserDetailsResponse, void>({
+      query: () => "/user",
+      keepUnusedDataFor: 60,
+      providesTags: ["User"],
+    }),
   }),
 });
 
-export const { useFetchUnassignedUserQuery, useApproveUserMutation } =
+export const { useFetchUnassignedUserQuery, useApproveUserMutation, useFetchUsersQuery } =
   UserApi;

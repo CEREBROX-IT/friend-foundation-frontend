@@ -45,7 +45,7 @@ interface UserDetails {
   age: number;
   gender: string;
   contact_no: string;
-  birth_date: string; // Date string in ISO format
+  birth_date: string; 
   salutation: string | null;
   title: string;
   role: string;
@@ -228,17 +228,7 @@ export const userApi = createApi({
   }),
 
   endpoints: (builder) => ({
-    getUserList: builder.query<User[], void>({
-      query: () => "/user",
-      transformResponse: (response: UserListResponse) => response.data,
-      keepUnusedDataFor: 60,
-      providesTags: ["Users"],
-    }),
-    getUserCount: builder.query<Stats, void>({
-      query: () => "/stats/user-counts",
-      keepUnusedDataFor: 60,
-      providesTags: ["Users"],
-    }),
+
     getFormCount: builder.query<Stats, void>({
       query: () => "/stats/report-form-status/me",
       keepUnusedDataFor: 60,
@@ -439,9 +429,7 @@ export const userApi = createApi({
 });
 
 export const {
-  useGetUserListQuery,
   usePostRegisterUserMutation,
-  useGetUserCountQuery,
   useGetFormSubmissionCountQuery,
   useGetChurchCountQuery,
   usePostRemoveUserMutation,

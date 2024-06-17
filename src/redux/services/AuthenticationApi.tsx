@@ -6,6 +6,7 @@ import {
   ForgotPasswordPayload,
 } from "../type/Type";
 import { StatsApi } from "./StatsApi";
+import { UserApi } from "./UserApi";
 
 export const AuthenticationApi = createApi({
   reducerPath: "AuthenticationApi",
@@ -27,10 +28,11 @@ export const AuthenticationApi = createApi({
         method: "POST",
         body: data,
       }),
-      async onQueryStarted(data, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_data, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
           dispatch(StatsApi.util.invalidateTags(["User"]));
+          dispatch(UserApi.util.invalidateTags(['User']))
          
         } catch (error) {
           console.error("Error creating User:", error);

@@ -1,20 +1,20 @@
 export interface AuthLoginResponse {
-    message: string
-    token: string
-    data : {
-        error: string
-    }
+  message: string;
+  token: string;
+  data: {
+    error: string;
+  };
 }
 
 export interface AuthLoginPayload {
-    email: string
-    password: string
+  email: string;
+  password: string;
 }
 
 export interface RegisterUserPayload {
   email: string;
   password: string;
-  confirm_password?: string
+  confirm_password?: string;
   first_name: string;
   last_name: string;
   middle_name: string;
@@ -22,12 +22,12 @@ export interface RegisterUserPayload {
   age: number;
   gender: string;
   contact_no: string;
-  birth_date: string; 
+  birth_date: string;
   title: string;
 }
 
 export interface ForgotPasswordPayload {
-    email: string
+  email: string;
 }
 
 export interface ChurchResponse {
@@ -47,26 +47,73 @@ export interface ChurchResponse {
 }
 
 export interface ChurchPayload {
-  district_id: number ; 
+  district_id: number;
   church_name: string;
-  pastor_assign: number ; 
+  pastor_assign: number;
   church_date_establish: string;
   church_address: string;
 }
 
 export interface UnAssignedUserResponse {
-    message: string
-    data: {
-        id: number
-        full_name: string
-    }[]
+  message: string;
+  data: {
+    id: number;
+    full_name: string;
+  }[];
 }
 
 export interface NumberOfUsers {
-  active_user: number
-  pending_user: number
+  active_user: number;
+  pending_user: number;
 }
 
 export interface ApproveUserPayload {
-  targetUserId: number
+  targetUserId: number;
+}
+
+
+export interface UserDetailsResponse {
+  message: string
+  data: UserDetails[]
+}
+export interface UserDetails {
+  
+    first_name: string;
+    last_name: string;
+    email: string;
+    middle_name: string;
+    date_created: string
+    date_updated: string
+    suffix: string;
+    age: number;
+    gender: string;
+    contact_no: string;
+    birth_date: string;
+    salutation: string | null;
+    title: string;
+    role: string;
+    profile_display: string | null;
+    id: number;
+    user_id: number;
+    street: string | null;
+    barangay: string | null;
+    municipal: string | null;
+    province: string | null;
+    postal_code: string | null;
+    region: string | null;
+    country: string | null;
+    date_of_marriage: string | null;
+    spouse_first_name: string | null;
+    spouse_last_name: string | null;
+    spouse_middle_name: string | null;
+    spouse_contact: string | null;
+    father_first_name: string | null;
+    father_last_name: string | null;
+    father_middle_name: string | null;
+    father_suffix_name: string | null;
+    mother_first_name: string | null;
+    mother_last_name: string | null;
+    mother_middle_name: string | null;
+    mother_suffix_name: string | null;
+  
 }
