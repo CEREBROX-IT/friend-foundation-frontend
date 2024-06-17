@@ -140,7 +140,7 @@ const AdminSideBar = () => {
                   openSidebar ? "flex" : "hidden"
                 } text-bold text-[15px]`}
               >
-                Forms Management
+                Create Form
               </p>
             )}
           </div>
