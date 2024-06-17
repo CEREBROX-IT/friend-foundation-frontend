@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { MenuItem, TextField, InputAdornment, IconButton } from "@mui/material";
 import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
 import LoadingAnimation from "../../../components/loading-animation";
-import { RegisterUser } from "../../../redux/type/Type";
+import { RegisterUserPayload } from "../../../redux/type/Type";
 import { useAuthRegisterMutation } from "../../../redux/services/AuthenticationApi";
 
 interface RegisterScreenProps {
@@ -18,7 +18,7 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
     formState: { errors },
     reset,
     getValues,
-  } = useForm<RegisterUser>();
+  } = useForm<RegisterUserPayload>();
   const [Register, {isLoading}] = useAuthRegisterMutation()
 
   const [showPassword, setShowPassword] = useState(false);
@@ -27,11 +27,13 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
   const handleClickShowConfirmPassowrd = () =>
     setShowConfirmPassword((prevValue) => !prevValue);
 
-  const onSubmitHandler: SubmitHandler<RegisterUser> = async (data) => {
-    await Register(data).unwrap().then(() => {
-      handleBackToLogin()
-      reset()
-    })
+  const onSubmitHandler: SubmitHandler<RegisterUserPayload> = async (data) => {
+    await Register(data)
+      .unwrap()
+      .then(() => {
+        handleBackToLogin();
+        reset();
+      });
   };
 
   return (
