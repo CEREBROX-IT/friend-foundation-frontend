@@ -333,3 +333,17 @@ export interface UpdateChurchPayload {
     church_address: string;
   };
 }
+
+export interface AssignedLogsDetails {
+  id: number;
+  user_id: number;
+  user_full_name: string;
+  previous_assign: string;
+  current_assign: string;
+  date_created: string
+}
+
+export interface AssignedLogsDetailsResponse {
+  message: string
+  data: AssignedLogsDetails[]
+}

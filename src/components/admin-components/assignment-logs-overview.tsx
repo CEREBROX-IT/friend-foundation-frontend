@@ -2,14 +2,15 @@ import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useGetAssignedLogsQuery } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
 import { useNavigate } from "react-router-dom";
+import { useFetchAssignedLogsQuery } from "../../redux/services/AssignedLogsApi";
+import { AssignedLogsDetails } from "../../redux/type/Type";
 const AssignmentLogsOverview: FC = () => {
   const navigate = useNavigate()
-  const { data: AssignedLogs } = useGetAssignedLogsQuery();
+  const { data: AssignedLogs } = useFetchAssignedLogsQuery();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(AssignedLogs || []);
+  const [filteredRows, setFilteredRows] = useState<AssignedLogsDetails[]>([]);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -19,11 +20,12 @@ const AssignmentLogsOverview: FC = () => {
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      AssignedLogs?.filter((row) => {
+      AssignedLogs?.data.filter((row) => {
         return (
           row.user_full_name?.toLowerCase().includes(lowerCaseQuery) ||
           row.current_assign?.toLowerCase().includes(lowerCaseQuery) ||
-          row.previous_assign?.toLowerCase().includes(lowerCaseQuery)
+          row.previous_assign?.toLowerCase().includes(lowerCaseQuery) ||
+          row.date_created?.toLowerCase().includes(lowerCaseQuery)
         );
       }).filter((row) => {
         // Filter by date within past two days
@@ -59,7 +61,12 @@ const AssignmentLogsOverview: FC = () => {
       flex: 1,
       minWidth: 200,
     },
-    
+    {
+      field: "date_created",
+      headerName: "DATE CREATED",
+      flex: 1,
+      minWidth: 200,
+    },
   ];
 
   return (

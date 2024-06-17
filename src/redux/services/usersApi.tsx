@@ -229,12 +229,7 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
   
-    getAssignedLogs: builder.query<AssingedLogs[], void>({
-      query: () => "/assignee_logs/",
-      keepUnusedDataFor: 60,
-      transformResponse: (response: AssignedLogsResponse) => response.data,
-      providesTags: ["Church"],
-    }),
+
     postUploadProfile: builder.mutation<void, FormData>({
       query: (data) => ({
         url: `/user/update-profile-display/me`,
@@ -281,7 +276,6 @@ export const userApi = createApi({
 });
 
 export const {
-  useGetAssignedLogsQuery,
   usePostUploadProfileMutation,
   useGetAnsweredFormrQuery,
   useGetUnansweredFormsQuery,
