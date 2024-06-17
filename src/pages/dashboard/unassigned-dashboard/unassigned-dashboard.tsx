@@ -2,9 +2,8 @@ import Header from "../../../components/header";
 import { TextField, MenuItem } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { useFetchUserProfileQuery } from "../../../redux/services/UserApi";
+import { useFetchUserProfileQuery, useUpdateUserDetailsMutation } from "../../../redux/services/UserApi";
 import JwtDecoder from "../../../utils/jwt-decoder";
-import { usePostUpdateUserDetailsMutation } from "../../../redux/services/usersApi";
 import LoadingAnimation from "../../../components/loading-animation";
 import { usePostUploadProfileMutation } from "../../../redux/services/usersApi";
 import { UnassignedPayload } from "../../../redux/type/Type";
@@ -269,7 +268,7 @@ const country = [
 ];
 
 export default function UnassignedDashboard() {
-  const [updateProfile, { isLoading }] = usePostUpdateUserDetailsMutation();
+  const [updateProfile, { isLoading }] = useUpdateUserDetailsMutation();
   const [uploadProfile] = usePostUploadProfileMutation();
   const userData = JwtDecoder().decodedToken;
   const id: number | undefined = userData?.id;

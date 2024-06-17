@@ -270,3 +270,40 @@ export interface UpdateDistrictPayload {
 export interface RemoveDistrictPayload {
    id: number
 }
+
+export interface UpdateUserProfileDetailsPayload {
+  id?: number;
+  data: {
+    email?: string | null;
+    first_name?: string | null;
+    last_name?: string | null;
+    middle_name?: string | null;
+    suffix?: string | null;
+    age?: number | null;
+    gender?: string | null;
+    contact_no?: string | null;
+    birth_date?: string | null;
+    salutation?: string | null;
+    title?: string | null;
+    street?: string | null;
+    barangay?: string | null;
+    municipal?: string | null;
+    province?: string | null;
+    postal_code?: string | null;
+    region?: string | null;
+    country?: string | null;
+    date_of_marriage?: string | null;
+    spouse_first_name?: string | null;
+    spouse_last_name?: string | null;
+    spouse_middle_name?: string | null;
+    spouse_contact?: string | null;
+    father_first_name?: string | null;
+    father_last_name?: string | null;
+    father_middle_name?: string | null;
+    father_suffix_name?: string | null;
+    mother_first_name?: string | null;
+    mother_last_name?: string | null;
+    mother_middle_name?: string | null;
+    mother_suffix_name?: string | null;
+  };
+};

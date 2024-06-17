@@ -1,5 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { UnAssignedUserResponse, ApproveUserPayload, UserDetailsResponse, RemoveUser, UserProfileResponse } from "../type/Type";
+import {
+  UnAssignedUserResponse,
+  ApproveUserPayload,
+  UserDetailsResponse,
+  RemoveUser,
+  UserProfileResponse,
+  UpdateUserProfileDetailsPayload,
+} from "../type/Type";
 import { StatsApi } from "./StatsApi";
 export const UserApi = createApi({
   reducerPath: "UserApi",
@@ -52,13 +59,26 @@ export const UserApi = createApi({
       },
     }),
     FetchUserProfile: builder.query<UserProfileResponse, void>({
-      query : () => "/user/me",
+      query: () => "/user/me",
       keepUnusedDataFor: 120,
-      providesTags: ["UserProfile"]
-
-    })
+      providesTags: ["UserProfile"],
+    }),
+    UpdateUserDetails: builder.mutation<void, UpdateUserProfileDetailsPayload>({
+      query: ({data, id}) => ({
+        url: `/user/update?id=${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["UserProfile"]
+    }),
   }),
 });
 
-export const { useFetchUnassignedUserQuery, useApproveUserMutation, useFetchUsersQuery, useRemoveUserMutation, useFetchUserProfileQuery } =
-  UserApi;
+export const {
+  useFetchUnassignedUserQuery,
+  useApproveUserMutation,
+  useFetchUsersQuery,
+  useRemoveUserMutation,
+  useFetchUserProfileQuery,
+  useUpdateUserDetailsMutation
+} = UserApi;

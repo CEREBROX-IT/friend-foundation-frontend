@@ -229,14 +229,6 @@ export const userApi = createApi({
 
   endpoints: (builder) => ({
   
-
-    postUpdateUserDetails: builder.mutation<void, UnassignedPayload>({
-      query: ({ id, data }) => ({
-        url: `/user/update?id=${id}`,
-        method: "PUT",
-        body: data,
-      }),
-    }),
     postAddChurch: builder.mutation<void, Partial<ChurchDetails>>({
       query: (data) => ({
         url: `/church/create`,
@@ -362,7 +354,6 @@ export const userApi = createApi({
 });
 
 export const {
-  usePostUpdateUserDetailsMutation,
   usePostAddChurchMutation,
   useGetChurchListQuery,
   usePostDeleteChurchMutation,
