@@ -1,4 +1,5 @@
-import { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
+
 import BackgroundImage from "../../../assets/authentication/background_image.webp";
 import LeftPanel from "../../../assets/authentication/left_panel.webp";
 import RightPanel from "../../../assets/authentication/right_panel.webp";
