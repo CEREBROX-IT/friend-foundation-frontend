@@ -4,12 +4,10 @@ import { MenuItem, TextField } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import AddDistrictModal from "../../../components/admin-components/add-district-modal";
 import { useState } from "react";
-import {
-  useGetUnassignedUserQuery,
-  useGetDistrictListQuery,
-  usePostUpdateDistrictMutation,
-} from "../../../redux/services/usersApi";
+
 import LoadingAnimation from "../../../components/loading-animation";
+import { useFetchUnassignedUserQuery } from "../../../redux/services/UserApi";
+import { useFetchDistrictListQuery, useUpdateDistrictMutation } from "../../../redux/services/DistrictApi";
 
 interface IFormInput {
   head_district_assign: number;
@@ -30,16 +28,15 @@ const AdminDistrictAssignment = () => {
 
   const [openNewDistrictModal, setOpenNewDistrictModal] = useState(false);
   const [UpdateDistrict, { isLoading: UpdateLoading }] =
-    usePostUpdateDistrictMutation();
-  const { data: UnAssignedUsers } = useGetUnassignedUserQuery();
-  const { data: DistrictList } = useGetDistrictListQuery();
-  const filter = DistrictList?.filter(
+    useUpdateDistrictMutation();
+  const { data: UnAssignedUsers } = useFetchUnassignedUserQuery();
+  const { data: DistrictList } = useFetchDistrictListQuery();
+  const filter = DistrictList?.data.filter(
     (item) => item.head_district_assign === null
   );
 
-  console.log(filter);
   const onSubmitHandle: SubmitHandler<IFormInput> = async (data) => {
-    const filter = DistrictList?.filter((item) => item.id === data.id) || [];
+    const filter = DistrictList?.data.filter((item) => item.id === data.id) || [];
 
     const value = {
       union_conference: filter[0]?.union_conference,

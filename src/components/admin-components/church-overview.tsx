@@ -8,60 +8,57 @@ import {
   GridAlignment,
 } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
-import {
-  useGetChurchListAdminQuery,
-  usePostDeleteChurchMutation,
-} from "../../redux/services/usersApi";
+import { useFetchChurchListAdminQuery, useRemoveChurchMutation} from "../../redux/services/ChurchApi";
+import { ChurchResponse } from "../../redux/type/Type";
 
 const ChurchOverview: FC = () => {
-  const { data: ChurchList } = useGetChurchListAdminQuery();
-  const [PostDeleteChurch] = usePostDeleteChurchMutation();
+  const { data: ChurchListAdmin } = useFetchChurchListAdminQuery();
+  console.log(ChurchListAdmin)
+  const [PostDeleteChurch] = useRemoveChurchMutation();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(ChurchList ?? []);
+  const [filteredRows, setFilteredRows] = useState<ChurchResponse["data"]>([]);
   const { theme } = useContext(ThemeContext);
-
-  useEffect(() => {
-    applyFilters();
-  }, [searchQuery, ChurchList]);
 
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      ChurchList?.filter((row) => {
-        return (
-          row.district_name?.toLowerCase().includes(lowerCaseQuery) ||
-          row.church_name?.toLowerCase().includes(lowerCaseQuery) ||
-          row.head_pastor_full_name?.toLowerCase().includes(lowerCaseQuery) ||
-          row.church_address?.toLowerCase().includes(lowerCaseQuery)
-        );
-      }) ?? [];
+      ChurchListAdmin?.data?.filter((row) =>
+        Object.values(row).some(
+          (value) =>
+            typeof value === "string" &&
+            value.toLowerCase().includes(lowerCaseQuery)
+        )
+      ) ?? [];
+
     setFilteredRows(filteredData);
   };
 
-  // Memoize the filtered rows to prevent unnecessary re-renders
+  useEffect(() => {
+    applyFilters();
+  }, [searchQuery, ChurchListAdmin]);
+
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
   const CustomCellRenderer: React.FC<{ value: string }> = ({ value }) => (
     <h1 className="text-red-700">{value}</h1>
   );
 
-  //-----for the Table------
   const columns = [
     {
       field: "church_name",
-      headerName: "Church Name",
+      headerName: "CHURCH NAME",
       flex: 1,
       minWidth: 200,
     },
     {
       field: "district_name",
-      headerName: "District Name",
+      headerName: "DISTRICT NAME",
       flex: 1,
       minWidth: 200,
     },
     {
       field: "head_pastor_full_name",
-      headerName: "Pastor Name",
+      headerName: "PASTOR NAME",
       flex: 1,
       minWidth: 200,
       renderCell: (params: GridRenderCellParams) =>
@@ -73,15 +70,27 @@ const ChurchOverview: FC = () => {
     },
     {
       field: "church_date_establish",
-      headerName: "Church Establish",
+      headerName: "CHURCH ESTABLISH",
       flex: 1,
       minWidth: 250,
     },
     {
       field: "church_address",
-      headerName: "Church Address",
+      headerName: "CHURCH ADDRESS",
       flex: 1,
       minWidth: 250,
+    },
+    {
+      field: "date_created",
+      headerName: "DATE CREATE",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "date_updated",
+      headerName: "DATE UPDATED",
+      flex: 1,
+      minWidth: 200,
     },
     {
       field: "action",

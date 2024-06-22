@@ -1,53 +1,18 @@
 import Header from "../../../components/header";
 import { TextField, MenuItem } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useGetUserDetailsQuery } from "../../../redux/services/usersApi";
 import { useEffect } from "react";
+import { useFetchUserProfileQuery, useUpdateUserDetailsMutation, useUploadProfilePictureMutation } from "../../../redux/services/UserApi";
 import JwtDecoder from "../../../utils/jwt-decoder";
-import { usePostUpdateUserDetailsMutation } from "../../../redux/services/usersApi";
 import LoadingAnimation from "../../../components/loading-animation";
-import { usePostUploadProfileMutation } from "../../../redux/services/usersApi";
-export type TFormInput = {
-  id?: number;
-  data: {
-    email?: string | null;
-    first_name?: string | null;
-    last_name?: string | null;
-    middle_name?: string | null;
-    suffix?: string | null;
-    age?: number | null;
-    gender?: string | null;
-    contact_no?: string | null;
-    birth_date?: string | null;
-    salutation?: string | null;
-    title?: string | null;
-    street?: string | null;
-    barangay?: string | null;
-    municipal?: string | null;
-    province?: string | null;
-    postal_code?: string | null;
-    region?: string | null;
-    country?: string | null;
-    date_of_marriage?: string | null;
-    spouse_first_name?: string | null;
-    spouse_last_name?: string | null;
-    spouse_middle_name?: string | null;
-    spouse_contact?: string | null;
-    father_first_name?: string | null;
-    father_last_name?: string | null;
-    father_middle_name?: string | null;
-    father_suffix_name?: string | null;
-    mother_first_name?: string | null;
-    mother_last_name?: string | null;
-    mother_middle_name?: string | null;
-    mother_suffix_name?: string | null;
-  };
-};
+import { UnassignedPayload } from "../../../redux/type/Type";
+
 
 export type ProfileInput = {
   profile_display: FileList;
   buffer: any;
 };
+
 const country = [
   "Afghanistan",
   "Åland Islands",
@@ -302,8 +267,8 @@ const country = [
 ];
 
 export default function UnassignedDashboard() {
-  const [updateProfile, { isLoading }] = usePostUpdateUserDetailsMutation();
-  const [uploadProfile] = usePostUploadProfileMutation();
+  const [updateProfile, { isLoading }] = useUpdateUserDetailsMutation();
+  const [uploadProfile] = useUploadProfilePictureMutation();
   const userData = JwtDecoder().decodedToken;
   const id: number | undefined = userData?.id;
   const {
@@ -311,15 +276,15 @@ export default function UnassignedDashboard() {
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<TFormInput>();
+  } = useForm<UnassignedPayload>();
 
   const { register: RegisterProfile, handleSubmit: SubmitProfile } =
     useForm<ProfileInput>();
 
-  const { data: UserDetails } = useGetUserDetailsQuery();
-  console.log(UserDetails);
+  const { data: UserDetails } = useFetchUserProfileQuery();
+  
 
-  async function onSubmitHandler({ data }: TFormInput) {
+  async function onSubmitHandler({ data }: UnassignedPayload) {
     await updateProfile({ id: id, data: data })
       .unwrap()
       .then((response) => console.log(response));
@@ -364,7 +329,6 @@ export default function UnassignedDashboard() {
   async function ProfileUpload(data: ProfileInput) {
     const formdata = new FormData();
     formdata.append("profile_display", data.profile_display[0]);
-
     await uploadProfile(formdata)
       .unwrap()
       .then((response) => console.log(response));
@@ -393,16 +357,14 @@ export default function UnassignedDashboard() {
                 <div className="w-full  ">
                   <TextField
                     type="file"
-                    // error={errors.profile_display ? true : false}
                     {...RegisterProfile("profile_display", {
                       validate: {
                         validFileType: (value: FileList) => {
-                          if (!value) return true; // Let the required validation handle empty files
+                          if (!value) return true; 
                           const allowedTypes = [
                             "image/jpeg",
                             "image/png",
                             "image/gif",
-                            // Add more image types if needed
                           ];
                           const isValid = Array.from(value).every((file) =>
                             allowedTypes.includes(file.type)
@@ -797,9 +759,7 @@ export default function UnassignedDashboard() {
                   <TextField
                     type="text"
                     error={errors?.data?.province ? true : false}
-                    {...register("data.province", {
-                      required: "Province is required",
-                    })}
+                    {...register("data.province")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -824,9 +784,7 @@ export default function UnassignedDashboard() {
                   <TextField
                     type="text"
                     error={errors.data?.region ? true : false}
-                    {...register("data.region", {
-                      required: "Region is required",
-                    })}
+                    {...register("data.region")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -853,9 +811,7 @@ export default function UnassignedDashboard() {
                     defaultValue={UserDetails?.data?.country}
                     select
                     error={errors?.data?.country ? true : false}
-                    {...register("data.country", {
-                      required: "Country is required",
-                    })}
+                    {...register("data.country")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -884,9 +840,7 @@ export default function UnassignedDashboard() {
                   <TextField
                     type="text"
                     error={errors.data?.postal_code ? true : false}
-                    {...register("data.postal_code", {
-                      required: "Postal is required",
-                    })}
+                    {...register("data.postal_code")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -909,9 +863,7 @@ export default function UnassignedDashboard() {
                   <TextField
                     type="text"
                     error={errors?.data?.street ? true : false}
-                    {...register("data.street", {
-                      required: "Street is required",
-                    })}
+                    {...register("data.street")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -937,9 +889,7 @@ export default function UnassignedDashboard() {
                   <TextField
                     type="text"
                     error={errors.data?.barangay ? true : false}
-                    {...register("data.barangay", {
-                      required: "Barangay is required",
-                    })}
+                    {...register("data.barangay")}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {

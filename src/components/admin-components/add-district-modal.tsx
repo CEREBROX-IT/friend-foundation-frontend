@@ -4,18 +4,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField, MenuItem } from "@mui/material";
 import { IoMdCloseCircle } from "react-icons/io";
 import LoadingAnimation from "../loading-animation";
-import { usePostNewDistrictMutation, useGetUnassignedUserQuery } from "../../redux/services/usersApi";
+import { useCreateNewDistrictMutation } from "../../redux/services/DistrictApi";
+import { CreateNewDistrictPayload } from "../../redux/type/Type";
+import { useFetchUnassignedUserQuery } from "../../redux/services/UserApi";
 
-interface DistrictDetails {
-  union_conference: string;
-  district_name: string;
-  head_district_assign: number | ""; // user ID or empty string for null
-  date_establish: string; // ISO 8601 date string
-  district_region: string;
-  district_province: string;
-  district_municipal: string;
-  headquarters_address: string;
-}
+
 
 interface NewDistrictModalProps {
   closeDistrictModal: () => void;
@@ -27,16 +20,20 @@ const AddDistrictModal: FC<NewDistrictModalProps> = ({closeDistrictModal,}) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<DistrictDetails>();
+  } = useForm<CreateNewDistrictPayload>();
 
-  const [newDistrict, {isLoading}] = usePostNewDistrictMutation()
-  const {data: UnAssignedData} = useGetUnassignedUserQuery()
+  const [newDistrict, {isLoading}] = useCreateNewDistrictMutation()
+  const { data: UnAssignedData } = useFetchUnassignedUserQuery();
 
-  const onSubmitHandler: SubmitHandler<DistrictDetails> = async (data) => {
-    console.log(data)
-    await newDistrict(data).unwrap().then(() => {
-      closeDistrictModal()
-    })
+  const onSubmitHandler: SubmitHandler<CreateNewDistrictPayload> = async (
+    data
+  ) => {
+    console.log(data);
+    await newDistrict(data)
+      .unwrap()
+      .then(() => {
+        closeDistrictModal();
+      });
   };
 
   return (

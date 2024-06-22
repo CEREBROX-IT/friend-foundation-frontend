@@ -2,12 +2,13 @@ import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useGetAssignedLogsQuery } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
+import { useFetchAssignedLogsQuery } from "../../redux/services/AssignedLogsApi";
+import { AssignedLogsDetails } from "../../redux/type/Type";
 const AllAssignmentLogsOverview: FC = () => {
-  const { data: AssignedLogs } = useGetAssignedLogsQuery();
+  const { data: AssignedLogs } = useFetchAssignedLogsQuery();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(AssignedLogs || []);
+  const [filteredRows, setFilteredRows] = useState<AssignedLogsDetails[]>([]);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -17,11 +18,12 @@ const AllAssignmentLogsOverview: FC = () => {
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      AssignedLogs?.filter((row) => {
+      AssignedLogs?.data.filter((row) => {
         return (
           row.user_full_name?.toLowerCase().includes(lowerCaseQuery) ||
           row.current_assign?.toLowerCase().includes(lowerCaseQuery) ||
-          row.previous_assign?.toLowerCase().includes(lowerCaseQuery)
+          row.previous_assign?.toLowerCase().includes(lowerCaseQuery) ||
+          row.date_created?.toLowerCase().includes(lowerCaseQuery)
         );
       }) ?? [];
     setFilteredRows(filteredData);
@@ -40,13 +42,19 @@ const AllAssignmentLogsOverview: FC = () => {
     },
     {
       field: "previous_assign",
-      headerName: "Previous Assign",
+      headerName: "PREVIOUS ASSIGN",
       flex: 1,
       minWidth: 200,
     },
     {
       field: "current_assign",
-      headerName: "Current Assign",
+      headerName: "CURRENT ASSIGN",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "date_created",
+      headerName: "DATE CREATED",
       flex: 1,
       minWidth: 200,
     },

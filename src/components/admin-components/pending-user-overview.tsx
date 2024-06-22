@@ -3,15 +3,15 @@ import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
-import { useGetUserListQuery } from "../../redux/services/usersApi";
 import { useNavigate } from "react-router-dom";
+import { useFetchUsersQuery } from "../../redux/services/UserApi";
+import { UserDetails } from "../../redux/type/Type";
 
 const PendingUserOverview: FC = () => {
-  const { data: GetUserList } = useGetUserListQuery();
-  console.log(GetUserList)
+  const { data: GetUserList } = useFetchUsersQuery();
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(GetUserList ?? []);
+  const [filteredRows, setFilteredRows] = useState<UserDetails[]>([]);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const PendingUserOverview: FC = () => {
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      GetUserList?.filter((row) => {
+      GetUserList?.data?.filter((row) => {
         // Filter by search query and pending status
         return (
           (row.first_name.toLowerCase().includes(lowerCaseQuery) ||
@@ -30,6 +30,7 @@ const PendingUserOverview: FC = () => {
         );
       }).filter((row) => {
         // Filter by date within past two days
+        console.log(row)
         const currentDate = new Date();
         const rowDate = new Date(row.date_created); 
         const timeDiff = Math.abs(currentDate.getTime() - rowDate.getTime());

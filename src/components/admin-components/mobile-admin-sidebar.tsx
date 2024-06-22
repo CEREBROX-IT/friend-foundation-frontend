@@ -114,7 +114,7 @@ const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
           <div className="h-[42px] min-w-[42px] flex items-center justify-center">
             <FaFile className="text-[22px]" />
           </div>
-          <p className={`text-bold text-[15px]`}>Forms Management</p>
+          <p className={`text-bold text-[15px]`}>Create Form</p>
         </div>
         <div
           className={`flex flex-row max-auto px-2 items-center justify-between hover:bg-secondary-light cursor-pointer`}

@@ -3,14 +3,15 @@ import { FaFile } from "react-icons/fa6";
 import { HiMiniUsers } from "react-icons/hi2";
 import ResultCards from "../../../components/result-cards";
 import DistrictOverview from "../../../components/head-district-components/district-dashboard-overview";
-import { useGetChurchCountQuery, useGetFormSubmissionCountQuery } from "../../../redux/services/usersApi";
 import LoadingAnimation2 from "../../../components/loading-animation2";
 import JwtDecoder from "../../../utils/jwt-decoder";
+import { useFetchNoFormSubmissionQuery, useFetchNoChurchCountQuery } from "../../../redux/services/StatsApi";
+
 const HeadDistrictDashboard = () => {
     console.log(JwtDecoder().decodedToken);
 
-  const { data: ChurchCount, isLoading: ChurchLoading } = useGetChurchCountQuery();
-  const {data: FormSubmission, isLoading:FormSubmissionLoading} = useGetFormSubmissionCountQuery()
+  const { data: ChurchCount, isLoading: ChurchLoading } = useFetchNoChurchCountQuery();
+  const {data: FormSubmission, isLoading:FormSubmissionLoading} = useFetchNoFormSubmissionQuery()
   return (
     <div
       className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto`}

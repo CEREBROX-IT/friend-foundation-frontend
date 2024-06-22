@@ -2,18 +2,17 @@ import { FC } from "react";
 import Header from "../../../components/header";
 import ResultCards from "../../../components/result-cards";
 import { HiMiniUsers } from "react-icons/hi2";
-import { FaUserTie, FaFile, FaChurch } from "react-icons/fa6";
-import SubmittedFormOverview from "../../../components/admin-components/submitted-forms-overview";
+import { FaUserTie, FaChurch } from "react-icons/fa6";
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
-import { useGetUserCountQuery, useGetFormSubmissionCountQuery, useGetChurchCountQuery, useGetHeadPastorCountQuery } from "../../../redux/services/usersApi";
 import LoadingAnimation2 from "../../../components/loading-animation2";
+import { useFetchNoOfUserQuery,  useFetchNoChurchCountQuery, useFetchNoHeadPastorCountQuery } from "../../../redux/services/StatsApi";
 const AdminDashboard: FC = () => {
 
-  const {data: userCount, isLoading: UserLoading} = useGetUserCountQuery()
-  const {data: FormSubmissionCount, isLoading: FormLoading} = useGetFormSubmissionCountQuery()
-  const {data: ChurchCount, isLoading: ChurchLoading} = useGetChurchCountQuery()
-  const { data: PastorCount, isLoading } = useGetHeadPastorCountQuery();
+  const {data: UserCount, isLoading: UserLoading} = useFetchNoOfUserQuery()
+  // const {data: FormSubmissionCount, isLoading: FormLoading} = useFetchNoFormSubmissionQuery()
+  const {data: ChurchCount, isLoading: ChurchLoading} = useFetchNoChurchCountQuery()
+  const { data: PastorCount, isLoading } = useFetchNoHeadPastorCountQuery();
   return (
     <div className="relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto">
       <Header />
@@ -25,13 +24,13 @@ const AdminDashboard: FC = () => {
       <div className="flex flex-wrap flex-row gap-4 px-4 mt-[-7.5rem]">
         <ResultCards
           title="No. of Users"
-          result={UserLoading ? <LoadingAnimation2 /> : userCount?.active_user}
-          incomplete={userCount?.pending_user}
+          result={UserLoading ? <LoadingAnimation2 /> : UserCount?.active_user}
+          incomplete={UserCount?.pending_user}
           description="Pending User"
           icon={HiMiniUsers}
           navigation_path="/dashboard/users"
         />
-        <ResultCards
+        {/* <ResultCards
           title="Form Submission"
           result={
             FormLoading ? (
@@ -44,7 +43,7 @@ const AdminDashboard: FC = () => {
           description="Pastors not submitted"
           icon={FaFile}
           navigation_path="/dashboard"
-        />
+        /> */}
         <ResultCards
           title="No. Pastors"
           result={
@@ -71,11 +70,6 @@ const AdminDashboard: FC = () => {
 
       {/* ============================ First Table ============================ */}
 
-      <div className="w-full p-4 mt-2">
-        <div className="bg-sixth-light dark:bg-sixth-dark shadow-lg rounded-[10px] custom-scrollbar">
-          <SubmittedFormOverview />
-        </div>
-      </div>
 
       <div className="w-full p-4 mt-2">
         <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">

@@ -12,17 +12,12 @@ import { IoEyeOutline, IoEyeOffSharp } from "react-icons/io5";
 import { useForm, SubmitHandler } from "react-hook-form";
 import RegisterScreen from "../registration/register";
 import ResetPassword from "../reset-password/ResetPassword";
-import { usePostLoginMutation } from "../../../redux/services/loginApi";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import LoadingAnimation from "../../../components/loading-animation";
 import { Cookies } from "typescript-cookie";
-
-interface IFormInput {
-  email: string;
-  password: string;
-}
-
+import { AuthLoginPayload } from "../../../redux/type/Type";
+import { useAuthLoginMutation } from "../../../redux/services/AuthenticationApi";
 
 const LoginScreen: FC = () => {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -30,36 +25,35 @@ const LoginScreen: FC = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [animation, setAnimation] = useState("zoom-in");
-
-  const [postLogin, { isLoading, isError }] = usePostLoginMutation();
+  const [Login, { isLoading, isError }] = useAuthLoginMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<AuthLoginPayload>();
 
-
-const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
-  await postLogin(data).unwrap().then(response => {
-    Cookies.set("token", response.token)
-    console.log(response)
-    window.location.href = "/dashboard";
-  })
-};
+  const onSubmitHandler: SubmitHandler<AuthLoginPayload> = async (data) => {
+    await Login(data)
+      .unwrap()
+      .then((response) => {
+        Cookies.set("token", response.token);
+        window.location.href = "/dashboard";
+      })
+      
+  };
 
 
   const handleOpenRegister = () => {
     setAnimation("flip-right");
     setIsRegister(true);
     setIsResetPassword(false);
-    // navigate("/register");
+   
   };
 
   const handleOpenResetPassword = () => {
     setAnimation("flip-right");
     setIsResetPassword(true);
-    // navigate("/reset/password");
   };
 
   const handleBackToLogin = () => {
@@ -91,7 +85,7 @@ const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
       {isRegister ? (
         <RegisterScreen handleBackToLogin={handleBackToLogin} />
       ) : isResetPassword ? (
-        <ResetPassword handleOpenRegister={handleOpenRegister}/>
+        <ResetPassword handleOpenRegister={handleOpenRegister} />
       ) : (
         <div
           data-aos={animation}
@@ -177,12 +171,22 @@ const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
             ) : (
               ""
             )} */}
-            {isError ? <p className="text-red-600 w-full text-sm">Invalid Credentials</p> : ""}
+            {isError ? (
+              <p className="text-red-600 w-full text-sm">Invalid Credentials</p>
+            ) : (
+              ""
+            )}
             <button
               type="submit"
               className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-full h-[45px]"
             >
-              {isLoading ? <div className="flex w-full justify-center"><LoadingAnimation /></div>: "SIGN IN"}
+              {isLoading ? (
+                <div className="flex w-full justify-center">
+                  <LoadingAnimation />
+                </div>
+              ) : (
+                "SIGN IN"
+              )}
             </button>
           </form>
 

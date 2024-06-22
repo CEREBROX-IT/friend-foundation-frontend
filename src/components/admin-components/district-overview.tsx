@@ -7,20 +7,22 @@ import {
   GridRenderCellParams,
   GridAlignment,
 } from "@mui/x-data-grid";
-import { useGetDistrictListQuery, usePostDeleteDistrictMutation } from "../../redux/services/usersApi";
 import ThemeContext from "../ThemeContext";
 import LoadingAnimation2 from "../loading-animation2";
+import { useFetchDistrictListQuery, useRemoveDistrictMutation } from "../../redux/services/DistrictApi";
+import { DistrictDetails } from "../../redux/type/Type";
 
  const CustomCellRenderer: React.FC<{ value: string }> = ({ value }) => (
    <h1 className="text-red-700">{value}</h1>
  );
 
 const DistrictOverview: FC = () => {
-  const { data: GetDistrictList, isLoading: LoadingDistrict } = useGetDistrictListQuery();
+  const { data: GetDistrictList, isLoading: LoadingDistrict } =
+    useFetchDistrictListQuery();
   
-  const [deleteDistrict] = usePostDeleteDistrictMutation()
+  const [deleteDistrict] = useRemoveDistrictMutation();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(GetDistrictList ?? []);
+  const [filteredRows, setFilteredRows] = useState<DistrictDetails[]>([]);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const DistrictOverview: FC = () => {
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
-      GetDistrictList?.filter((row) => {
+      GetDistrictList?.data.filter((row) => {
         return (
           row.union_conference.toLowerCase().includes(lowerCaseQuery) ||
           row.district_name.toLowerCase().includes(lowerCaseQuery) ||
@@ -93,6 +95,12 @@ const DistrictOverview: FC = () => {
       headerName: "HEADQUARTER ADDRESS",
       flex: 1,
       minWidth: 170,
+    },
+    {
+      field: "date_created",
+      headerName: "DATE CREATED",
+      flex: 1,
+      minWidth: 200,
     },
     {
       field: "actions",

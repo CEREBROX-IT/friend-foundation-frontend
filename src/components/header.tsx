@@ -2,21 +2,22 @@ import { useState } from "react";
 import SampleLogo from "../assets/ff_sample_logo.webp";
 import BellIcon from "../assets/notification_bell_icon.webp";
 import { IoMdMenu } from "react-icons/io";
-import { FaUser } from "react-icons/fa6";
 import MobileAdminSideBar from "./admin-components/mobile-admin-sidebar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Cookies } from "typescript-cookie";
-import { useGetUserDetailsQuery } from "../redux/services/usersApi";
 import { useNavigate } from "react-router-dom";
 import JwtDecoder from "../utils/jwt-decoder";
+import { useFetchUserProfileQuery } from "../redux/services/UserApi";
+import { FaRegUser } from "react-icons/fa";
+
 const Header = () => {
   const navigate = useNavigate();
   const userData = JwtDecoder().decodedToken;
   const role = userData?.role;
   const [OpenMenu, setOpenMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { data: GetUserData } = useGetUserDetailsQuery();
+  const { data: GetUserData } = useFetchUserProfileQuery();
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -70,13 +71,19 @@ const Header = () => {
             onClick={handleClick}
           >
             <div className="text-white my-auto mx-auto h-10 w-10 aspect-square">
-              <img
-                src={
-                  import.meta.env.VITE_IMAGE +
-                  GetUserData?.data?.profile_display
-                }
-                 className="object-contain h-full w-full rounded-full"
-              />
+              {GetUserData?.data.profile_display === null ? (
+                <>
+                  <FaRegUser className="text-2xl w-full mx-auto my-auto h-full p-2" />
+                </>
+              ) : (
+                <img
+                  src={
+                    import.meta.env.VITE_IMAGE +
+                    GetUserData?.data?.profile_display
+                  }
+                  className="object-contain h-full w-full rounded-full"
+                />
+              )}
             </div>
           </div>
           <Menu
@@ -100,13 +107,13 @@ const Header = () => {
               // },
             }}
           >
-            {role === "Unassigned" ? (
+            {role === "Unassign" ? (
               <>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </>
             ) : (
               <>
-                <MenuItem onClick={handleUserProfile} disabled>
+                <MenuItem onClick={handleUserProfile}>
                   User Profile
                 </MenuItem>
                 <MenuItem onClick={handleClose} disabled>

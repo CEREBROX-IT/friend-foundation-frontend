@@ -4,23 +4,19 @@ import { MenuItem, TextField } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import AddChurchModal from "../../../components/admin-components/add-churhc-modal";
-import {
-  useGetChurchListAdminQuery,
-  useGetUnassignedChurchQuery,
-  useGetUnassignedUserQuery,
-  usePostUpdateChurchMutation,
-} from "../../../redux/services/usersApi";
 
+import { useFetchUnassignedUserQuery } from "../../../redux/services/UserApi";
+import { useFetchChurchListAdminQuery, useUpdateChurchMutation, useFetchUnassginedChurchQuery } from "../../../redux/services/ChurchApi";
 interface IFormInput {
   pastor_assign: number;
   church_name: string;
 }
 const AdminChurchAssignment = () => {
   const [openModal, setOpenModal] = useState(false);
-  const { data: ChurchList } = useGetChurchListAdminQuery();
-  const { data: UnAssignedChurch } = useGetUnassignedChurchQuery()
-  const { data: Unassgined } = useGetUnassignedUserQuery();
-  const [updateChurch] = usePostUpdateChurchMutation();
+  const { data: ChurchList } = useFetchChurchListAdminQuery();
+  const { data: UnAssignedChurch } = useFetchUnassginedChurchQuery();
+  const { data: Unassgined } = useFetchUnassignedUserQuery();
+  const [updateChurch] = useUpdateChurchMutation();
   
   const {
     register,
@@ -36,8 +32,8 @@ const AdminChurchAssignment = () => {
 
   const onSubmitHandler: SubmitHandler<IFormInput> = async (data) => {
     const filter =
-      ChurchList?.filter((item) => item.church_name === data.church_name) || [];
-    console.log(filter)
+      ChurchList?.data.filter((item) => item.church_name === data.church_name) || [];
+    
     const value = {
       district_id: filter[0]?.district_id, //automatic na mo add sa name sa distrtict
       church_name: filter[0]?.church_name,
@@ -135,7 +131,7 @@ const AdminChurchAssignment = () => {
                           : "Select Church"}
                       </p>
                     </MenuItem>
-                    {UnAssignedChurch?.data?.map((item) => (
+                    {UnAssignedChurch?.data?.map((item: any) => (
                       <MenuItem value={item}>
                         <p className="text-slate-500 text-sm">
                           {item}
