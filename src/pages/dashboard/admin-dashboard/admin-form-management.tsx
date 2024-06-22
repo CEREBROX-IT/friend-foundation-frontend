@@ -16,8 +16,9 @@ const AdminFormManagement = () => {
 
       <div className="flex-1  w-full px-4 absolute translate-y-32">
         <div className="bg-white min-h-screen p-4 rounded-[10px] dark:bg-fourth-dark">
-         
-        </div>
+          <button className=" bg-secondary-light py-2 lg:w-[250px] max-h-[50px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">ADD FORM
+          </button>        
+          </div>
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center dark:text-white">
           © Copyright reserve Friend Foundation Management System 2024
         </p>

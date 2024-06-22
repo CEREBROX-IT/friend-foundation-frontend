@@ -339,7 +339,7 @@ export default function UnassignedDashboard() {
       <Header />
       <div className="bg-fourth-light p-4 flex-1 w-full mx-auto">
         <div className="flex flex-col gap-4 lg:flex-row   p-4  overflow-auto ">
-          <div className="bg-white p-4 ">
+          <div className="bg-white p-4 border border-black">
             <form
               onChange={SubmitProfile(ProfileUpload)}
               className="inline-block w-full"
@@ -386,17 +386,19 @@ export default function UnassignedDashboard() {
               </div>
             </form>
           </div>
-          <div className=" shadow-black bg-white flex-1">
+          <div className=" shadow-black  flex-1">
             <form
               onSubmit={handleSubmit(onSubmitHandler)}
-              className="p-4 max-h-[80vh] overflow-auto custom-scrollbar"
+              className=" max-h-[80vh] overflow-auto custom-scrollbar"
             >
+              <div className="bg-white p-5 border border-black"> 
+                <h1 className="text-2xl font-bold mb-2">Personal Information</h1>
               <div className="flex flex-col xl:flex-row">
                 <div className="w-full">
                   <div className="flex flex-col lg:flex-row  gap-6">
                     <div className="w-full mt-[10px]">
                       <div className="flex flex-row px-1 text-[15px] mb-1">
-                        <span className="font-bold uppercase">First Name</span>
+                        <span className="font-semibold uppercase">First Name</span>
                       </div>
                       <TextField
                         type="text"
@@ -425,7 +427,7 @@ export default function UnassignedDashboard() {
                     </div>
                     <div className="w-full mt-[10px]">
                       <div className="flex flex-row px-1 text-[15px] mb-1">
-                        <span className="font-bold uppercase">Last Name</span>
+                        <span className="font-semibold uppercase">Last Name</span>
                       </div>
                       <TextField
                         type="text"
@@ -454,7 +456,7 @@ export default function UnassignedDashboard() {
                     </div>
                     <div className="w-full mt-[10px] ">
                       <div className="flex flex-row px-1 text-[15px] mb-1">
-                        <span className="font-bold uppercase">Middle Name</span>
+                        <span className="font-semibold uppercase">Middle Name</span>
                       </div>
                       <TextField
                         type="text"
@@ -479,41 +481,10 @@ export default function UnassignedDashboard() {
                     </div>
                   </div>
                   <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
+                    
                     <div className="w-full mt-[10px]">
                       <div className="flex flex-row px-1 text-[15px] mb-1">
-                        <span className="font-bold uppercase">
-                          {" "}
-                          Email Address
-                        </span>
-                      </div>
-                      <TextField
-                        type="email"
-                        error={errors.data?.email ? true : false}
-                        {...register("data.email", {
-                          required: "Email is required",
-                          pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: "Invalid email address",
-                          },
-                        })}
-                        className="w-full bg-fourth-light"
-                        InputProps={{
-                          sx: {
-                            height: "45px",
-                            lineHeight: "normal",
-                            borderRadius: "10px",
-                          },
-                        }}
-                      />
-                      {errors.data?.email && (
-                        <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                          {errors.data.email.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className="w-full mt-[10px]">
-                      <div className="flex flex-row px-1 text-[15px] mb-1">
-                        <span className="font-bold uppercase">Suffix</span>
+                        <span className="font-semibold uppercase">Suffix</span>
                       </div>
                       <TextField
                         type="text"
@@ -541,7 +512,7 @@ export default function UnassignedDashboard() {
                     </div>
                     <div className="w-full mt-[10px]">
                       <div className="flex flex-row px-1 text-[15px] mb-1">
-                        <span className="font-bold uppercase">Age</span>
+                        <span className="font-semibold uppercase">Age</span>
                       </div>
                       <TextField
                         type="number"
@@ -564,13 +535,9 @@ export default function UnassignedDashboard() {
                         </p>
                       )}
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
-                <div className="w-full mt-[10px]">
+                     <div className="w-full mt-[10px]">
                   <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Gender</span>
+                    <span className="font-semibold uppercase">Gender</span>
                   </div>
                   <TextField
                     type="text"
@@ -594,34 +561,14 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
-                <div className="w-full mt-[10px] ">
-                  <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Contact Number</span>
                   </div>
-                  <TextField
-                    type="text"
-                    error={errors.data?.contact_no ? true : false}
-                    {...register("data.contact_no", {
-                      required: "Contact Number is required",
-                    })}
-                    className="w-full bg-fourth-light"
-                    InputProps={{
-                      sx: {
-                        height: "45px",
-                        lineHeight: "normal",
-                        borderRadius: "10px",
-                      },
-                    }}
-                  />
-                  {errors.data?.contact_no && (
-                    <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                      {errors.data.contact_no.message}
-                    </p>
-                  )}
                 </div>
+              </div>
+              
+              <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
                 <div className="w-full mt-[10px] ">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Birthday</span>
+                    <span className="font-semibold uppercase">Birthday</span>
                   </div>
                   <TextField
                     type="text"
@@ -646,11 +593,9 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
-              </div>
-              <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
                 <div className="w-full mt-[10px]">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Salutation</span>
+                    <span className="font-semibold uppercase">Salutation</span>
                   </div>
                   <TextField
                     type="text"
@@ -678,7 +623,7 @@ export default function UnassignedDashboard() {
                 </div>
                 <div className="w-full mt-[10px]">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Title</span>
+                    <span className="font-semibold uppercase">Title</span>
                   </div>
                   <TextField
                     type="text"
@@ -701,16 +646,22 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
-                <div className="w-full mt-[10px]">
+                
+              </div>
+              </div>
+             <div className="mt-10 border border-black bg-white p-4">
+              <h1 className="font-bold text-2xl">Contact Information</h1>
+              <div className="flex gap-6 flex-col lg:flex-row">
+                <div className="w-full mt-[10px] ">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">
-                      Date of Mirriage
-                    </span>
+                    <span className="font-semibold uppercase">Contact Number</span>
                   </div>
                   <TextField
-                    type="date"
-                    error={errors.data?.date_of_marriage ? true : false}
-                    {...register("data.date_of_marriage")}
+                    type="text"
+                    error={errors.data?.contact_no ? true : false}
+                    {...register("data.contact_no", {
+                      required: "Contact Number is required",
+                    })}
                     className="w-full bg-fourth-light"
                     InputProps={{
                       sx: {
@@ -720,17 +671,52 @@ export default function UnassignedDashboard() {
                       },
                     }}
                   />
-                  {errors.data?.date_of_marriage && (
+                  {errors.data?.contact_no && (
                     <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                      {errors.data.date_of_marriage.message}
+                      {errors.data.contact_no.message}
                     </p>
                   )}
-                </div>
               </div>
+              <div className="w-full mt-[10px]">
+                    <div className="flex flex-row px-1 text-[15px] mb-1">
+                      <span className="font-semibold uppercase">
+                        {" "}
+                        Email Address
+                      </span>
+                    </div>
+                    <TextField
+                      type="email"
+                      error={errors.data?.email ? true : false}
+                      {...register("data.email", {
+                        required: "Email is required",
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                          message: "Invalid email address",
+                        },
+                      })}
+                      className="w-full bg-fourth-light"
+                      InputProps={{
+                        sx: {
+                          height: "45px",
+                          lineHeight: "normal",
+                          borderRadius: "10px",
+                        },
+                      }}
+                    />
+                    {errors.data?.email && (
+                      <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                        {errors.data.email.message}
+                      </p>
+                    )}
+              </div></div>
+              
+             </div>
+              <div className="bg-white p-5 border border-black mt-10">
+                <h1 className="font-bold text-2xl ">Address Information</h1>
               <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
                 <div className="w-full mt-[10px]">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Municipal</span>
+                    <span className="font-semibold uppercase">Municipal</span>
                   </div>
                   <TextField
                     type="text"
@@ -754,7 +740,7 @@ export default function UnassignedDashboard() {
 
                 <div className="w-full mt-[15px]">
                   <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Province</span>
+                    <span className="font-semibold uppercase">Province</span>
                   </div>
                   <TextField
                     type="text"
@@ -779,7 +765,7 @@ export default function UnassignedDashboard() {
 
                 <div className="w-full mt-[15px] ">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Region</span>
+                    <span className="font-semibold uppercase">Region</span>
                   </div>
                   <TextField
                     type="text"
@@ -804,7 +790,7 @@ export default function UnassignedDashboard() {
               <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
                 <div className="w-full mt-[15px]">
                   <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Country</span>
+                    <span className="font-semibold uppercase">Country</span>
                   </div>
                   <TextField
                     type="text"
@@ -835,7 +821,7 @@ export default function UnassignedDashboard() {
                 </div>
                 <div className="w-full mt-[15px]">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Postal Code</span>
+                    <span className="font-semibold uppercase">Postal Code</span>
                   </div>
                   <TextField
                     type="text"
@@ -858,7 +844,7 @@ export default function UnassignedDashboard() {
                 </div>
                 <div className="w-full mt-[10px]">
                   <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Street</span>
+                    <span className="font-semibold uppercase">Street</span>
                   </div>
                   <TextField
                     type="text"
@@ -884,7 +870,7 @@ export default function UnassignedDashboard() {
               <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
                 <div className="w-full mt-[10px] ">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Barangay</span>
+                    <span className="font-semibold uppercase">Barangay</span>
                   </div>
                   <TextField
                     type="text"
@@ -905,9 +891,17 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
-                <div className="w-full mt-[10px]">
+                
+              </div>
+              </div>
+              
+              <div className="bg-white mt-10 border border-black p-5">
+                <h1 className="text-2xl font-bold">Family Information</h1>
+                <h2 className="text-xl font-semibold underline mt-6">SPOUSE INFORMATION</h2>
+              <div className="flex flex-col lg:flex-row flex-wrap flex-1  gap-6 mt-[20px]">
+                <div className="grow mt-[10px]">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">
+                    <span className="font-semibold uppercase">
                       Spouse First Name
                     </span>
                   </div>
@@ -930,10 +924,9 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
-
-                <div className="w-full mt-[10px] ">
+                <div className=" grow mt-[10px] ">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">
+                    <span className="font-semibold uppercase">
                       Spouse Middle Name
                     </span>
                   </div>
@@ -956,11 +949,9 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
-              </div>
-              <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
-                <div className="w-full mt-[10px]">
+                <div className=" grow mt-[10px]">
                   <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Spouse Lastname</span>
+                    <span className="font-semibold uppercase">Spouse Lastname</span>
                   </div>
                   <TextField
                     type="text"
@@ -982,9 +973,9 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
-                <div className="w-full mt-[10px]">
+                <div className="grow  mt-[10px]">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Spouse Contact</span>
+                    <span className="font-semibold uppercase">Spouse Contact</span>
                   </div>
                   <TextField
                     type="number"
@@ -1005,10 +996,13 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
+              </div>
+              <h2 className="text-xl font-semibold underline mt-6">FATHER INFORMATION</h2>
 
-                <div className="w-full mt-[10px]">
+              <div className="flex flex-col lg:flex-row flex-wrap gap-6 mt-[20px]">
+                 <div className="grow mt-[10px]">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">
+                    <span className="font-semibold  uppercase">
                       Father First Name
                     </span>
                   </div>
@@ -1031,35 +1025,9 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
-              </div>
-              <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
-                <div className="w-full mt-[10px]">
-                  <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Father Lastname</span>
-                  </div>
-                  <TextField
-                    type="text"
-                    error={errors?.data?.father_last_name ? true : false}
-                    {...register("data.father_last_name")}
-                    className="w-full bg-fourth-light"
-                    InputProps={{
-                      sx: {
-                        height: "45px",
-                        lineHeight: "normal",
-                        borderRadius: "10px",
-                      },
-                    }}
-                  />
-
-                  {errors.data?.father_last_name && (
-                    <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                      {errors.data.father_last_name.message}
-                    </p>
-                  )}
-                </div>
-                <div className="w-full mt-[10px] ">
+                <div className="grow mt-[10px] ">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">
+                    <span className="font-semibold  uppercase">
                       Father Middle Name
                     </span>
                   </div>
@@ -1082,9 +1050,34 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
-                <div className="w-full mt-[10px]">
+                <div className="grow mt-[10px]">
+                  <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+                    <span className="font-semibold  uppercase">Father Lastname</span>
+                  </div>
+                  <TextField
+                    type="text"
+                    error={errors?.data?.father_last_name ? true : false}
+                    {...register("data.father_last_name")}
+                    className="w-full bg-fourth-light"
+                    InputProps={{
+                      sx: {
+                        height: "45px",
+                        lineHeight: "normal",
+                        borderRadius: "10px",
+                      },
+                    }}
+                  />
+
+                  {errors.data?.father_last_name && (
+                    <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                      {errors.data.father_last_name.message}
+                    </p>
+                  )}
+                </div>
+                
+                <div className="grow mt-[10px]">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Father Suffix</span>
+                    <span className="font-semibold uppercase">Father Suffix</span>
                   </div>
                   <TextField
                     type="text"
@@ -1106,10 +1099,11 @@ export default function UnassignedDashboard() {
                   )}
                 </div>
               </div>
+              <h2 className="text-xl font-semibold underline mt-6">MOTHER INFORMATION</h2>
               <div className="flex flex-col lg:flex-row  gap-6 mt-[20px]">
-                <div className="w-full mt-[10px]">
+                <div className="grow mt-[10px]">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">
+                    <span className="font-semibold uppercase">
                       Mother First Name
                     </span>
                   </div>
@@ -1133,9 +1127,9 @@ export default function UnassignedDashboard() {
                   )}
                 </div>
 
-                <div className="w-full mt-[10px] ">
+                <div className="grow mt-[10px] ">
                   <div className="flex flex-row px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">
+                    <span className="font-semibold uppercase">
                       Mother Middle Name
                     </span>
                   </div>
@@ -1158,9 +1152,9 @@ export default function UnassignedDashboard() {
                     </p>
                   )}
                 </div>
-                <div className="w-full mt-[10px]">
+                <div className="grow mt-[10px]">
                   <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                    <span className="font-bold uppercase">Mother Lastname</span>
+                    <span className="font-semibold uppercase">Mother Lastname</span>
                   </div>
                   <TextField
                     type="text"
@@ -1183,9 +1177,9 @@ export default function UnassignedDashboard() {
                   )}
                 </div>
               </div>
-              <div className="w-52 mt-[15px] ">
+              <div className="grow mt-[15px] ">
                 <div className="flex flex-row px-1 text-[15px] mb-1">
-                  <span className="font-bold uppercase">Mother Suffix </span>
+                  <span className="font-semibold uppercase">Mother Suffix </span>
                 </div>
                 <TextField
                   type="text"
@@ -1206,7 +1200,7 @@ export default function UnassignedDashboard() {
                   </p>
                 )}
               </div>
-              <div className="w-full flex mt-10 justify-end">
+              <div className=" flex mt-10 justify-end">
                 <button className="py-2 px-6 bg-secondary-light rounded-md text-white min-w-[200px]">
                   {isLoading ? (
                     <div className="flex w-full justify-center">
@@ -1217,6 +1211,11 @@ export default function UnassignedDashboard() {
                   )}
                 </button>
               </div>
+
+              </div>
+              
+              
+              
             </form>
           </div>
         </div>
