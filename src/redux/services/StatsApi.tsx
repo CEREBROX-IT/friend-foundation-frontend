@@ -8,7 +8,7 @@ import {
 } from "../type/Type";
 export const StatsApi = createApi({
   reducerPath: "StatsApi",
-  tagTypes: ["CreateForm", "SubmitForm", "ChurchCount", "CreateUser"],
+  tagTypes: ["CreateForm", "SubmitForm", "ChurchCount", "CreateUser", "HeadPastorCount"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -37,6 +37,7 @@ export const StatsApi = createApi({
     FetchNoHeadPastorCount: builder.query<HeadPastorCountResponse, void>({
       query: () => "/stats/head-pastor-count",
       keepUnusedDataFor: 60,
+      providesTags: ["HeadPastorCount"]
     }),
   }),
 });

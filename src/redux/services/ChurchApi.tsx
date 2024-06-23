@@ -43,7 +43,7 @@ export const ChurchApi = createApi({
         try {
           await queryFulfilled;
           dispatch(UserApi.util.invalidateTags(["User"]));
-          dispatch(StatsApi.util.invalidateTags(["ChurchCount"]));
+          dispatch(StatsApi.util.invalidateTags(["ChurchCount", "HeadPastorCount"]));
         } catch (error) {
           console.error("Error creating church:", error);
         }
@@ -75,6 +75,8 @@ export const ChurchApi = createApi({
         try {
           await queryFulfilled;
           dispatch(UserApi.util.invalidateTags(["User"]));
+          dispatch(StatsApi.util.invalidateTags(["ChurchCount", "HeadPastorCount"]));
+
         } catch (error) {
           console.error("Error creating church:", error);
         }

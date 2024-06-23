@@ -8,8 +8,8 @@ dotenvConfig({ path: resolve(__dirname, ".env") });
 
 export default defineConfig({
   plugins: [react()],
-  server: {
-    port: 3500,
-    host: "0.0.0.0",
-  },
+  // server: {
+  //   port: 5173,
+  //   host: "0.0.0.0",
+  // },
 });
