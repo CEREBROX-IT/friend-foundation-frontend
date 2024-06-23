@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { FormPayload, FormResponse } from "../type/Type";
+import { FormPayload, FormResponse, UnansweredFormsResponse } from "../type/Type";
 
 export const FormApi = createApi({
   reducerPath: "FormApi",
@@ -14,13 +14,14 @@ export const FormApi = createApi({
       query: (data) => ({
         url: "/form/create",
         method: "POST",
-        body: data
-       
+        body: data,
       }),
-      
+    }),
+    FetchUnansweredForm: builder.query<UnansweredFormsResponse, void>({
+      query: () => "/form/unanswered",
+      keepUnusedDataFor: 60,
     }),
   }),
 });
 
-
-export const {useCreateNewFormMutation} = FormApi
+export const { useCreateNewFormMutation, useFetchUnansweredFormQuery } = FormApi;

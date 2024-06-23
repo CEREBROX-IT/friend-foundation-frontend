@@ -390,4 +390,24 @@ export interface FormResponse {
   date_created: string; // Assuming date_created is always in ISO 8601 format
   date_updated: string; // Assuming date_updated is always in ISO 8601 format
 
+  
 }
+
+export type  UnansweredFormsResponse = {
+
+    id: number;
+    form_title: string;
+    form_description: string;
+    attachments?: {} | null;
+    dynamic_fields: {
+      type: string;
+      field_name: string;
+      field_value: string;
+    }[];
+    deadline: string;
+    active_status: string;
+    date_created: string;
+    date_updated: string;
+    status: string;
+  
+}[]
