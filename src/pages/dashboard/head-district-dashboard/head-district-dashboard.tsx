@@ -1,9 +1,11 @@
 import Header from "../../../components/header";
+import React from "react";
 import { FaFile } from "react-icons/fa6";
 import { HiMiniUsers } from "react-icons/hi2";
 import ResultCards from "../../../components/result-cards";
 import DistrictOverview from "../../../components/head-district-components/district-dashboard-overview";
 import LoadingAnimation2 from "../../../components/loading-animation2";
+import DistrictRevisedForm from "../../../components/head-district-components/district-revised-form";
 import {
   useFetchNoFormSubmissionQuery,
   useFetchNoChurchCountQuery,
@@ -82,6 +84,10 @@ const HeadDistrictDashboard = () => {
         <div className="bg-sixth-light dark:bg-sixth-dark shadow-lg rounded-[10px] custom-scrollbar">
           <DistrictOverview />
         </div>
+        <div className="bg-sixth-light dark:bg-sixth-dark shadow-lg rounded-[10px] custom-scrollbar">
+          <DistrictRevisedForm />
+        </div>
+
       </div>
       <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
         © Copyright reserve Friend Foundation Management System 2024

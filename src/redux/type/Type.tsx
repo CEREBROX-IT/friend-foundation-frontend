@@ -366,15 +366,28 @@ export type DistrictResponse = {
   count: number
 }
 
-export type ReviseFormResponse = {
-  message: string
-  count: number
-}
 
 export interface FormPayload {
   form_title: string;
   form_description: string;
-  dynamic_fields: { [key: string]: string };
   deadline: string;
-  attachment: { [key: string]: string };
+  dynamic_fields: { field_name: string; field_value: any; field_type: string }[];
+  attachments: { field_name?: string; field_value?: any; field_type?: string }[];
+
 };
+
+
+
+export interface FormResponse {
+  
+  id: number;
+  form_title: string;
+  form_description: string;
+  attachments: {}; // You can define a more specific type if you know the structure
+  dynamic_fields: {}; // You can define a more specific type if you know the structure
+  deadline: string; // Assuming deadline is always in ISO 8601 format
+  active_status: boolean;
+  date_created: string; // Assuming date_created is always in ISO 8601 format
+  date_updated: string; // Assuming date_updated is always in ISO 8601 format
+
+}

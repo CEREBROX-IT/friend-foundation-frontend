@@ -1,6 +1,6 @@
 import Header from "../../../components/header";
 import { useState } from "react";
-// import AddFormModal from "../../../components/admin-components/add-form-modal";
+import AddFormModal from "../../../components/admin-components/add-form-modal";
 
 const AdminFormManagement = () => {
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
@@ -38,9 +38,9 @@ const AdminFormManagement = () => {
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center dark:text-white">
           © Copyright reserve Friend Foundation Management System 2024
         </p>
-        {/* {isOpenAddForm && (
+        {isOpenAddForm && (
           <AddFormModal closeAddModalForm={hanldeCloseFormModal} />
-        )} */}
+        )}
       </div>
     </div>
   );
