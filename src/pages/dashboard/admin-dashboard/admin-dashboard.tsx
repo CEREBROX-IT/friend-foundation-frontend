@@ -5,17 +5,19 @@ import { HiMiniUsers } from "react-icons/hi2";
 import { FaUserTie, FaChurch } from "react-icons/fa6";
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
+import { FaFile } from "react-icons/fa";
 import LoadingAnimation2 from "../../../components/loading-animation2";
 import {
   useFetchNoOfUserQuery,
   useFetchNoChurchCountQuery,
   useFetchNoHeadPastorCountQuery,
   useFetchNoDistrictCountQuery,
+  useFetchNoFormSubmissionQuery
 } from "../../../redux/services/StatsApi";
 const AdminDashboard: FC = () => {
   const { data: UserCount, isLoading: UserLoading } = useFetchNoOfUserQuery();
   const {data: DistrictCount, isLoading: DistrictLoading} = useFetchNoDistrictCountQuery()
-  // const {data: FormSubmissionCount, isLoading: FormLoading} = useFetchNoFormSubmissionQuery()
+  const {data: FormSubmissionCount, isLoading: FormLoading} = useFetchNoFormSubmissionQuery()
   const { data: ChurchCount, isLoading: ChurchLoading } =
     useFetchNoChurchCountQuery();
   const { data: PastorCount, isLoading } = useFetchNoHeadPastorCountQuery();
@@ -36,7 +38,7 @@ const AdminDashboard: FC = () => {
           icon={HiMiniUsers}
           navigation_path="/dashboard/users"
         />
-        {/* <ResultCards
+        <ResultCards
           title="Form Submission"
           result={
             FormLoading ? (
@@ -49,7 +51,7 @@ const AdminDashboard: FC = () => {
           description="Pastors not submitted"
           icon={FaFile}
           navigation_path="/dashboard"
-        /> */}
+        />
         <ResultCards
           title="No. Pastors"
           result={isLoading ? <LoadingAnimation2 /> : PastorCount?.head_pastors}

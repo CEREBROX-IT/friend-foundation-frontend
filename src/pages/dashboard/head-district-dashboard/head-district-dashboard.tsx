@@ -4,14 +4,14 @@ import { HiMiniUsers } from "react-icons/hi2";
 import ResultCards from "../../../components/result-cards";
 import DistrictOverview from "../../../components/head-district-components/district-dashboard-overview";
 import LoadingAnimation2 from "../../../components/loading-animation2";
-import JwtDecoder from "../../../utils/jwt-decoder";
-import { useFetchNoFormSubmissionQuery, useFetchNoChurchCountQuery } from "../../../redux/services/StatsApi";
+import { useFetchNoFormSubmissionQuery, useFetchNoChurchCountQuery, useFetchNoOfFormsQuery } from "../../../redux/services/StatsApi";
 
 const HeadDistrictDashboard = () => {
-    console.log(JwtDecoder().decodedToken);
 
   const { data: ChurchCount, isLoading: ChurchLoading } = useFetchNoChurchCountQuery();
   const {data: FormSubmission, isLoading:FormSubmissionLoading} = useFetchNoFormSubmissionQuery()
+  const {data: CompletedForms, isLoading: CompletedFormsLoading} = useFetchNoOfFormsQuery()
+  
   return (
     <div
       className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto`}
@@ -29,8 +29,6 @@ const HeadDistrictDashboard = () => {
           result={
             ChurchLoading ? <LoadingAnimation2 /> : ChurchCount?.total_churches
           }
-          // incomplete={userCount?.pending_user}
-          // description="Total Churches"
           icon={HiMiniUsers}
           navigation_path="/dashboard/church-list"
         />
@@ -46,7 +44,21 @@ const HeadDistrictDashboard = () => {
           incomplete={FormSubmission?.not_submitted_pastors}
           description="Pastors not submitted"
           icon={FaFile}
-          navigation_path="/dashboard/form-submission"
+          navigation_path=""
+        />
+        <ResultCards
+          title="No. of Completed Forms"
+          result={
+            CompletedFormsLoading ? (
+              <LoadingAnimation2 />
+            ) : (
+              CompletedForms?.completed_forms
+            )
+          }
+          incomplete={CompletedForms?.pending_forms}
+          description="Pending Forms you have not Submitted"
+          icon={FaFile}
+          navigation_path=""
         />
       </div>
 
