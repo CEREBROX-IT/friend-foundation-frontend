@@ -6,12 +6,18 @@ import { FaUserTie, FaChurch } from "react-icons/fa6";
 import AssignmentLogsOverview from "../../../components/admin-components/assignment-logs-overview";
 import PendingUserOverview from "../../../components/admin-components/pending-user-overview";
 import LoadingAnimation2 from "../../../components/loading-animation2";
-import { useFetchNoOfUserQuery,  useFetchNoChurchCountQuery, useFetchNoHeadPastorCountQuery } from "../../../redux/services/StatsApi";
+import {
+  useFetchNoOfUserQuery,
+  useFetchNoChurchCountQuery,
+  useFetchNoHeadPastorCountQuery,
+  useFetchNoDistrictCountQuery,
+} from "../../../redux/services/StatsApi";
 const AdminDashboard: FC = () => {
-
-  const {data: UserCount, isLoading: UserLoading} = useFetchNoOfUserQuery()
+  const { data: UserCount, isLoading: UserLoading } = useFetchNoOfUserQuery();
+  const {data: DistrictCount, isLoading: DistrictLoading} = useFetchNoDistrictCountQuery()
   // const {data: FormSubmissionCount, isLoading: FormLoading} = useFetchNoFormSubmissionQuery()
-  const {data: ChurchCount, isLoading: ChurchLoading} = useFetchNoChurchCountQuery()
+  const { data: ChurchCount, isLoading: ChurchLoading } =
+    useFetchNoChurchCountQuery();
   const { data: PastorCount, isLoading } = useFetchNoHeadPastorCountQuery();
   return (
     <div className="relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto">
@@ -46,13 +52,7 @@ const AdminDashboard: FC = () => {
         /> */}
         <ResultCards
           title="No. Pastors"
-          result={
-            isLoading ? (
-              <LoadingAnimation2 />
-            ) : (
-              PastorCount?.head_pastors
-            )
-          }
+          result={isLoading ? <LoadingAnimation2 /> : PastorCount?.head_pastors}
           icon={FaUserTie}
           navigation_path="/dashboard"
         />
@@ -61,15 +61,22 @@ const AdminDashboard: FC = () => {
           result={
             ChurchLoading ? <LoadingAnimation2 /> : ChurchCount?.total_churches
           }
-          // incomplete="14"
-          // description="Church not assigned"
+          
+          icon={FaChurch}
+          navigation_path="/dashboard"
+        />
+        <ResultCards
+          title="No. of District"
+          result={
+            DistrictLoading ? <LoadingAnimation2 /> : DistrictCount?.count
+          }
+          
           icon={FaChurch}
           navigation_path="/dashboard"
         />
       </div>
 
       {/* ============================ First Table ============================ */}
-
 
       <div className="w-full p-4 mt-2">
         <div className="bg-sixth-light dark:bg-sixth-dark  shadow-lg rounded-[10px]">

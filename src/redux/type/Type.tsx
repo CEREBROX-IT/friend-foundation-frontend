@@ -360,3 +360,8 @@ export interface UnassignResponse {
     [index: number]: string;
   }[];
 }
+
+export type DistrictResponse = {
+  message: string
+  count: number
+}

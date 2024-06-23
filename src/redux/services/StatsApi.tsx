@@ -5,10 +5,18 @@ import {
   FormSubmissionCountResponse,
   ChurchCountResponse,
   HeadPastorCountResponse,
+  DistrictResponse,
 } from "../type/Type";
 export const StatsApi = createApi({
   reducerPath: "StatsApi",
-  tagTypes: ["CreateForm", "SubmitForm", "ChurchCount", "CreateUser", "HeadPastorCount"],
+  tagTypes: [
+    "CreateForm",
+    "SubmitForm",
+    "ChurchCount",
+    "CreateUser",
+    "HeadPastorCount",
+    "DistrictCount"
+  ],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -37,7 +45,12 @@ export const StatsApi = createApi({
     FetchNoHeadPastorCount: builder.query<HeadPastorCountResponse, void>({
       query: () => "/stats/head-pastor-count",
       keepUnusedDataFor: 60,
-      providesTags: ["HeadPastorCount"]
+      providesTags: ["HeadPastorCount"],
+    }),
+    FetchNoDistrictCount: builder.query<DistrictResponse, void>({
+      query: () => "/stats/districts/count/me",
+      keepUnusedDataFor: 60,
+      providesTags: ["DistrictCount"],
     }),
   }),
 });
@@ -47,5 +60,6 @@ export const {
   useFetchNoOfFormsQuery,
   useFetchNoFormSubmissionQuery,
   useFetchNoChurchCountQuery,
-  useFetchNoHeadPastorCountQuery
+  useFetchNoHeadPastorCountQuery,
+  useFetchNoDistrictCountQuery
 } = StatsApi;
