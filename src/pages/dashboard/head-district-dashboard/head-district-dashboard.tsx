@@ -4,14 +4,22 @@ import { HiMiniUsers } from "react-icons/hi2";
 import ResultCards from "../../../components/result-cards";
 import DistrictOverview from "../../../components/head-district-components/district-dashboard-overview";
 import LoadingAnimation2 from "../../../components/loading-animation2";
-import { useFetchNoFormSubmissionQuery, useFetchNoChurchCountQuery, useFetchNoOfFormsQuery } from "../../../redux/services/StatsApi";
+import {
+  useFetchNoFormSubmissionQuery,
+  useFetchNoChurchCountQuery,
+  useFetchNoOfFormsQuery,
+  useFetchNoReviseFormQuery
+} from "../../../redux/services/StatsApi";
 
 const HeadDistrictDashboard = () => {
+  const { data: ChurchCount, isLoading: ChurchLoading } =
+    useFetchNoChurchCountQuery();
+  const { data: FormSubmission, isLoading: FormSubmissionLoading } =
+    useFetchNoFormSubmissionQuery();
+  const { data: CompletedForms, isLoading: CompletedFormsLoading } =
+    useFetchNoOfFormsQuery();
+    const {data: ReviseForm, isLoading: ReviseFormLoading} = useFetchNoReviseFormQuery()
 
-  const { data: ChurchCount, isLoading: ChurchLoading } = useFetchNoChurchCountQuery();
-  const {data: FormSubmission, isLoading:FormSubmissionLoading} = useFetchNoFormSubmissionQuery()
-  const {data: CompletedForms, isLoading: CompletedFormsLoading} = useFetchNoOfFormsQuery()
-  
   return (
     <div
       className={`relative flex flex-col w-full bg-fourth-light dark:bg-fourth-dark overflow-y-auto`}
@@ -59,6 +67,14 @@ const HeadDistrictDashboard = () => {
           description="Pending Forms you have not Submitted"
           icon={FaFile}
           navigation_path=""
+        />
+        <ResultCards
+          title="No. of Revise Form"
+          result={
+            ReviseFormLoading ? <LoadingAnimation2 /> : ReviseForm?.count
+          }
+          icon={FaFile}
+          navigation_path="/dashboard/church-list"
         />
       </div>
 

@@ -365,3 +365,8 @@ export type DistrictResponse = {
   message: string
   count: number
 }
+
+export type ReviseFormResponse = {
+  message: string
+  count: number
+}

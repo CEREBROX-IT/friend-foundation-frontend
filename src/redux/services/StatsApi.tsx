@@ -6,6 +6,7 @@ import {
   ChurchCountResponse,
   HeadPastorCountResponse,
   DistrictResponse,
+  ReviseFormResponse,
 } from "../type/Type";
 export const StatsApi = createApi({
   reducerPath: "StatsApi",
@@ -15,7 +16,8 @@ export const StatsApi = createApi({
     "ChurchCount",
     "CreateUser",
     "HeadPastorCount",
-    "DistrictCount"
+    "DistrictCount",
+    "ReviseCount"
   ],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
@@ -52,6 +54,11 @@ export const StatsApi = createApi({
       keepUnusedDataFor: 60,
       providesTags: ["DistrictCount"],
     }),
+    FetchNoReviseForm: builder.query<ReviseFormResponse, void>({
+      query: () => "/stats/revise-count/me",
+      keepUnusedDataFor: 60,
+      providesTags: ["ReviseCount"],
+    }),
   }),
 });
 
@@ -61,5 +68,6 @@ export const {
   useFetchNoFormSubmissionQuery,
   useFetchNoChurchCountQuery,
   useFetchNoHeadPastorCountQuery,
-  useFetchNoDistrictCountQuery
+  useFetchNoDistrictCountQuery,
+  useFetchNoReviseFormQuery
 } = StatsApi;
