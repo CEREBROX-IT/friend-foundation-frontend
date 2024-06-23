@@ -43,7 +43,9 @@ export const ChurchApi = createApi({
         try {
           await queryFulfilled;
           dispatch(UserApi.util.invalidateTags(["User"]));
-          dispatch(StatsApi.util.invalidateTags(["ChurchCount", "HeadPastorCount"]));
+          dispatch(
+            StatsApi.util.invalidateTags(["ChurchCount", "HeadPastorCount"])
+          );
         } catch (error) {
           console.error("Error creating church:", error);
         }
@@ -58,7 +60,8 @@ export const ChurchApi = createApi({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
-          dispatch(StatsApi.util.invalidateTags(["ChurchCount"]));
+          dispatch(StatsApi.util.invalidateTags(["ChurchCount", "HeadPastorCount"]));
+          dispatch(UserApi.util.invalidateTags(["User"]));
         } catch (error) {
           console.error("Error creating church:", error);
         }
@@ -75,17 +78,15 @@ export const ChurchApi = createApi({
         try {
           await queryFulfilled;
           dispatch(UserApi.util.invalidateTags(["User"]));
-          dispatch(StatsApi.util.invalidateTags(["ChurchCount", "HeadPastorCount"]));
-
         } catch (error) {
           console.error("Error creating church:", error);
         }
       },
     }),
-    FetchUnassginedChurch: builder.query<UnassignResponse,void>({
+    FetchUnassginedChurch: builder.query<UnassignResponse, void>({
       query: () => "/church/unassigned",
       keepUnusedDataFor: 60,
-      providesTags: ["Church"]
+      providesTags: ["Church"],
     }),
   }),
 });
@@ -96,5 +97,5 @@ export const {
   useFetchChurchListHeadDistrictQuery,
   useRemoveChurchMutation,
   useUpdateChurchMutation,
-  useFetchUnassginedChurchQuery
+  useFetchUnassginedChurchQuery,
 } = ChurchApi;
