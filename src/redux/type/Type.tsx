@@ -370,3 +370,11 @@ export type ReviseFormResponse = {
   message: string
   count: number
 }
+
+export interface FormPayload {
+  form_title: string;
+  form_description: string;
+  dynamic_fields: { [key: string]: string };
+  deadline: string;
+  attachment: { [key: string]: string };
+};
