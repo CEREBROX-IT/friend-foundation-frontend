@@ -411,3 +411,34 @@ export type  UnansweredFormsResponse = {
     status: string;
   
 }[]
+
+export type DistrictChurchBelongResponse = {
+  district_belong: string;
+  church_belong: string
+};
+
+type DynamicField = {
+  field_name: string;
+  field_value: string;
+  type?: string;
+};
+
+export type SubmitFormPayload = {
+  report_form_id: number;
+  district_belong: string;
+  church_belong: string;
+  dynamic_fields: DynamicField[]
+  attachment: {};
+};
+
+export type AnsweredFormsResponse = {
+  id: number;
+  form_title: string;
+  form_description: string;
+  dynamic_fields: DynamicField[];
+  deadline: string;
+  active_status: boolean;
+  date_created: string;
+  date_updated: string;
+  status: string;
+}

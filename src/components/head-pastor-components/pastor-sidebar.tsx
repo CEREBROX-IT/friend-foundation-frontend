@@ -88,6 +88,19 @@ const PastorSideBar = () => {
           </div>
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
+              location.pathname === "/form-submission" ? "border-secondary-dark" : ""
+            }`}
+            onClick={() => {
+              navigate("/form-submission");
+            }}
+          >
+            <div className="h-[42px] min-w-[42px]  flex items-center justify-center">
+              <MdDashboardCustomize className="text-[25px] ease-in-out duration-500" />
+            </div>
+            {showName && <p className={`text-bold text-[15px]`}>Form Submission Logs</p>}
+          </div>
+          <div
+            className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
               location.pathname === "/" ? "border-secondary-dark" : ""
             }`}
             onClick={toggleTheme}

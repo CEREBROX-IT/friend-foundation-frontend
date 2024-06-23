@@ -1,18 +1,22 @@
-import React, { FC } from "react";
+import  { FC } from "react";
 
 interface FormCardModal {
   title: string;
   description: string;
   status: string;
   deadline: string;
+  date_created?: string | null;
+  card_click?: () => void;
 }
 const FormCard: FC<FormCardModal> = ({
   title,
   description,
   status,
   deadline,
+  date_created,
+  card_click,
 }) => {
-  const formatDate = (isoDateString: string): string => {
+  const formatDate = (isoDateString: any ): string => {
     const date = new Date(isoDateString);
     // Extracting year, month, and day
     const year = date.getFullYear();
@@ -23,17 +27,26 @@ const FormCard: FC<FormCardModal> = ({
   };
 
   const formattedDate = formatDate(deadline);
+  const formattedDateCreate = formatDate(date_created);
 
   return (
-    <div className="flex flex-col justify-between min-h-48 w-full bg-fourth-light p-2">
+    <div
+      className="flex flex-col justify-between min-h-48 w-full bg-fourth-light p-2 cursor-pointer"
+      onClick={card_click}
+    >
       <div className="flex justify-between">
         <div>
           <h1 className="text-xl font-bold">{title}</h1>
           <h2 className="text-sm font-semibold">{description}</h2>
         </div>
-        <h3 className="uppercase font-semibold"><span>STATUS : </span>{status}</h3>
+        <h3 className="uppercase font-semibold">
+          <span>STATUS : </span>
+          {status}
+        </h3>
       </div>
-      <h4 className="text-lg text-red-600 font-bold"><span className="uppercase mr-2">Deadline</span>({formattedDate})</h4>
+      <h4 className="text-lg text-red-600 font-bold">
+        <span className=" mr-2">Deadline</span>({formattedDate}) - ({formattedDateCreate === null  ? "" : formattedDateCreate})
+      </h4>
     </div>
   );
 };

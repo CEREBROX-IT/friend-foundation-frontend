@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-  FormPayload,
+  AnsweredFormsResponse,
+  DistrictChurchBelongResponse,
   FormResponse,
   UnansweredFormsResponse,
 } from "../type/Type";
@@ -8,7 +9,7 @@ import {
 export const FormApi = createApi({
   reducerPath: "FormApi",
 
-  tagTypes: ["UnansweredForms"],
+  tagTypes: ["UnansweredForms", "DistrictAndChurchBelongsTo", "AnsweredForms"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -28,8 +29,34 @@ export const FormApi = createApi({
       keepUnusedDataFor: 60,
       providesTags: ["UnansweredForms"],
     }),
+    FetchDistrictChurchBelongTo: builder.query<
+      DistrictChurchBelongResponse,
+      void
+    >({
+      query: () => "/form/user-church-details",
+      keepUnusedDataFor: 60,
+      providesTags: ["DistrictAndChurchBelongsTo"],
+    }),
+    SubmitForm: builder.mutation<void, FormData>({
+      query: (data) => ({
+        url: "/form/submit",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["UnansweredForms"],
+    }),
+    FetchAnsweredForms: builder.query<AnsweredFormsResponse[], void>({
+      query: () => "/form/answered",
+      keepUnusedDataFor: 60,
+      providesTags: ["AnsweredForms"],
+    }),
   }),
 });
 
-export const { useCreateNewFormMutation, useFetchUnansweredFormQuery } =
-  FormApi;
+export const {
+  useCreateNewFormMutation,
+  useFetchUnansweredFormQuery,
+  useFetchDistrictChurchBelongToQuery,
+  useSubmitFormMutation,
+  useFetchAnsweredFormsQuery
+} = FormApi;

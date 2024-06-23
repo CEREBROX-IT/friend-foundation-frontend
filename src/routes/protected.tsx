@@ -19,6 +19,7 @@ import UnAssginedSidebar from "../components/unassigned-components/unassigned-si
 import UnassignedDashboard from "../pages/dashboard/unassigned-dashboard/unassigned-dashboard";
 import PastorDashboard from "../pages/dashboard/pastor-dashboard/pastor-dashboard";
 import PastorSideBar from "../components/head-pastor-components/pastor-sidebar";
+import PastorFormSubmission from "../pages/dashboard/pastor-dashboard/pastor-form-submission";
 interface RoleProps {
   role?: string;
 }
@@ -174,6 +175,15 @@ const Protected: FC<RoleProps> = ({ role }) => {
                 <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
                   <PastorSideBar />
                   <PastorDashboard />
+                </div>
+              }
+            />
+            <Route
+              path="/form-submission"
+              element={
+                <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
+                  <PastorSideBar />
+                  <PastorFormSubmission />
                 </div>
               }
             />
