@@ -6,6 +6,7 @@ import {
   UpdateDistrictPayload,
 } from "../type/Type";
 import { UserApi } from "./UserApi";
+import { StatsApi } from "./StatsApi";
 
 export const DistrictApi = createApi({
   reducerPath: "DistrictApi",
@@ -27,6 +28,7 @@ export const DistrictApi = createApi({
         try {
           await queryFulfilled;
           dispatch(UserApi.util.invalidateTags(["User"]));
+          dispatch(StatsApi.util.invalidateTags(["DistrictCount"]));
         } catch (error) {
           console.error(error);
         }
@@ -48,17 +50,27 @@ export const DistrictApi = createApi({
         try {
           await queryFulfilled;
           dispatch(UserApi.util.invalidateTags(["User"]));
+          dispatch(StatsApi.util.invalidateTags(["DistrictCount"]));
         } catch (error) {
           console.error(error);
         }
       },
     }),
     RemoveDistrict: builder.mutation<void, RemoveDistrictPayload>({
-      query: ({id}) => ({
+      query: ({ id }) => ({
         url: `/district/delete?id=${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["DistrictList"]
+      invalidatesTags: ["DistrictList"],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(StatsApi.util.invalidateTags(["DistrictCount"]));
+          dispatch(UserApi.util.invalidateTags(["User"]));
+        } catch (error) {
+          console.error(error);
+        }
+      },
     }),
   }),
 });
@@ -67,5 +79,5 @@ export const {
   useCreateNewDistrictMutation,
   useFetchDistrictListQuery,
   useUpdateDistrictMutation,
-  useRemoveDistrictMutation
+  useRemoveDistrictMutation,
 } = DistrictApi;
