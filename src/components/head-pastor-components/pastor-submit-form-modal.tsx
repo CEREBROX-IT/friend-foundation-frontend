@@ -77,9 +77,8 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
                 <span className="font-bold">{item.field_name}</span>
               </div>
               <TextField
-                placeholder={`Enter ${item.field_name}`}
                 defaultValue={item.field_value}
-                error={!!errors.dynamic_fields?.[index]?.field_value} 
+                error={!!errors.dynamic_fields?.[index]?.field_value}
                 {...register(`dynamic_fields.${index}.field_value`, {
                   required: `${item.field_name} is required`,
                 })}

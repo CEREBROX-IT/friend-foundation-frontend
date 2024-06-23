@@ -77,10 +77,10 @@ const UnAssginedSidebar = () => {
 
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-              location.pathname === "/dashboard" ? "border-secondary-dark" : ""
+              location.pathname === "/user-profile" ? "border-secondary-dark" : ""
             }`}
             onClick={() => {
-              navigate("/dashboard");
+              navigate("/user-profile");
             }}
           >
             <div className="h-[42px] min-w-[42px]  flex items-center justify-center">

@@ -43,7 +43,7 @@ export const FormApi = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["UnansweredForms"],
+      invalidatesTags: ["UnansweredForms", "AnsweredForms"],
     }),
     FetchAnsweredForms: builder.query<AnsweredFormsResponse[], void>({
       query: () => "/form/answered",

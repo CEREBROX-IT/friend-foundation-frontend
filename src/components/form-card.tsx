@@ -45,7 +45,7 @@ const FormCard: FC<FormCardModal> = ({
         </h3>
       </div>
       <h4 className="text-lg text-red-600 font-bold">
-        <span className=" mr-2">Deadline</span>({formattedDate}) - ({formattedDateCreate === null  ? "" : formattedDateCreate})
+        ({formattedDate}) - ({formattedDateCreate === null  ? "" : formattedDateCreate})
       </h4>
     </div>
   );

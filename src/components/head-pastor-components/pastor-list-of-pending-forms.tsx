@@ -15,7 +15,7 @@ const PastorListOfPendingForms = () => {
   };
 
   return (
-    <div className="flex-1 relative min-h-screen ">
+    <div className="flex-1 relative min-h-screen w-full">
       <div className="mt-10 flex flex-col gap-4 flex-1">
         {FetchUnasweredForm?.map((item) => (
           <FormCard

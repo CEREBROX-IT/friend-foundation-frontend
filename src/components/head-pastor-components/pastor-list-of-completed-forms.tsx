@@ -3,7 +3,6 @@ import FormCard from "../form-card";
 import { useFetchAnsweredFormsQuery } from "../../redux/services/FormApi";
 const PastorListOfCompletedForms = () => {
     const {data: AnsweredForms} = useFetchAnsweredFormsQuery()
-    console.log(AnsweredForms)
   return (
     <div className="flex-1 relative min-h-screen ">
       <div className="mt-10 flex flex-col gap-4 flex-1">

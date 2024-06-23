@@ -139,6 +139,15 @@ const Protected: FC<RoleProps> = ({ role }) => {
                   </div>
                 }
               />
+              <Route
+                path="/user-profile"
+                element={
+                  <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
+                    <HeadDistrictSidebar />
+                    <UserProfile />
+                  </div>
+                }
+              />
             </Routes>
           </div>
         </>
@@ -155,7 +164,7 @@ const Protected: FC<RoleProps> = ({ role }) => {
         <div className="flex bg-white min-h-[100vh]">
           <Routes>
             <Route
-              path="/dashboard"
+              path="/user-profile"
               element={
                 <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
                   <UnAssginedSidebar />
@@ -184,6 +193,15 @@ const Protected: FC<RoleProps> = ({ role }) => {
                 <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
                   <PastorSideBar />
                   <PastorFormSubmission />
+                </div>
+              }
+            />
+            <Route
+              path="/user-profile"
+              element={
+                <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
+                  <PastorSideBar />
+                  <UserProfile />
                 </div>
               }
             />
