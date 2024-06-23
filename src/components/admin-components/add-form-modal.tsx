@@ -178,6 +178,7 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
                 {field.type === "text" ? (
                   <TextField
                     type="text"
+                    disabled
                     placeholder="Field Value"
                     error={!!errors.dynamic_fields?.[index]?.field_value}
                     {...register(`dynamic_fields.${index}.field_value`)}

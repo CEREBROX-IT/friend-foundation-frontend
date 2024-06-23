@@ -1,9 +1,14 @@
 import Header from "../../../components/header";
 import { useState } from "react";
 import AddFormModal from "../../../components/admin-components/add-form-modal";
+import { IoIosAddCircle } from "react-icons/io";
+import AdminForms from "../../../components/admin-components/admin-forms";
 
 const AdminFormManagement = () => {
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
+  const [page, setPage] = useState("forms");
+
+  const handleFormPage = () => setPage("forms");
 
   const handleAddFormModal = () => setIsOpenAddForm(true);
   const hanldeCloseFormModal = () => setIsOpenAddForm(false);
@@ -19,20 +24,29 @@ const AdminFormManagement = () => {
       </div>
 
       <div className="flex-1  w-full px-4 absolute translate-y-32">
-        <div className=" gap-4 bg-white min-h-screen p-4 rounded-[10px] dark:bg-fourth-dark">
-          <div className="flex flex-wrap gap-4">
-            <button
-              className=" bg-secondary-light py-2 px-10 lg:w-[250px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
+        <div className=" gap-4 bg-white min-h-screen   p-4 rounded-[10px] dark:bg-fourth-dark">
+          <div className="flex justify-between">
+            <div className="flex flex-wrap gap-4">
+              <button
+                className=" bg-secondary-light py-2 px-10 lg:w-[250px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
+                onClick={handleFormPage}
+              >
+                FORMS
+              </button>
+              <button className=" bg-[#B378FF] py-2 px-10 lg:w-[250px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">
+                SUBMITTED LOGS
+              </button>
+              <button className=" bg-primary-dark py-2 px-10 lg:w-[250px]  cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">
+                PENDING LOGS
+              </button>
+            </div>
+            <IoIosAddCircle
+              className="text-5xl text-secondary-light cursor-pointer"
               onClick={handleAddFormModal}
-            >
-              ADD FORM
-            </button>
-            <button className=" bg-[#B378FF] py-2 px-10 lg:w-[250px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">
-              SUBMITTED LOGS
-            </button>
-            <button className=" bg-primary-dark py-2 px-10 lg:w-[250px]  cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">
-              PENDING LOGS
-            </button>
+            />
+          </div>
+          <div className="max-h-screen overflow-auto min-h-screen custom-scrollbar">
+            {page === "forms" && <AdminForms />}
           </div>
         </div>
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center dark:text-white">
