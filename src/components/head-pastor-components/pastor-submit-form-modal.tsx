@@ -54,65 +54,67 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
   };
 
   return (
-    <div className="absolute inset-0 flex-1  bg-fourth-light max-h-screen ">
-      <div className="flex justify-end p-4" onClick={closeModal}>
-        <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
-      </div>
-      <h1 className="m-4 text-2xl font-bold inline-block -translate-y-16">
-        {data?.form_title}
-      </h1>
-      <h2 className="m-4 text-xl font-semibold -translate-y-16">
-        {data?.form_description}
-      </h2>
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="max-h-screen min-h-screen overflow-auto p-4"
-        encType="multipart/form-data"
-      >
-        <div className="flex gap-4 flex-wrap ">
-          {data?.dynamic_fields?.map((item, index) => (
-            <div key={index} className=" mt-[10px]">
-              <div className="flex flex-row px-1 text-[15px] mb-1">
-                <span className="font-bold">{item.field_name}</span>
-              </div>
-              <TextField
-                defaultValue={item.field_value}
-                error={!!errors.dynamic_fields?.[index]?.field_value}
-                {...register(`dynamic_fields.${index}.field_value`, {
-                  required: `${item.field_name} is required`,
-                })}
-                className=" bg-fourth-light "
-                InputProps={{
-                  sx: {
-                    height: "45px",
-                    lineHeight: "normal",
-                    borderRadius: "10px",
-                  },
-                }}
-              />
-              {errors.dynamic_fields?.[index]?.field_value && (
-                <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
-                  {errors?.dynamic_fields[index]?.field_value?.message}
-                </p>
-              )}
-            </div>
-          ))}
+    <div className="absolute flex justify-center inset-0 flex-1 min-w-screen min-h-screen backdrop-brightness-50 p-10">
+      <div className=" bg-white max-w-[400px] h-max p-4">
+        <div className="flex justify-end" onClick={closeModal}>
+          <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
         </div>
-        <button
-          type="submit"
-          className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-1/5 h-[45px] "
+        <h1 className=" text-2xl inline-block uppercase font-bold">
+          {data?.form_title}
+        </h1>
+        <hr className="border-black"/> 
+        <h2 className="text-lg font-medium ">
+          {data?.form_description}
+        </h2>
+
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="max-h-screen overflow-auto p-4"
+          encType="multipart/form-data"
         >
-          {/* {isLoading ? (
+          <div className="flex gap-4 flex-wrap ">
+            {data?.dynamic_fields?.map((item, index) => (
+              <div key={index} className="w-full mt-[10px]">
+                <div className="flex flex-row px-1 text-[15px] mb-1 ">
+                  <span className="font-bold">{item.field_name}</span>
+                </div>
+                <TextField
+                  defaultValue={item.field_value}
+                  error={!!errors.dynamic_fields?.[index]?.field_value}
+                  {...register(`dynamic_fields.${index}.field_value`, {
+                    required: `${item.field_name} is required`,
+                  })}
+                  className=" bg-fourth-light w-full"
+                  InputProps={{
+                    sx: {
+                      lineHeight: "normal",
+                      borderRadius: "10px",
+                    },
+                  }}
+                />
+                {errors.dynamic_fields?.[index]?.field_value && (
+                  <p className="text-red-500 text-[14px] pl-1 mt-1 mb-[-0.5rem]">
+                    {errors?.dynamic_fields[index]?.field_value?.message}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+          <button
+            type="submit"
+            className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px]  h-[45px]  "
+          >
+            {/* {isLoading ? (
             <div className="flex justify-center">
               <LoadingAnimation message="Registering, please wait!" />
             </div>
           ) : (
             "REGISTER"
           )} */}
-          SUBMIT FORM
-        </button>
-      </form>
+            SUBMIT FORM
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

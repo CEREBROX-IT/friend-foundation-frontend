@@ -45,13 +45,12 @@ const AdminFormManagement = () => {
               onClick={handleAddFormModal}
             />
           </div>
-          <div className="max-h-screen overflow-auto min-h-screen custom-scrollbar">
-            {page === "forms" && <AdminForms />}
-          </div>
+          {page === "forms" && <AdminForms />}
         </div>
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center dark:text-white">
           © Copyright reserve Friend Foundation Management System 2024
         </p>
+
         {isOpenAddForm && (
           <AddFormModal closeAddModalForm={hanldeCloseFormModal} />
         )}

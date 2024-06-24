@@ -136,7 +136,6 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
 
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span className="font-semibold uppercase">Add Fields</span>
               <TextField
                 select
                 value={selectedType}

@@ -27,11 +27,11 @@ const FormCard: FC<FormCardModal> = ({
   };
 
   const formattedDate = formatDate(deadline);
-  const formattedDateCreate = formatDate(date_created);
+  // const formattedDateCreate = formatDate(date_created);
 
   return (
     <div
-      className="flex flex-col justify-between min-h-48 w-full bg-fourth-light p-2 cursor-pointer"
+      className="flex flex-col justify-between min-h-48 w-full bg-fourth-light p-2 cursor-pointer shadow-sm shadow-black"
       onClick={card_click}
     >
       <div className="flex justify-between">
@@ -45,7 +45,7 @@ const FormCard: FC<FormCardModal> = ({
         </h3>
       </div>
       <h4 className="text-lg text-red-600 font-bold">
-        ({formattedDate}) - ({formattedDateCreate === null  ? "" : formattedDateCreate})
+        ({formattedDate})
       </h4>
     </div>
   );

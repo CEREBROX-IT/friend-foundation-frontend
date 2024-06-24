@@ -442,3 +442,26 @@ export type AnsweredFormsResponse = {
   date_updated: string;
   status: string;
 }
+export type SubmittedFormResponse = {
+  id: number;
+  user_id: number;
+  submitted_by: string;
+  email: string;
+  contact_no: string;
+  report_form_id: number;
+  district_belong: string;
+  church_belong: string;
+  dynamic_fields: DynamicField[];
+  remarks: string | null;
+  status: string;
+  date_completed: string;
+}
+
+export type ApprovePayload = {
+  id : number
+  remarks?: string | any
+}
+
+export interface SubmittedFormPayload {
+  id?: number | undefined
+}

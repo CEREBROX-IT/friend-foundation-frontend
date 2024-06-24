@@ -15,8 +15,8 @@ const PastorListOfPendingForms = () => {
   };
 
   return (
-    <div className="flex-1 relative min-h-screen w-full">
-      <div className="mt-10 flex flex-col gap-4 flex-1">
+    <div className="flex-1">
+      <div className="mt-10 flex flex-col gap-4 flex-1 ">
         {FetchUnasweredForm?.map((item) => (
           <FormCard
             title={item.form_title}
@@ -27,7 +27,9 @@ const PastorListOfPendingForms = () => {
           />
         ))}
       </div>
-      {submitModal && <PastorSubmitFormModal closeModal={handleCloseModal} data={values}/>}
+      {submitModal && (
+        <PastorSubmitFormModal closeModal={handleCloseModal} data={values} />
+      )}
     </div>
   );
 };

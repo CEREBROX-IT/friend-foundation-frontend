@@ -1,15 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   AnsweredFormsResponse,
+  ApprovePayload,
   DistrictChurchBelongResponse,
   FormResponse,
+  SubmittedFormPayload,
+  SubmittedFormResponse,
   UnansweredFormsResponse,
 } from "../type/Type";
 
 export const FormApi = createApi({
   reducerPath: "FormApi",
 
-  tagTypes: ["UnansweredForms", "DistrictAndChurchBelongsTo", "AnsweredForms"],
+  tagTypes: [
+    "UnansweredForms",
+    "DistrictAndChurchBelongsTo",
+    "AnsweredForms",
+    "SubmittedForm",
+  ],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
     credentials: "include",
@@ -50,6 +58,36 @@ export const FormApi = createApi({
       keepUnusedDataFor: 60,
       providesTags: ["AnsweredForms"],
     }),
+    FetchSubmittedForm: builder.query<
+      SubmittedFormResponse[],
+      SubmittedFormPayload
+    >({
+      query: ({ id }) => `/form/submitted-forms?report_form_id=${id}`,
+      keepUnusedDataFor: 60,
+      providesTags: ["SubmittedForm"],
+    }),
+    ApproveSubmitted: builder.mutation<void, ApprovePayload>({
+      query: ( {id }) => ({
+        url: `/form/approve-submission?id=${id}`,
+        method: "PUT"
+      }),
+      invalidatesTags: ["SubmittedForm"],
+    }),
+    DeleteFromSubmitted: builder.mutation({
+      query: (id) => ({
+        url: `/form/submitted-forms-logs/delete?id=${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["SubmittedForm"],
+    }),
+    AddRemark: builder.mutation<void, ApprovePayload>({
+      query: ({ id, remarks }) => ({
+        url: `/form/review-add-remarks?id=${id}`,
+        method: "PUT",
+        body: remarks,
+      }),
+      invalidatesTags: ["SubmittedForm"],
+    }),
   }),
 });
 
@@ -58,5 +96,9 @@ export const {
   useFetchUnansweredFormQuery,
   useFetchDistrictChurchBelongToQuery,
   useSubmitFormMutation,
-  useFetchAnsweredFormsQuery
+  useFetchAnsweredFormsQuery,
+  useFetchSubmittedFormQuery,
+  useApproveSubmittedMutation,
+  useDeleteFromSubmittedMutation,
+  useAddRemarkMutation
 } = FormApi;
