@@ -465,3 +465,31 @@ export type ApprovePayload = {
 export interface SubmittedFormPayload {
   id?: number | undefined
 }
+
+export interface Field {
+  field_name: string;
+  field_value: string;
+}
+
+export interface SubmittedFormLog {
+  id: number;
+  report_form_id: number;
+  form_title: string;
+  user_id: number;
+  form_description: string;
+  submitted_by: string;
+  email: string;
+  contact_no: string;
+  district_belong: string;
+  church_belong: string;
+  response_attachment: object; // Update the type according to the actual structure of response_attachment if available
+  dynamic_fields: DynamicField[];
+  remarks: string | null;
+  status: string;
+  date_completed: string; // Consider using Date type if you will be manipulating dates
+}
+
+export type SubmittedFormsResponse = {
+  message: string;
+  data: SubmittedFormLog[];
+}

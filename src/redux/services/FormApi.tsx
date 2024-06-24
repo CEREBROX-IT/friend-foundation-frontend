@@ -17,6 +17,7 @@ export const FormApi = createApi({
     "DistrictAndChurchBelongsTo",
     "AnsweredForms",
     "SubmittedForm",
+    "SubmittedLogs"
   ],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
@@ -67,9 +68,9 @@ export const FormApi = createApi({
       providesTags: ["SubmittedForm"],
     }),
     ApproveSubmitted: builder.mutation<void, ApprovePayload>({
-      query: ( {id }) => ({
+      query: ({ id }) => ({
         url: `/form/approve-submission?id=${id}`,
-        method: "PUT"
+        method: "PUT",
       }),
       invalidatesTags: ["SubmittedForm"],
     }),
@@ -88,6 +89,11 @@ export const FormApi = createApi({
       }),
       invalidatesTags: ["SubmittedForm"],
     }),
+    FetchSubmittedLogs: builder.query<SubmittedFormsResponse, void >({
+      query: () => "/form/submitted-forms-logs",
+      keepUnusedDataFor: 60,
+      providesTags: ["SubmittedLogs"]
+    }),
   }),
 });
 
@@ -100,5 +106,6 @@ export const {
   useFetchSubmittedFormQuery,
   useApproveSubmittedMutation,
   useDeleteFromSubmittedMutation,
-  useAddRemarkMutation
+  useAddRemarkMutation,
+  useFetchSubmittedLogsQuery
 } = FormApi;
