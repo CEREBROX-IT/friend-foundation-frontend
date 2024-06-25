@@ -110,12 +110,12 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
               <h3 className="text-lg font-semibold">Attachments:</h3>
               {files.map((file, index) => {
                 const href = import.meta.env.VITE_ATTACHMENT + `${file}`;
-                console.log(href)
+                
                 return (
                   <div key={index} className="mt-2">
-                    <a href={href} className="flex items-center">
+                    <a href={href} className="flex items-center" target="blank">
                       <FaFilePdf className="mr-2" />
-                      ATTACHMENT {file.filename}
+                      <span className="font-bold">ATTACHMENT</span> {file.filename}
                     </a>
                   </div>
                 );

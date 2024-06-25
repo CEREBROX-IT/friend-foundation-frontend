@@ -22,9 +22,11 @@ export default function ReviseLogs() {
 
   const handleCloseModal = () => setOpenModal(false)
   return (
-    <div className="flex-1 min-h-screen">
+    <div className="flex-1 min-h-screen max-h-screen overflow-auto">
+      <h1 className="mt-4 text-4xl font-bold underline">REVISE FORMS</h1>
+
       <div className="mt-10 flex flex-col gap-4 flex-1">
-        {filterData?.map((item) => (
+        {filterData?.map((item: any) => (
           <FormCardRemarks
             title={item.form_title}
             description={item.form_description}
@@ -34,7 +36,9 @@ export default function ReviseLogs() {
           />
         ))}
       </div>
-      {openModal && <PastorEditForm closeModal={handleCloseModal} data={selectedData}/>}
+      {openModal && (
+        <PastorEditForm closeModal={handleCloseModal} data={selectedData} />
+      )}
     </div>
   );
 }
