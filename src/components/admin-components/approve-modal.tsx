@@ -7,6 +7,12 @@ import {
   useApproveSubmittedMutation,
   useAddRemarkMutation,
 } from "../../redux/services/FormApi";
+import { FaFilePdf } from "react-icons/fa";
+
+type Attachment = {
+  filename: string;
+  // Assuming the filename is enough to construct the full URL based on the environment variable
+};
 
 type ApproveModalProps = {
   data: {
@@ -15,6 +21,7 @@ type ApproveModalProps = {
       field_value: string;
     }[];
     id: number;
+    response_attachment: Attachment[] | undefined;
   };
   closeModal: () => void;
 };
@@ -46,6 +53,9 @@ const ApproveModal: FC<ApproveModalProps> = ({ data, closeModal }) => {
   };
 
   const convertArray = Object.values(data.dynamic_fields)
+    const files = data?.response_attachment
+      ? Object.values(data.response_attachment)
+      : [];
 
   return (
     <div className="absolute shadow-md drop-shadow-md inset-0 backdrop-brightness-50">
@@ -61,6 +71,24 @@ const ApproveModal: FC<ApproveModalProps> = ({ data, closeModal }) => {
             </h2>
           </div>
         ))}
+        {files.length > 0 && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Attachments:</h3>
+            {files.map((file, index) => {
+              const href = import.meta.env.VITE_ATTACHMENT + `${file}`;
+
+              return (
+                <div key={index} className="mt-2">
+                  <a href={href} className="flex items-center" target="blank">
+                    <FaFilePdf className="mr-2" />
+                    <span className="font-bold">ATTACHMENT</span>{" "}
+                    {file?.filename}
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+        )}
         <form
           onSubmit={handleSubmit(handleAddRemark)}
           encType="application/json"
@@ -93,6 +121,7 @@ const ApproveModal: FC<ApproveModalProps> = ({ data, closeModal }) => {
                 </p>
               )}
             </div>
+
             <div className="flex gap-4">
               <button
                 type="button"

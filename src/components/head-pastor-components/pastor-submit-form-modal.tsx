@@ -20,7 +20,7 @@ type PastorModal = {
     form_title?: string;
     form_description?: string;
     dynamic_fields?: { field_name: string; field_value: string }[];
-    attachments?: Attachment[] | undefined
+    attachments?: Attachment[] | undefined | []
   };
 };
 
@@ -32,6 +32,7 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<SubmitFormPayload>();
+  console.log(data)
   
   const onSubmit: SubmitHandler<SubmitFormPayload> = async (values) => {
     const formData = new FormData();
@@ -49,6 +50,18 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
     // Append dynamic_fields as a JSON string
     formData.append("dynamic_fields", JSON.stringify(dynamicFields));
 
+    values?.attachments.forEach((attachment, index) => {
+      formData.append(
+        `attachments[${index}][field_name]`,
+        attachment.field_name
+      ); 
+      formData.append(
+        `attachments[${index}][field_value]`,
+        attachment.field_value[0]
+      ); // Assuming field_value is an array of files
+    });
+
+    console.log(values)
     
 
     await SubmitForm(formData)
@@ -104,18 +117,42 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
                 )}
               </div>
             ))}
+            {files.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold">Attachments:</h3>
+                {files.map((file, index) => {
+                  return (
+                    <TextField
+                    type="file"
+                      error={!!errors.attachments?.[index]?.field_value}
+                      {...register(`attachments.${index}.field_value`, {
+                        required: `Attachment is required`,
+                      })}
+                      className=" bg-fourth-light w-full mt-4"
+                      InputProps={{
+                        sx: {
+                          lineHeight: "normal",
+                          borderRadius: "10px",
+                        },
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            )}
           </div>
           {files.length > 0 && (
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Attachments:</h3>
               {files.map((file, index) => {
                 const href = import.meta.env.VITE_ATTACHMENT + `${file}`;
-                
+
                 return (
                   <div key={index} className="mt-2">
                     <a href={href} className="flex items-center" target="blank">
                       <FaFilePdf className="mr-2" />
-                      <span className="font-bold">ATTACHMENT</span> {file.filename}
+                      <span className="font-bold">ATTACHMENT</span>{" "}
+                      {file.filename}
                     </a>
                   </div>
                 );

@@ -428,7 +428,7 @@ export type SubmitFormPayload = {
   district_belong: string;
   church_belong: string;
   dynamic_fields: DynamicField[]
-  attachment: {};
+  attachments: {};
 };
 
 export type AnsweredFormsResponse = {
