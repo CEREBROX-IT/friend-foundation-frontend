@@ -5,7 +5,7 @@ const PastorListOfCompletedForms = () => {
     const {data: AnsweredForms} = useFetchAnsweredFormsQuery()
   return (
     <div className="flex-1  min-h-screen max-h-screen overflow-auto">
-      <h1 className="mt-4 text-4xl font-bold underline">COMPLETED FORMS</h1>
+      <h1 className="mt-4 text-3xl font-bold underline">COMPLETED FORMS</h1>
 
       <div className="mt-10 flex flex-col gap-4 flex-1">
         {AnsweredForms?.map((item) => (
