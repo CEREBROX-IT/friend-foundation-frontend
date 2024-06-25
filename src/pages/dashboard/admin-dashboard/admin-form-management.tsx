@@ -4,12 +4,14 @@ import AddFormModal from "../../../components/admin-components/add-form-modal";
 import { IoIosAddCircle } from "react-icons/io";
 import AdminForms from "../../../components/admin-components/admin-forms";
 import AdminSubmittedPage from "../../../components/admin-components/admin-submitted-page";
+import AdminPendingPage from "../../../components/admin-components/admin-pending-logs";
 const AdminFormManagement = () => {
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
   const [page, setPage] = useState("forms");
 
   const handleFormPage = () => setPage("forms");
-  const handleSubmittedPage = () => setPage("submitted-page")
+  const handleSubmittedPage = () => setPage("submitted-page");
+  const handlePendingPage = () => setPage("pending-page");
 
   const handleAddFormModal = () => setIsOpenAddForm(true);
   const hanldeCloseFormModal = () => setIsOpenAddForm(false);
@@ -40,7 +42,7 @@ const AdminFormManagement = () => {
               >
                 SUBMITTED LOGS
               </button>
-              <button className=" bg-primary-dark py-2 px-10 lg:w-[250px]  cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85">
+              <button className=" bg-primary-dark py-2 px-10 lg:w-[250px]  cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85" onClick={handlePendingPage}>
                 PENDING LOGS
               </button>
             </div>
@@ -51,6 +53,7 @@ const AdminFormManagement = () => {
           </div>
           {page === "forms" && <AdminForms />}
           {page === "submitted-page" && <AdminSubmittedPage />}
+          {page === "pending-page" && <AdminPendingPage />}
         </div>
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center dark:text-white">
           © Copyright reserve Friend Foundation Management System 2024

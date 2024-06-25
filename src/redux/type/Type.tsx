@@ -493,3 +493,27 @@ export type SubmittedFormsResponse = {
   message: string;
   data: SubmittedFormLog[];
 }
+
+export type IncompleteFormsResponse = {
+  user_id : number
+  user_full_name: string
+  district_belong  : string
+  church_belong : string
+  status: string
+  lacking_report_form: []
+}[]
+
+export interface RevisePayload {
+  data: {
+    report_form_id?: number;
+    district_belong?: string;
+    church_belong?: string;
+    response_attachment?: Record<string, any>;
+    dynamic_fields?: Array<{
+      field_name: string;
+      field_value: string;
+    }>;
+  }[];
+  dynamic_fields: any
+  id: number
+}

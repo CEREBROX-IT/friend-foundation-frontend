@@ -2,11 +2,11 @@ import { FC } from "react";
 import { IoMdCloseCircle } from "react-icons/io";
 import {
   useFetchDistrictChurchBelongToQuery,
-  useSubmitFormMutation,
+  useEditFormMutation
 } from "../../redux/services/FormApi";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField } from "@mui/material";
-import { SubmitFormPayload } from "../../redux/type/Type";
+import { RevisePayload } from "../../redux/type/Type";
 import { FaFilePdf } from "react-icons/fa";
 
 type Attachment = {
@@ -20,20 +20,24 @@ type PastorModal = {
     form_title?: string;
     form_description?: string;
     dynamic_fields?: { field_name: string; field_value: string }[];
-    attachments?: Attachment[] | undefined
+    attachments?: Attachment[];
   };
+  
 };
 
-const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
+const PastorEditFormModal: FC<PastorModal> = ({ closeModal, data }) => {
   const { data: DistrictBelong } = useFetchDistrictChurchBelongToQuery();
-  const [SubmitForm] = useSubmitFormMutation();
+  const [SubmitForm] = useEditFormMutation();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SubmitFormPayload>();
-  
-  const onSubmit: SubmitHandler<SubmitFormPayload> = async (values) => {
+  } = useForm<RevisePayload>();
+
+const convertArray = Object.values(data?.dynamic_fields);
+
+
+  const onSubmit: SubmitHandler<RevisePayload> = async (values) => {
     const formData = new FormData();
     formData.append("report_form_id", data?.id?.toString() || "");
     formData.append("district_belong", DistrictBelong?.district_belong || "");
@@ -41,7 +45,7 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
 
     // Construct dynamic_fields array
     const dynamicFields =
-      data?.dynamic_fields?.map((item, index) => ({
+      convertArray.map((item, index) => ({
         field_name: item.field_name,
         field_value: values.dynamic_fields?.[index]?.field_value || "",
       })) || [];
@@ -49,16 +53,13 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
     // Append dynamic_fields as a JSON string
     formData.append("dynamic_fields", JSON.stringify(dynamicFields));
 
-    
-
-    await SubmitForm(formData)
+    await SubmitForm({ data: formData , id: data.id})
       .unwrap()
-      .then(() => {
+      .then((response) => {
+        console.log(response);
         closeModal();
       });
   };
-
-  const files = data?.attachments ? Object.values(data.attachments) : [];
 
   return (
     <div className="absolute flex justify-center inset-0 flex-1 min-w-screen min-h-screen backdrop-brightness-50 ">
@@ -78,7 +79,7 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
           encType="multipart/form-data"
         >
           <div className="flex gap-4 flex-wrap ">
-            {data?.dynamic_fields?.map((item, index) => (
+            {convertArray.map((item, index) => (
               <div key={index} className="w-full mt-[10px]">
                 <div className="flex flex-row px-1 text-[15px] mb-1 ">
                   <span className="font-bold">{item.field_name}</span>
@@ -105,23 +106,6 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
               </div>
             ))}
           </div>
-          {files.length > 0 && (
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Attachments:</h3>
-              {files.map((file, index) => {
-                const href = import.meta.env.VITE_ATTACHMENT + `${file}`;
-                console.log(href)
-                return (
-                  <div key={index} className="mt-2">
-                    <a href={href} className="flex items-center">
-                      <FaFilePdf className="mr-2" />
-                      ATTACHMENT {file.filename}
-                    </a>
-                  </div>
-                );
-              })}
-            </div>
-          )}
 
           <button
             type="submit"
@@ -135,4 +119,4 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
   );
 };
 
-export default PastorSubmitFormModal;
+export default PastorEditFormModal;

@@ -1,8 +1,11 @@
 import React, { useState, FC } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { TextField, IconButton, MenuItem } from "@mui/material";
-import { IoIosRemoveCircle, IoIosAddCircle, IoMdCloseCircle } from "react-icons/io";
-import { FormPayload } from "../../redux/type/Type";
+import {
+  IoIosRemoveCircle,
+  IoIosAddCircle,
+  IoMdCloseCircle,
+} from "react-icons/io";
 import { useCreateNewFormMutation } from "../../redux/services/FormApi";
 import LoadingAnimation from "../loading-animation";
 
@@ -11,38 +14,69 @@ type AddFormModalProps = {
 };
 
 const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
-  const [CreateForm, { isLoading: CreateFormLoading }] = useCreateNewFormMutation();
+  const [CreateForm, { isLoading: CreateFormLoading }] =
+    useCreateNewFormMutation();
   const {
     register,
     handleSubmit,
     control,
-    setValue, // Added from react-hook-form to set values dynamically
     formState: { errors },
-  } = useForm<FormPayload>();
-  const { fields, append, remove } = useFieldArray({
+  } = useForm<FormPayload>(); // Replace FormPayload with your actual form data type
+
+  const {
+    fields: dynamicFields,
+    append: appendDynamic,
+    remove: removeDynamic,
+  } = useFieldArray({
     control,
     name: "dynamic_fields",
   });
 
-  // State to hold the selected type (text or file)
+  const {
+    fields: attachments,
+    append: appendAttachment,
+    remove: removeAttachment,
+  } = useFieldArray({
+    control,
+    name: "attachments",
+  });
+
   const [selectedType, setSelectedType] = useState<"text" | "file">("text");
 
   const onSubmit: SubmitHandler<FormPayload> = async (data) => {
-  const formData = new FormData();
-  formData.append("form_title", data.form_title);
-  formData.append("form_description", data.form_description);
-  formData.append("deadline", data.deadline);
-  formData.append("dynamic_fields", JSON.stringify(data.dynamic_fields));
+    const formData = new FormData();
+    formData.append("form_title", data.form_title);
+    formData.append("form_description", data.form_description);
+    formData.append("deadline", data.deadline);
 
+    // Append dynamic fields to formData
+    formData.append("dynamic_fields", JSON.stringify(data.dynamic_fields));
 
-  await CreateForm(formData).unwrap().then(() => {
-    closeAddModalForm();
-  });
-};
+    // Append attachments to formData
+    data.attachments.forEach((attachment, index) => {
+      formData.append(
+        `attachments[${index}][field_name]`,
+        attachment.field_name
+      ); // Include field_name
+      formData.append(
+        `attachments[${index}][field_value]`,
+        attachment.field_value[0]
+      ); // Assuming field_value is an array of files
+    });
 
+    await CreateForm(formData)
+      .unwrap()
+      .then(() => {
+        closeAddModalForm();
+      });
+  };
 
   const handleAddField = () => {
-    append({ field_name: "", field_value: "", type: selectedType }); 
+    appendDynamic({ field_name: "", field_value: "", type: selectedType });
+  };
+
+  const handleAddAttachment = () => {
+    appendAttachment({ field_name: "", field_value: "" });
   };
 
   return (
@@ -134,12 +168,15 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
             )}
           </div>
 
+          {/* Dynamic Fields Section */}
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
               <TextField
                 select
                 value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value as "text" | "file")}
+                onChange={(e) =>
+                  setSelectedType(e.target.value as "text" | "file")
+                }
                 className="w-32 bg-fourth-light"
                 InputProps={{
                   sx: {
@@ -156,8 +193,11 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
                 <IoIosAddCircle className="text-2xl text-secondary-light" />
               </IconButton>
             </div>
-            {fields.map((field, index) => (
-              <div key={field.id} className="flex flex-col gap-2 items-center mb-2">
+            {dynamicFields.map((field, index) => (
+              <div
+                key={field.id}
+                className="flex flex-col gap-2 items-center mb-2"
+              >
                 <TextField
                   type="text"
                   placeholder="Field Name"
@@ -190,16 +230,83 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
                       },
                     }}
                   />
-                ) : null}
-                <IconButton onClick={() => remove(index)}>
+                ) : (
+                  <TextField
+                    type="file"
+                    error={!!errors.dynamic_fields?.[index]?.field_value}
+                    {...register(`dynamic_fields.${index}.field_value`, {
+                      required: "File is required",
+                    })}
+                    className="w-full bg-fourth-light"
+                    InputProps={{
+                      sx: {
+                        height: "45px",
+                        lineHeight: "normal",
+                        borderRadius: "10px",
+                      },
+                    }}
+                  />
+                )}
+                <IconButton onClick={() => removeDynamic(index)}>
                   <IoIosRemoveCircle className="text-2xl text-red-500" />
                 </IconButton>
               </div>
             ))}
           </div>
 
-          
+          {/* Attachments Section */}
+          <div className="w-full mt-[15px]">
+            <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+              <span className="font-semibold uppercase">Attachments</span>
+            </div>
+            <IconButton onClick={handleAddAttachment}>
+              <IoIosAddCircle className="text-2xl text-secondary-light" />
+            </IconButton>
+            {attachments.map((attachment, index) => (
+              <div
+                key={attachment.id}
+                className="
+flex flex-col gap-2 items-center mb-2"
+              >
+                <TextField
+                  type="text"
+                  placeholder="Attachment Name"
+                  error={!!errors.attachments?.[index]?.field_name}
+                  {...register(`attachments.${index}.field_name`, {
+                    required: "Attachment Name is required",
+                  })}
+                  className="w-full bg-fourth-light mr-2"
+                  InputProps={{
+                    sx: {
+                      height: "45px",
+                      lineHeight: "normal",
+                      borderRadius: "10px",
+                    },
+                  }}
+                />
+                <TextField
+                  type="file"
+                  error={!!errors.attachments?.[index]?.field_value}
+                  {...register(`attachments.${index}.field_value`, {
+                    required: "Attachment File is required",
+                  })}
+                  className="w-full bg-fourth-light"
+                  InputProps={{
+                    sx: {
+                      height: "45px",
+                      lineHeight: "normal",
+                      borderRadius: "10px",
+                    },
+                  }}
+                />
+                <IconButton onClick={() => removeAttachment(index)}>
+                  <IoIosRemoveCircle className="text-2xl text-red-500" />
+                </IconButton>
+              </div>
+            ))}
+          </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="mt-10 bg-secondary-light hover:bg-third-light text-white py-2 px-4 rounded-[10px] w-full h-[45px]"

@@ -4,8 +4,11 @@ import {
   ApprovePayload,
   DistrictChurchBelongResponse,
   FormResponse,
+  IncompleteFormsResponse,
+  RevisePayload,
   SubmittedFormPayload,
   SubmittedFormResponse,
+  SubmittedFormsResponse,
   UnansweredFormsResponse,
 } from "../type/Type";
 
@@ -17,7 +20,8 @@ export const FormApi = createApi({
     "DistrictAndChurchBelongsTo",
     "AnsweredForms",
     "SubmittedForm",
-    "SubmittedLogs"
+    "SubmittedLogs",
+    "IncompleteForms",
   ],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
@@ -89,10 +93,23 @@ export const FormApi = createApi({
       }),
       invalidatesTags: ["SubmittedForm"],
     }),
-    FetchSubmittedLogs: builder.query<SubmittedFormsResponse, void >({
+    FetchSubmittedLogs: builder.query<SubmittedFormsResponse, void>({
       query: () => "/form/submitted-forms-logs",
       keepUnusedDataFor: 60,
-      providesTags: ["SubmittedLogs"]
+      providesTags: ["SubmittedLogs"],
+    }),
+    FetchIncompleteForms: builder.query<IncompleteFormsResponse, void>({
+      query: () => "/form/incomplete",
+      keepUnusedDataFor: 60,
+      providesTags: ["IncompleteForms"],
+    }),
+    EditForm: builder.mutation<void, FormData>({
+      query: ({id, data}) => ({
+        url: `/form/edit-response?id=${id}`,
+        method: "PUT",
+        body: data
+      }),
+      invalidatesTags: ["SubmittedLogs"]
     }),
   }),
 });
@@ -107,5 +124,7 @@ export const {
   useApproveSubmittedMutation,
   useDeleteFromSubmittedMutation,
   useAddRemarkMutation,
-  useFetchSubmittedLogsQuery
+  useFetchSubmittedLogsQuery,
+  useFetchIncompleteFormsQuery,
+  useEditFormMutation
 } = FormApi;

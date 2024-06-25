@@ -1,4 +1,4 @@
-import  { FC } from "react";
+import { FC } from "react";
 
 interface FormCardModal {
   title: string;
@@ -6,16 +6,18 @@ interface FormCardModal {
   status: string;
   deadline?: string;
   date_created?: string | null;
+  remarks?: string | null;
   card_click?: () => void;
 }
-const FormCard: FC<FormCardModal> = ({
+const FormCardRemarks: FC<FormCardModal> = ({
   title,
   description,
   status,
   deadline,
+  remarks,
   card_click,
 }) => {
-  const formatDate = (isoDateString: any ): string => {
+  const formatDate = (isoDateString: any): string => {
     const date = new Date(isoDateString);
     // Extracting year, month, and day
     const year = date.getFullYear();
@@ -46,9 +48,9 @@ const FormCard: FC<FormCardModal> = ({
       <h4 className="text-sm text-red-600 font-sans">
         <span>Deadline: </span>({formattedDate})
       </h4>
-      
+      <p>Remarks: {remarks}</p>
     </div>
   );
 };
 
-export default FormCard;
+export default FormCardRemarks;

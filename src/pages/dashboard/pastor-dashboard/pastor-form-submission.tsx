@@ -2,6 +2,7 @@ import Header from "../../../components/header";
 import { useState } from "react";
 import PastorListOfPendingForms from "../../../components/head-pastor-components/pastor-list-of-pending-forms";
 import PastorListOfCompletedForms from "../../../components/head-pastor-components/pastor-list-of-completed-forms";
+import ReviseLogs from "../../../components/revise-forms";
 const PastorFormSubmission = () => {
   const [setPage, setIspage] = useState("pending-page");
 
@@ -44,6 +45,7 @@ const PastorFormSubmission = () => {
           </div>
           {setPage === "pending-page" ? <PastorListOfPendingForms /> : null}
           {setPage === "complete-page" ? <PastorListOfCompletedForms /> : null}
+          {setPage === "revised-page" ? <ReviseLogs /> : null}
         </div>
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
           © Copyright reserve Friend Foundation Management System 2024

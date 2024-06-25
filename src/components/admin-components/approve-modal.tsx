@@ -20,6 +20,7 @@ type ApproveModalProps = {
 };
 
 const ApproveModal: FC<ApproveModalProps> = ({ data, closeModal }) => {
+  console.log(data)
   const [ApproveForm] = useApproveSubmittedMutation();
   const [AddRemark] = useAddRemarkMutation();
   const {
@@ -44,13 +45,15 @@ const ApproveModal: FC<ApproveModalProps> = ({ data, closeModal }) => {
       });
   };
 
+  const convertArray = Object.values(data.dynamic_fields)
+
   return (
     <div className="absolute shadow-md drop-shadow-md inset-0 backdrop-brightness-50">
       <div className="h-max overflow-auto max-w-[400px]  mx-auto bg-white p-4">
         <div className="flex justify-end" onClick={closeModal}>
           <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
         </div>
-        {data.dynamic_fields.map((item, index) => (
+        {convertArray.map((item, index) => (
           <div className="flex flex-col my-2" key={index}>
             <h1 className="text-lg font-semibold">{item.field_name}</h1>
             <h2 className="bg-fourth-light p-2 text-sm font-semibold">
