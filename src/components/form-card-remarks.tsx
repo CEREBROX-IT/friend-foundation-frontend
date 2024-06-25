@@ -45,9 +45,9 @@ const FormCardRemarks: FC<FormCardModal> = ({
           {status}
         </h3>
       </div>
-      <h4 className="text-sm text-red-600 font-sans">
+      {/* <h4 className="text-sm text-red-600 font-sans">
         <span>Deadline: </span>({formattedDate})
-      </h4>
+      </h4> */}
       <p>Remarks: {remarks}</p>
     </div>
   );

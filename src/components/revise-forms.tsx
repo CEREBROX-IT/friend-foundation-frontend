@@ -9,9 +9,11 @@ export default function ReviseLogs() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedData, setSelectedData] = useState({})
   const { data: SubmittedLog } = useFetchSubmittedLogsQuery();
+  
   const filterData = SubmittedLog?.data.filter(
     (item: any) => item.status === "Revise" && item.user_id === id
   );
+  console.log(filterData)
 
   const handleOpenModal = (item: any) => {
     setOpenModal(true);
