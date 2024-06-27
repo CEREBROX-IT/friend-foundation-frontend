@@ -3,7 +3,7 @@ import { useFetchActiveFormQuery, useDeleteReportFormsMutation } from "../../red
 import { useState } from "react";
 import AdminTablePerForm from "./admin-table-per-form";
 import AdminEditFormModal from "./admin-edit-form-modal";
-
+import Empty from "../../assets/Empty.jpg"
 const AdminForms = () => {
   const [formId, setFormId] = useState<number>();
   const [openForm, setOpenForm] = useState(false);
@@ -29,7 +29,7 @@ const AdminForms = () => {
   return (
     <div className="max-h-screen overflow-auto custom-scrollbar ">
       <div className="mt-10 flex flex-col gap-4 relative ">
-        {FetchUnasweredForm?.map((item) => (
+        {FetchUnasweredForm && FetchUnasweredForm.length > 0 ? <>{FetchUnasweredForm?.map((item) => (
           <FormCard
             title={item.form_title}
             description={item.form_description}
@@ -40,7 +40,9 @@ const AdminForms = () => {
             delete_click={() => handleDeleteForm(item.id)}
             edit_click={() => handleOpenEditForm()}
           />
-        ))}
+        ))}</> : <> <div className="flex flex-1 w-full h-full justify-center ">
+          <img src={Empty} className="w-96 w-96"/></div></>}
+        
       </div>
       {openForm && <AdminTablePerForm id={formId} closeForm={handleCloseForm}/>}
       {editFormModal && <AdminEditFormModal />}
