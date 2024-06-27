@@ -76,14 +76,12 @@ const HeadDistrictDashboard = () => {
             ReviseFormLoading ? <LoadingAnimation2 /> : ReviseForm?.count
           }
           icon={FaFile}
-          navigation_path="/dashboard/church-list"
+          navigation_path=""
         />
       </div>
 
       <div className="flex flex-col  gap-4 w-full p-4 mt-4">
-        {/* <div className="bg-sixth-light dark:bg-sixth-dark shadow-lg rounded-[10px] custom-scrollbar">
-          <DistrictOverview />
-        </div> */}
+        
         <div className="bg-sixth-light dark:bg-sixth-dark shadow-lg rounded-[10px] custom-scrollbar">
           <DistrictRevisedForm />
         </div>

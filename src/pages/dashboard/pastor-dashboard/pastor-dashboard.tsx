@@ -3,6 +3,7 @@ import { FaFile } from "react-icons/fa6";
 import ResultCards from "../../../components/result-cards";
 import { useFetchNoOfFormsQuery, useFetchNoReviseFormQuery } from "../../../redux/services/StatsApi";
 import LoadingAnimation2 from "../../../components/loading-animation2";
+import DistrictRevisedForm from "../../../components/head-district-components/district-revised-form";
 
 const PastorDashboard = () => {
   const { data: FormCount, isLoading: FormLoading } = useFetchNoOfFormsQuery();
@@ -46,7 +47,9 @@ const PastorDashboard = () => {
       </div>
 
       <div className="w-full p-4 mt-4">
-        <div className="bg-sixth-light dark:bg-sixth-dark shadow-lg rounded-[10px] custom-scrollbar"></div>
+        <div className="bg-sixth-light dark:bg-sixth-dark shadow-lg rounded-[10px] custom-scrollbar">
+          <DistrictRevisedForm />
+        </div>
       </div>
       <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
         © Copyright reserve Friend Foundation Management System 2024

@@ -22,7 +22,7 @@ const PastorFormSubmission = () => {
         <p className="text-sixth-light font-semibold text-[25px]">
           HEAD PASTOR FORM
         </p>
-        <div className="bg-white  mt-10 p-4  ">
+        <div className="bg-white min-h-screen mt-10 p-4  ">
           <div className="flex flex-wrap gap-4">
             <button
               className=" bg-secondary-light py-2 px-10 lg:w-[250px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"

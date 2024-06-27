@@ -18,6 +18,7 @@ const Header = () => {
   const userData = JwtDecoder().decodedToken;
   const role = userData?.role;
   const [OpenMenu, setOpenMenu] = useState(false);
+  const [OpenNotification, setOpenNotification] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { data: GetUserData } = useFetchUserProfileQuery();
 
@@ -36,6 +37,10 @@ const Header = () => {
   const MenuHandler = () => {
     setOpenMenu(true);
   };
+
+  function NotificationHandler(){
+    setOpenNotification(!OpenNotification)
+  }
 
   const CloseMenuHandler = () => {
     setOpenMenu(false);
@@ -134,8 +139,10 @@ const Header = () => {
               </>
             )}
           </Menu>
-          <div className="rounded-[50%] bg-fourth-light dark:bg-fourth-dark h-[40px] min-w-[40px] flex items-center cursor-pointer">
+          <div className="relative rounded-[50%] bg-fourth-light dark:bg-fourth-dark h-[40px] min-w-[40px] flex items-center cursor-pointer" onClick={NotificationHandler}>
             <img src={BellIcon} className="h-[35px] mx-auto" />
+
+            {OpenNotification && <div className="w-60 h-[400px] shadow-black shadow-lg bg-white absolute z-20 -translate-x-52 translate-y-[230px]"></div>}
           </div>
         </div>
       </div>

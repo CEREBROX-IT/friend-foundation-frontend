@@ -7,6 +7,8 @@ import { StatsApi } from "../services/StatsApi";
 import { DistrictApi } from "../services/DistrictApi";
 import { AssignedLogsApi } from "../services/AssignedLogsApi";
 import { FormApi } from "../services/FormApi";
+import { NotificationApi } from "../services/NotificationApi";
+
 export const store = configureStore({
   reducer: {
     [AuthenticationApi.reducerPath]: AuthenticationApi.reducer,
@@ -16,6 +18,7 @@ export const store = configureStore({
     [DistrictApi.reducerPath]: DistrictApi.reducer,
     [AssignedLogsApi.reducerPath]: AssignedLogsApi.reducer,
     [FormApi.reducerPath]: FormApi.reducer,
+     [NotificationApi.reducerPath]: NotificationApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -26,7 +29,8 @@ export const store = configureStore({
       StatsApi.middleware,
       DistrictApi.middleware,
       AssignedLogsApi.middleware,
-      FormApi.middleware
+      FormApi.middleware,
+      NotificationApi.middleware
     ),
 });
 
