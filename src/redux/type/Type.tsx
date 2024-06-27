@@ -52,6 +52,7 @@ export interface ChurchPayload {
   pastor_assign: number;
   church_date_establish: string;
   church_address: string;
+  id: number
 }
 
 export interface UnAssignedUserResponse {
@@ -371,11 +372,10 @@ export interface FormPayload {
   form_title: string;
   form_description: string;
   deadline: string;
-  dynamic_fields: { field_name: string; field_value: any; field_type: string }[];
+  dynamic_fields: { field_name: string; field_value: any; field_type?: string }[];
   attachments: { field_name?: string; field_value?: any; field_type?: string }[];
 
 };
-
 
 
 export interface FormResponse {
@@ -409,6 +409,7 @@ export type  UnansweredFormsResponse = {
     date_created: string;
     date_updated: string;
     status: string;
+    total?: string
   
 }[]
 
@@ -515,5 +516,9 @@ export interface RevisePayload {
     }>;
   }[];
   dynamic_fields: any
+  id: number
+}
+
+export interface DeleteFormPayload {
   id: number
 }

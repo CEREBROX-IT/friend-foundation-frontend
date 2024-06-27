@@ -6,11 +6,14 @@ import {
   GridToolbar,
   GridRenderCellParams,
   GridAlignment,
+  GridValueGetterParams
 } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
 import LoadingAnimation2 from "../loading-animation2";
 import { useFetchDistrictListQuery, useRemoveDistrictMutation } from "../../redux/services/DistrictApi";
 import { DistrictDetails } from "../../redux/type/Type";
+import { format } from 'date-fns';  
+import AdminEditDistrict from "./admin-edit-district";
 
  const CustomCellRenderer: React.FC<{ value: string }> = ({ value }) => (
    <h1 className="text-red-700">{value}</h1>
@@ -19,7 +22,8 @@ import { DistrictDetails } from "../../redux/type/Type";
 const DistrictOverview: FC = () => {
   const { data: GetDistrictList, isLoading: LoadingDistrict } =
     useFetchDistrictListQuery();
-  
+    const [openEditModal, setOpenEditModal] = useState(false)
+  const [districtData, setDistrictData] = useState({})
   const [deleteDistrict] = useRemoveDistrictMutation();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState<DistrictDetails[]>([]);
@@ -51,6 +55,21 @@ const DistrictOverview: FC = () => {
   async function hanldeDelete(id: number){
     await deleteDistrict({id: id}).unwrap().then((response) => console.log(response))
   }
+
+  function handleCloseModal () {
+    setOpenEditModal(false)
+  }
+
+  function handleEditModal(data: any) {
+    setOpenEditModal(true)
+    setDistrictData(data)
+  }
+
+   const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return format(date, 'MM-dd-yyyy');  // Formatting the date to 'YYYY-MM-DD'
+  };
+
 
   //-----for the Table------
   const columns = [
@@ -101,6 +120,8 @@ const DistrictOverview: FC = () => {
       headerName: "DATE CREATED",
       flex: 1,
       minWidth: 200,
+      valueGetter: (params: GridValueGetterParams) => formatDate(params.value),  // Apply date formatting
+
     },
     {
       field: "actions",
@@ -110,6 +131,17 @@ const DistrictOverview: FC = () => {
       minWidth: 200,
       flex: 1,
       renderCell: (params: GridRenderCellParams) => (
+        <div className="flex w-full justify-center">
+          <div className="flex justify-evenly w-full">
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleEditModal(params.row)}
+          >
+            EDIT
+          </Button>
+        </div>
         <div className="flex justify-evenly w-full">
           <Button
             variant="contained"
@@ -119,6 +151,7 @@ const DistrictOverview: FC = () => {
           >
             DELETE
           </Button>
+        </div>
         </div>
       ),
     },
@@ -218,6 +251,7 @@ const DistrictOverview: FC = () => {
           </>
         )}
       </Box>
+      {openEditModal && <AdminEditDistrict closeDistrictModal={handleCloseModal} data={districtData}/>}
     </>
   );
 };

@@ -8,7 +8,7 @@ import {
   MdDarkMode,
   MdOutlineDarkMode,
 } from "react-icons/md";
-import { TbReportSearch } from "react-icons/tb";
+import { IoIosNotifications } from "react-icons/io";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
 import ThemeContext from "../ThemeContext";
@@ -192,7 +192,7 @@ const AdminSideBar = () => {
             <>
               <div
                 className={`flex w-full bg-secondary-light flex-row max-auto px-2 items-center hover:bg-fifth-dark cursor-pointer hover:border-secondary-dark  hover:border-b-[2px]${
-                  location.pathname === "/"
+                  location.pathname === "/dashboard/church-district/district-assignment"
                     ? "bg-fifth-dark border-secondary-dark  border-b-[2px]"
                     : ""
                 }`}
@@ -209,7 +209,7 @@ const AdminSideBar = () => {
               </div>
               <div
                 className={`flex w-full bg-secondary-light flex-row max-auto px-2 items-center hover:bg-fifth-dark cursor-pointer hover:border-secondary-dark  hover:border-b-[2px]${
-                  location.pathname === "/"
+                  location.pathname === "/dashboard/church-district/church-assignment"
                     ? "bg-fifth-dark border-secondary-dark  border-b-[2px]"
                     : ""
                 }`}
@@ -226,7 +226,7 @@ const AdminSideBar = () => {
               </div>
               <div
                 className={`flex w-full bg-secondary-light flex-row max-auto px-2 items-center hover:bg-fifth-dark cursor-pointer hover:border-secondary-dark  hover:border-b-[2px]${
-                  location.pathname === "/"
+                  location.pathname === "/dashboard/church-district/assignment-logs"
                     ? "bg-fifth-dark border-secondary-dark  border-b-[2px]"
                     : ""
                 }`}
@@ -244,86 +244,31 @@ const AdminSideBar = () => {
             </>
           )}
           <div
-            className={`flex flex-row max-auto px-2 items-center justify-between hover:bg-secondary-light cursor-pointer`}
+            className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
+              location.pathname === "/dashboard/notifications"
+                ? "border-secondary-dark"
+                : ""
+            }`}
             onClick={() => {
-              toggleDropdown("dropdown2");
+              //change it to the actual path
+              navigate("/dashboard/notifications");
             }}
           >
             <div className="h-[42px] min-w-[42px]  flex items-center justify-center">
-              <TbReportSearch className="text-[25px] ease-in-out duration-500 mx-2" />
-              {showName && (
-                <p
-                  className={`${
-                    openSidebar ? "flex" : "hidden"
-                  } text-bold text-[15px] `}
-                >
-                  Analytic/Alerts
-                </p>
-              )}
+              <IoIosNotifications className="text-[22px]"/>
+
             </div>
-            {dropdowns.dropdown2 ? (
-              <>
-                {showName && (
-                  <p
-                    className={`${
-                      openSidebar ? "flex" : "hidden"
-                    } text-bold text-[10px] `}
-                  >
-                    <IoIosArrowBack className="text-[25px] ease-in-out duration-500 mx-2" />
-                  </p>
-                )}
-              </>
-            ) : (
-              <>
-                {showName && (
-                  <p
-                    className={`${
-                      openSidebar ? "flex" : "hidden"
-                    } text-bold text-[10px] `}
-                  >
-                    <IoIosArrowDown className="text-[25px] ease-in-out duration-500 mx-2" />
-                  </p>
-                )}
-              </>
+            {showName && (
+              <p
+                className={`${
+                  openSidebar ? "flex" : "hidden"
+                } text-bold text-[15px]`}
+              >
+                Notification
+              </p>
             )}
           </div>
-          {!dropdowns.dropdown2 && (
-            <>
-              <div
-                className={`flex w-full bg-secondary-light flex-row max-auto px-2 items-center hover:bg-fifth-dark cursor-pointer hover:border-secondary-dark  hover:border-b-[2px]${
-                  location.pathname === "/"
-                    ? "bg-fifth-dark border-secondary-dark  border-b-[2px]"
-                    : ""
-                }`}
-                onClick={() => {
-                  //change it to the actual path
-                  navigate("/dashboard/analytic-alert/chart");
-                }}
-              >
-                <div className="h-[35px] min-w-[42px]  flex items-center justify-center ml-2">
-                  <IoIosFolder className="text-[20px] ease-in-out duration-500" />
-                </div>
-                {showName && <p className={`text-bold text-[14px]`}>Chart</p>}
-              </div>
-              <div
-                className={`flex w-full bg-secondary-light flex-row max-auto px-2 items-center hover:bg-fifth-dark cursor-pointer hover:border-secondary-dark  hover:border-b-[2px]${
-                  location.pathname === "/"
-                    ? "bg-fifth-dark border-secondary-dark  border-b-[2px]"
-                    : ""
-                }`}
-                onClick={() => {
-                  navigate("/dashboard/analytic-alert/notification");
-                }}
-              >
-                <div className="h-[35px] min-w-[42px]  flex items-center justify-center ml-2">
-                  <IoIosFolder className="text-[20px] ease-in-out duration-500" />
-                </div>
-                {showName && (
-                  <p className={`text-bold text-[14px]`}>Notification</p>
-                )}
-              </div>
-            </>
-          )}
+          
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
               location.pathname === "/" ? "border-secondary-dark" : ""

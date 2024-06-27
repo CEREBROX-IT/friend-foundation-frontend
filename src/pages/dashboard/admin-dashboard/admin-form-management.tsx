@@ -31,23 +31,23 @@ const AdminFormManagement = () => {
           <div className="flex justify-between">
             <div className="flex flex-wrap gap-4">
               <button
-                className=" bg-secondary-light py-2 px-10 lg:w-[250px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
+                className=" bg-secondary-light py-2 px-10 cursor-pointer text-white dark:bg-white text-lg font-semibold dark:text-black  rounded-md hover:opacity-85"
                 onClick={handleFormPage}
               >
                 FORMS
               </button>
               <button
-                className=" bg-[#B378FF] py-2 px-10 lg:w-[250px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
+                className=" bg-[#B378FF] py-2 px-10  cursor-pointer text-white dark:bg-white text-lg font-semibold dark:text-black  rounded-md hover:opacity-85"
                 onClick={handleSubmittedPage}
               >
                 SUBMITTED LOGS
               </button>
-              <button className=" bg-primary-dark py-2 px-10 lg:w-[250px]  cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85" onClick={handlePendingPage}>
+              <button className=" bg-primary-dark py-2 px-10 text-lg font-semibold  cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85" onClick={handlePendingPage}>
                 PENDING LOGS
               </button>
             </div>
             <IoIosAddCircle
-              className="text-5xl text-secondary-light cursor-pointer"
+              className="text-8xl lg:text-5xl text-secondary-light cursor-pointer"
               onClick={handleAddFormModal}
             />
           </div>

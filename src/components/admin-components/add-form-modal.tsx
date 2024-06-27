@@ -8,6 +8,7 @@ import {
 } from "react-icons/io";
 import { useCreateNewFormMutation } from "../../redux/services/FormApi";
 import LoadingAnimation from "../loading-animation";
+import { FormPayload } from "../../redux/type/Type";
 
 type AddFormModalProps = {
   closeAddModalForm: () => void;
@@ -53,15 +54,15 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
     formData.append("dynamic_fields", JSON.stringify(data.dynamic_fields));
 
     // Append attachments to formData
-    data.attachments.forEach((attachment, index) => {
+    data.attachments.forEach((attachment: any, index: any) => {
       formData.append(
         `attachments[${index}][field_name]`,
         attachment.field_name
-      ); // Include field_name
+      ); 
       formData.append(
         `attachments[${index}][field_value]`,
         attachment.field_value[0]
-      ); // Assuming field_value is an array of files
+      ); 
     });
 
     await CreateForm(formData)
@@ -72,7 +73,7 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
   };
 
   const handleAddField = () => {
-    appendDynamic({ field_name: "", field_value: "", type: selectedType });
+    appendDynamic({ field_name: "", field_value: ""});
   };
 
   const handleAddAttachment = () => {
@@ -81,7 +82,7 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
 
   return (
     <div className="absolute inset-0 flex justify-center md:items-start backdrop-brightness-50">
-      <div className="min-h-96 pb-10 max-w-[350px] lg:min-w-[400px] w-96 dark:bg-fourth-dark dark:text-white bg-white rounded-[10px] p-4 mx-4 fixed top-0">
+      <div className="min-h-96 pb-10 max-w-[450px] lg:min-w-[450px] w-96 dark:bg-fourth-dark dark:text-white bg-white rounded-[10px] p-4 mx-4 fixed top-0">
         <div className="flex justify-end" onClick={closeAddModalForm}>
           <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
         </div>
@@ -168,31 +169,16 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
             )}
           </div>
 
-          {/* Dynamic Fields Section */}
+          <div className="flex gap-4">
+            {/* Dynamic Fields Section */}
           <div className="w-full mt-[15px]">
-            <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <TextField
-                select
-                value={selectedType}
-                onChange={(e) =>
-                  setSelectedType(e.target.value as "text" | "file")
-                }
-                className="w-32 bg-fourth-light"
-                InputProps={{
-                  sx: {
-                    height: "45px",
-                    lineHeight: "normal",
-                    borderRadius: "10px",
-                  },
-                }}
-              >
-                <MenuItem value="text">Text</MenuItem>
-                <MenuItem value="file">File</MenuItem>
-              </TextField>
-              <IconButton onClick={handleAddField}>
+              <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
+               <span className="font-semibold uppercase">Text Field</span>
+               </div>
+               <IconButton onClick={handleAddField}>
                 <IoIosAddCircle className="text-2xl text-secondary-light" />
               </IconButton>
-            </div>
+            
             {dynamicFields.map((field, index) => (
               <div
                 key={field.id}
@@ -214,7 +200,7 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
                     },
                   }}
                 />
-                {field.type === "text" ? (
+            
                   <TextField
                     type="text"
                     disabled
@@ -230,23 +216,7 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
                       },
                     }}
                   />
-                ) : (
-                  <TextField
-                    type="file"
-                    error={!!errors.dynamic_fields?.[index]?.field_value}
-                    {...register(`dynamic_fields.${index}.field_value`, {
-                      required: "File is required",
-                    })}
-                    className="w-full bg-fourth-light"
-                    InputProps={{
-                      sx: {
-                        height: "45px",
-                        lineHeight: "normal",
-                        borderRadius: "10px",
-                      },
-                    }}
-                  />
-                )}
+            
                 <IconButton onClick={() => removeDynamic(index)}>
                   <IoIosRemoveCircle className="text-2xl text-red-500" />
                 </IconButton>
@@ -304,6 +274,7 @@ flex flex-col gap-2 items-center mb-2"
                 </IconButton>
               </div>
             ))}
+          </div>
           </div>
 
           {/* Submit Button */}

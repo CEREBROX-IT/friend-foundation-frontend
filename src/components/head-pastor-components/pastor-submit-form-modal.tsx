@@ -50,7 +50,7 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
     // Append dynamic_fields as a JSON string
     formData.append("dynamic_fields", JSON.stringify(dynamicFields));
 
-    values?.attachments.forEach((attachment, index) => {
+    values?.attachments.forEach((attachment: any, index: number) => {
       formData.append(
         `attachments[${index}][field_name]`,
         attachment.field_name
@@ -61,7 +61,6 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
       ); // Assuming field_value is an array of files
     });
 
-    console.log(values)
     
 
     await SubmitForm(formData)
@@ -146,7 +145,7 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
               <h3 className="text-lg font-semibold">Attachments:</h3>
               {files.map((file, index) => {
                 const href = import.meta.env.VITE_ATTACHMENT + `${file}`;
-
+                console.log(href)
                 return (
                   <div key={index} className="mt-2">
                     <a href={href} className="flex items-center" target="blank">

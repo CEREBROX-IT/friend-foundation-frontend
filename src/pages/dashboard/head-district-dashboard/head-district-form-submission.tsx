@@ -20,7 +20,11 @@ const HeadDistrictFormSubmission = () => {
         <p className="text-sixth-light font-semibold text-[25px]">
           HEAD DISTRICT FORM
         </p>
-        <div className="bg-white min-h-screen border-2 mt-10 p-4 ">
+        
+      </div>
+      <div className="p-4">
+        
+      <div className="bg-white min-h-screen border-2 mt-5 p-4 ">
           <div className="flex flex-wrap gap-4">
             <button
               className=" bg-secondary-light py-2 px-10 lg:w-[250px] cursor-pointer text-white dark:bg-white  dark:text-black  rounded-md hover:opacity-85"
@@ -47,11 +51,11 @@ const HeadDistrictFormSubmission = () => {
 
           {setPage === "revised-page" ? <ReviseForm /> : null}
         </div>
+      </div>
 
         <p className="px-4 mb-2 text-[14px] text-[#707070] text-center">
           © Copyright reserve Friend Foundation Management System 2024
         </p>
-      </div>
     </div>
   );
 };

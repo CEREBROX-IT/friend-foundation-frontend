@@ -118,7 +118,7 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
             {...register("last_name", {
               required: "Last Name is required",
               pattern: {
-                value: /^[A-Za-z]+$/,
+                value: /^[A-Za-z\s]+$/,
                 message: "Invalid Last name",
               },
             })}
@@ -146,7 +146,12 @@ const RegisterScreen: FC<RegisterScreenProps> = ({ handleBackToLogin }) => {
               type="text"
               placeholder="middle name"
               error={errors.middle_name ? true : false}
-              {...register("middle_name")}
+              {...register("middle_name", {
+                pattern: {
+                    value: /^[A-Za-z\s]+$/,
+                    message: "Invalid Middle Name",
+                  },
+              })}
               className="w-full bg-fourth-light"
               InputProps={{
                 sx: {

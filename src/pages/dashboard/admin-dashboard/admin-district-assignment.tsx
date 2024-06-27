@@ -34,10 +34,9 @@ const AdminDistrictAssignment = () => {
   const filter = DistrictList?.data.filter(
     (item) => item.head_district_assign === null
   );
-
   const onSubmitHandle: SubmitHandler<IFormInput> = async (data) => {
     const filter = DistrictList?.data.filter((item) => item.id === data.id) || [];
-
+    
     const value = {
       union_conference: filter[0]?.union_conference,
       head_district_assign: data?.head_district_assign,

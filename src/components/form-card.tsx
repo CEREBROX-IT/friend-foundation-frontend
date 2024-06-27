@@ -1,20 +1,30 @@
 import  { FC } from "react";
-
+import { MdDeleteForever } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import JwtDecoder from "../utils/jwt-decoder";
 interface FormCardModal {
   title: string;
   description: string;
-  status: string;
+  status?: string;
   deadline?: string;
   date_created?: string | null;
+  total?: string
   card_click?: () => void;
+  delete_click?: () => void
+  edit_click? : () => void
 }
 const FormCard: FC<FormCardModal> = ({
   title,
   description,
   status,
   deadline,
+  total,
   card_click,
+  delete_click,
+  edit_click
 }) => {
+  const decodeData = JwtDecoder().decodedToken
+  const role = decodeData?.role
   const formatDate = (isoDateString: any ): string => {
     const date = new Date(isoDateString);
     // Extracting year, month, and day
@@ -26,28 +36,40 @@ const FormCard: FC<FormCardModal> = ({
   };
 
   const formattedDate = formatDate(deadline);
-  // const formattedDateCreate = formatDate(date_created);
 
   return (
-    <div
-      className="flex flex-col justify-between min-h-48 w-full bg-fourth-light p-2 cursor-pointer shadow-sm shadow-black"
-      onClick={card_click}
-    >
-      <div className="flex justify-between">
-        <div>
-          <h1 className="text-xl font-black uppercase">{title}</h1>
-          <h2 className="text-sm font-semibold">{description}</h2>
+    <div className="flex flex-col md:flex-row">
+        <div
+        className="flex flex-col justify-between min-h-48 w-full bg-fourth-light p-2 cursor-pointer shadow-sm shadow-black"
+        onClick={card_click}
+      >
+        <div className="flex justify-between">
+          <div>
+            <h1 className="text-lg font-black uppercase">{title}</h1>
+            <h2 className="text-sm font-semibold">{description}</h2>
+          </div>
+          <h3 className="uppercase font-semibold">
+            {status}
+          </h3>
         </div>
-        <h3 className="uppercase font-semibold">
-          <span>STATUS : </span>
-          {status}
-        </h3>
+      <div className="flex justify-between">
+        <h4 className="text-sm text-red-600 font-bold">
+          <span>Deadline: </span>({formattedDate})
+        </h4>
+          <h1>{total}</h1>
       </div>
-      <h4 className="text-sm text-red-600 font-sans">
-        <span>Deadline: </span>({formattedDate})
-      </h4>
-      
+        
+      </div>
+     {role === "Admin" &&  <div className="flex md:flex-col md:w-10 min-h-full flex flex-col ">
+      <div className="h-1/2 flex flex-col justify-center py-2 items-center bg-red-600 cursor-pointer" onClick={delete_click}>
+        <MdDeleteForever className="text-2xl text-white"/>
+      </div>
+      <div className="h-1/2 flex flex-col items-center  py-2 justify-center bg-blue-600 border-t-4 cursor-pointer" >
+        <FaRegEdit className="text-2xl text-white"/>
+      </div>
+      </div>}
     </div>
+    
   );
 };
 

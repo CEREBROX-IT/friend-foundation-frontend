@@ -57,7 +57,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
         >
           <div className="w-full mt-[10px]">
             <div className="flex flex-row px-1 text-[15px] mb-1">
-              <span className="font-bold">EMAIL ADDRESS</span>
+              <span className="font-semibold">EMAIL ADDRESS</span>
             </div>
             <TextField
               type="email"
@@ -87,7 +87,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[10px] rounded-full ">
             <div className="flex flex-row px-1 text-[15px] mb-1">
-              <span className="font-bold uppercase">First Name</span>
+              <span className="font-semibold uppercase">First Name</span>
             </div>
             <TextField
               type="text"
@@ -117,7 +117,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span className="font-bold uppercase">Last Name</span>
+              <span className="font-semibold uppercase">Last Name</span>
             </div>
             <TextField
               type="text"
@@ -126,7 +126,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
               {...register("last_name", {
                 required: "Last Name is required",
                 pattern: {
-                  value: /^[A-Za-z]+$/,
+                  value: /^[A-Za-z\s]+$/,
                   message: "Invalid Last name",
                 },
               })}
@@ -148,7 +148,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           <div className="flex gap-2">
             <div className="w-full mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                <span className="font-bold uppercase">Middle Name</span>
+                <span className="font-semibold uppercase">Middle Name</span>
               </div>
               <TextField
                 type="text"
@@ -156,7 +156,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
                 error={errors.middle_name ? true : false}
                 {...register("middle_name", {
                   pattern: {
-                    value: /^[A-Za-z]+$/,
+                    value: /^[A-Za-z\s]+$/,
                     message: "Invalid Middle Name",
                   },
                 })}
@@ -177,7 +177,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
             </div>
             <div className="w-1/3 mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                <span className="font-bold uppercase">Suffix</span>
+                <span className="font-semibold uppercase">Suffix</span>
               </div>
               <TextField
                 type="text"
@@ -206,7 +206,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
             </div>
             <div className="w-1/3 mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                <span className="font-bold uppercase">Age</span>
+                <span className="font-semibold uppercase">Age</span>
               </div>
               <TextField
                 type="number"
@@ -233,7 +233,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span className="font-bold uppercase">
+              <span className="font-semibold uppercase">
                 Title/Position (Ex. Pastor)
               </span>
             </div>
@@ -261,7 +261,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span className="font-bold uppercase">Contact Number</span>
+              <span className="font-semibold uppercase">Contact Number</span>
             </div>
             <TextField
               type="number"
@@ -300,7 +300,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           <div className="flex w-full gap-2">
             <div className="w-full mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                <span className="font-bold uppercase">Birth Date</span>
+                <span className="font-semibold uppercase">Birth Date</span>
               </div>
               <TextField
                 type="date"
@@ -326,7 +326,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
             </div>
             <div className="w-full mt-[15px]">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-                <span className="font-bold uppercase">Gender</span>
+                <span className="font-semibold uppercase">Gender</span>
               </div>
               <TextField
                 type="text"
@@ -361,7 +361,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span className="font-bold uppercase">Password</span>
+              <span className="font-semibold uppercase">Password</span>
             </div>
             <TextField
               type={showPassword ? "text" : "password"}
@@ -392,7 +392,7 @@ const NewUserModal: FC<NewUserModalProps> = ({ closeUserModal }) => {
           </div>
           <div className="w-full mt-[15px]">
             <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
-              <span className="font-bold uppercase">Confirm Password</span>
+              <span className="font-semibold uppercase">Confirm Password</span>
             </div>
             <TextField
               type={showConfirmPassword ? "text" : "password"}

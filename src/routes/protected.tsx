@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AdminSideBar from "../components/admin-components/admin-sidebar";
 import AdminDashboard from "../pages/dashboard/admin-dashboard/admin-dashboard";
 import AdminUserList from "../pages/dashboard/admin-dashboard/admin-userlist";
@@ -20,6 +20,7 @@ import UnassignedDashboard from "../pages/dashboard/unassigned-dashboard/unassig
 import PastorDashboard from "../pages/dashboard/pastor-dashboard/pastor-dashboard";
 import PastorSideBar from "../components/head-pastor-components/pastor-sidebar";
 import PastorFormSubmission from "../pages/dashboard/pastor-dashboard/pastor-form-submission";
+
 interface RoleProps {
   role?: string;
 }
@@ -30,6 +31,7 @@ const Protected: FC<RoleProps> = ({ role }) => {
         <>
           <div className="flex bg-white min-h-[100vh]">
             <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" />}></Route>
               <Route
                 path="/dashboard"
                 element={
@@ -112,6 +114,7 @@ const Protected: FC<RoleProps> = ({ role }) => {
         <>
           <div className="flex bg-white min-h-[100vh]">
             <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" />}></Route>
               <Route
                 path="/dashboard"
                 element={
@@ -163,6 +166,7 @@ const Protected: FC<RoleProps> = ({ role }) => {
       {role === "Unassign" && (
         <div className="flex bg-white min-h-[100vh]">
           <Routes>
+            <Route path="/" element={<Navigate to="/user-profile" />}></Route>
             <Route
               path="/user-profile"
               element={
@@ -178,6 +182,7 @@ const Protected: FC<RoleProps> = ({ role }) => {
       {role === "Head Pastor" && (
         <div className="flex bg-white min-h-[100vh]">
           <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" />}></Route>
             <Route
               path="/dashboard"
               element={

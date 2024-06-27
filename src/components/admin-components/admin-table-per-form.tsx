@@ -1,11 +1,13 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box, Button } from "@mui/material";
-import { DataGrid, GridToolbar, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridColDef, GridValueGetterParams, GridRenderCellParams  } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
 import { useFetchSubmittedFormQuery, useDeleteFromSubmittedMutation } from "../../redux/services/FormApi";
 import { SubmittedFormResponse } from "../../redux/type/Type";
 import ApproveModal from "./approve-modal";
 import { IoMdCloseCircle } from "react-icons/io";
+import { format } from 'date-fns';  
+
 
 type AdminTableModal = {
   id?: number;
@@ -60,11 +62,16 @@ const AdminTablePerForm: FC<AdminTableModal> = ({ id, closeForm }) => {
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return format(date, 'MM-dd-yyyy');  // Formatting the date to 'YYYY-MM-DD'
+  };
+
   //-----for the Table------
   const columns: GridColDef[] = [
     {
       field: "submitted_by",
-      headerName: "FULL NAME",
+      headerName: "Full Name",
       flex: 1,
       minWidth: 200,
     },
@@ -75,17 +82,27 @@ const AdminTablePerForm: FC<AdminTableModal> = ({ id, closeForm }) => {
       minWidth: 200,
     },
     {
-      field: "district_belong",
-      headerName: "District Belong",
-      flex: 1,
-      minWidth: 200,
-    },
-    {
-      field: "church_belong",
-      headerName: "Church Belong",
-      flex: 1,
-      minWidth: 200,
-    },
+    field: "district_belong",
+    headerName: "District Belong",
+    flex: 1,
+    minWidth: 200,
+    renderCell: (params: GridRenderCellParams) => (
+      <span style={{ color: params.value ? 'inherit' : 'red' }}>
+        {params.value || 'Not Applicable'}
+      </span>
+    ),
+  },
+  {
+    field: "church_belong",
+    headerName: "Church Belong",
+    flex: 1,
+    minWidth: 200,
+    renderCell: (params: GridRenderCellParams) => (
+      <span style={{ color: params.value ? 'inherit' : 'red' }}>
+        {params.value || 'Not Applicable'}
+      </span>
+    ),
+  },
     {
       field: "status",
       headerName: "Status",
@@ -97,6 +114,8 @@ const AdminTablePerForm: FC<AdminTableModal> = ({ id, closeForm }) => {
       headerName: "Date Completed",
       flex: 1,
       minWidth: 200,
+      valueGetter: (params: GridValueGetterParams) => formatDate(params.value),  // Apply date formatting
+
     },
     {
       field: "actions",
@@ -129,9 +148,9 @@ const AdminTablePerForm: FC<AdminTableModal> = ({ id, closeForm }) => {
   ];
 
   return (
-    <div className="absolute inset-0  h-full border-2 border-black p-10 bg-white">
+    <div className="absolute inset-0  h-full  p-6 bg-white">
       <div className="flex justify-end" onClick={closeForm}>
-        <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
+        <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300  " />
       </div>
       <Box
         sx={{

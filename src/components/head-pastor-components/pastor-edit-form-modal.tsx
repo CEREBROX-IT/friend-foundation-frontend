@@ -7,7 +7,6 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField } from "@mui/material";
 import { RevisePayload } from "../../redux/type/Type";
-import { FaFilePdf } from "react-icons/fa";
 
 type Attachment = {
   filename: string;
@@ -19,13 +18,13 @@ type PastorModal = {
     id?: number;
     form_title?: string;
     form_description?: string;
-    dynamic_fields?: { field_name: string; field_value: string }[];
-    attachments?: Attachment[];
+    dynamic_fields?: { [key: string]: { field_name: string; field_value: string } } | undefined;
   };
   
 };
 
 const PastorEditFormModal: FC<PastorModal> = ({ closeModal, data }) => {
+  
   const { data: DistrictBelong } = useFetchDistrictChurchBelongToQuery();
   const [SubmitForm] = useEditFormMutation();
   const {
@@ -34,7 +33,8 @@ const PastorEditFormModal: FC<PastorModal> = ({ closeModal, data }) => {
     formState: { errors },
   } = useForm<RevisePayload>();
 
-const convertArray = Object.values(data?.dynamic_fields);
+const convertArray = Object.values(data?.dynamic_fields || {});
+
 
 
   const onSubmit: SubmitHandler<RevisePayload> = async (values) => {
@@ -62,8 +62,8 @@ const convertArray = Object.values(data?.dynamic_fields);
   };
 
   return (
-    <div className="absolute flex justify-center inset-0 flex-1 min-w-screen min-h-screen backdrop-brightness-50 ">
-      <div className=" bg-white max-w-[400px] min-w-[400px] h-max p-4">
+    <div className="absolute flex justify-center inset-0 flex-1 min-w-screen min-h-screen backdrop-brightness-50 p-4">
+      <div className=" bg-white lg:max-w-[400px] lg:min-w-[400px] h-max p-4">
         <div className="flex justify-end" onClick={closeModal}>
           <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
         </div>
@@ -71,7 +71,7 @@ const convertArray = Object.values(data?.dynamic_fields);
           {data?.form_title}
         </h1>
         <hr className="border-black" />
-        <h2 className="text-lg font-medium ">{data?.form_description}</h2>
+        <h2 className="text-sm font-medium ">{data?.form_description}</h2>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -81,7 +81,7 @@ const convertArray = Object.values(data?.dynamic_fields);
           <div className="flex gap-4 flex-wrap ">
             {convertArray.map((item, index) => (
               <div key={index} className="w-full mt-[10px]">
-                <div className="flex flex-row px-1 text-[15px] mb-1 ">
+                <div className="flex flex-row px-1 text-[13px] mb-1 ">
                   <span className="font-bold">{item.field_name}</span>
                 </div>
                 <TextField
@@ -105,6 +105,30 @@ const convertArray = Object.values(data?.dynamic_fields);
                 )}
               </div>
             ))}
+
+            {/* {ConvertFile.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold">Attachments:</h3>
+                {ConvertFile.map((file, index) => {
+                  return (
+                    <TextField
+                    type="file"
+                      error={!!errors.attachments?.[index]?.field_value}
+                      {...register(`attachments.${index}.field_value`, {
+                        required: `Attachment is required`,
+                      })}
+                      className=" bg-fourth-light w-full mt-4"
+                      InputProps={{
+                        sx: {
+                          lineHeight: "normal",
+                          borderRadius: "10px",
+                        },
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            )} */}
           </div>
 
           <button

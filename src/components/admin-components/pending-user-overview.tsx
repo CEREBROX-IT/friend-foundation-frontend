@@ -1,14 +1,16 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box, Button } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridValueGetterParams } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { useFetchUsersQuery } from "../../redux/services/UserApi";
 import { UserDetails } from "../../redux/type/Type";
+import { format } from 'date-fns';  
 
 const PendingUserOverview: FC = () => {
   const { data: GetUserList } = useFetchUsersQuery();
+  console.log(GetUserList)
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState<UserDetails[]>([]);
@@ -25,7 +27,8 @@ const PendingUserOverview: FC = () => {
         // Filter by search query and pending status
         return (
           (row.first_name.toLowerCase().includes(lowerCaseQuery) ||
-            row.title.toLowerCase().includes(lowerCaseQuery)) &&
+          row.email.toLowerCase().includes(lowerCaseQuery) ||
+          row.title.toLowerCase().includes(lowerCaseQuery)) &&
           row.role.toLowerCase() === "pending"
         );
       }).filter((row) => {
@@ -42,6 +45,11 @@ const PendingUserOverview: FC = () => {
 
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
+
+   const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return format(date, 'MM-dd-yyyy');  // Formatting the date to 'YYYY-MM-DD'
+  };
 
   //-----for the Table------
   const columns = [
@@ -63,6 +71,20 @@ const PendingUserOverview: FC = () => {
       headerName: "TITLE",
       flex: 1,
       minWidth: 200,
+    },
+     {
+      field: "email",
+      headerName: "EMAIL",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "date_created",
+      headerName: "DATE CREATED",
+      flex: 1,
+      minWidth: 200,
+      valueGetter: (params: GridValueGetterParams) => formatDate(params.value),  // Apply date formatting
+
     },
     
   ];

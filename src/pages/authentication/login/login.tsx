@@ -38,7 +38,7 @@ const LoginScreen: FC = () => {
       .unwrap()
       .then((response) => {
         Cookies.set("token", response.token);
-        window.location.href = "/dashboard";
+        window.location.href = "/";
       })
       
   };
@@ -182,7 +182,7 @@ const LoginScreen: FC = () => {
             >
               {isLoading ? (
                 <div className="flex w-full justify-center">
-                  <LoadingAnimation />
+                  <LoadingAnimation message="Logging In"/>
                 </div>
               ) : (
                 "SIGN IN"

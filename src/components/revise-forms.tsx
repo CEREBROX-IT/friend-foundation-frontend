@@ -23,7 +23,7 @@ export default function ReviseLogs() {
   const handleCloseModal = () => setOpenModal(false)
   return (
     <div className="flex-1 min-h-screen max-h-screen overflow-auto">
-      <h1 className="mt-4 text-3xl font-bold underline">REVISE FORMS</h1>
+      <h1 className="mt-4 text-2xl font-bold ">REVISE FORMS</h1>
 
       <div className="mt-10 flex flex-col gap-4 flex-1">
         {filterData?.map((item: any) => (

@@ -3,6 +3,7 @@ import SampleLogo from "../assets/ff_sample_logo.webp";
 import BellIcon from "../assets/notification_bell_icon.webp";
 import { IoMdMenu } from "react-icons/io";
 import MobileAdminSideBar from "./admin-components/mobile-admin-sidebar";
+import MobileHeadSidebar from "./head-district-components/mobile-sidebar-head";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Cookies } from "typescript-cookie";
@@ -10,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import JwtDecoder from "../utils/jwt-decoder";
 import { useFetchUserProfileQuery } from "../redux/services/UserApi";
 import { FaRegUser } from "react-icons/fa";
+
 
 const Header = () => {
   const navigate = useNavigate();
@@ -46,12 +48,21 @@ const Header = () => {
 
   return (
     <>
+      {role === "Admin" ? <>
       {OpenMenu && (
         <MobileAdminSideBar
           openSidebar={OpenMenu}
           closeSideBar={CloseMenuHandler}
         />
       )}
+      </> : <>
+      {OpenMenu && (
+        <MobileHeadSidebar
+          openSidebar={OpenMenu}
+          closeSideBar={CloseMenuHandler}
+        />
+      )}
+      </>}
 
       <div className="bg-sixth-light dark:bg-sixth-dark px-4 p-[4px] flex justify-between">
         <div className="flex flex-row items-center gap-2 text-primary-light dark:text-white text-[20px] font-bold">

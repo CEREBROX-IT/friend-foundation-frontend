@@ -2,10 +2,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   AnsweredFormsResponse,
   ApprovePayload,
+  DeleteFormPayload,
   DistrictChurchBelongResponse,
   FormResponse,
   IncompleteFormsResponse,
-  RevisePayload,
   SubmittedFormPayload,
   SubmittedFormResponse,
   SubmittedFormsResponse,
@@ -22,6 +22,7 @@ export const FormApi = createApi({
     "SubmittedForm",
     "SubmittedLogs",
     "IncompleteForms",
+    "ActiveForm"
   ],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BASE_URL,
@@ -35,7 +36,7 @@ export const FormApi = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["UnansweredForms"],
+      invalidatesTags: ["UnansweredForms", "ActiveForm"],
     }),
     FetchUnansweredForm: builder.query<UnansweredFormsResponse, void>({
       query: () => "/form/unanswered",
@@ -111,6 +112,18 @@ export const FormApi = createApi({
       }),
       invalidatesTags: ["SubmittedLogs"]
     }),
+    FetchActiveForm : builder.query<UnansweredFormsResponse, void>({
+      query: () => "/stats/active-forms-stats",
+      keepUnusedDataFor: 60,
+      providesTags: ["ActiveForm"]
+    }),
+    DeleteReportForms: builder.mutation<void, DeleteFormPayload>({
+      query: ({id}) => ({
+        url: `/form/delete?id=${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["ActiveForm"],
+    }),
   }),
 });
 
@@ -126,5 +139,7 @@ export const {
   useAddRemarkMutation,
   useFetchSubmittedLogsQuery,
   useFetchIncompleteFormsQuery,
-  useEditFormMutation
+  useEditFormMutation,
+  useFetchActiveFormQuery,
+  useDeleteReportFormsMutation
 } = FormApi;

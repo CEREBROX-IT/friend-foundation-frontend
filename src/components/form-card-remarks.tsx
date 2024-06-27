@@ -17,17 +17,17 @@ const FormCardRemarks: FC<FormCardModal> = ({
   remarks,
   card_click,
 }) => {
-  const formatDate = (isoDateString: any): string => {
-    const date = new Date(isoDateString);
-    // Extracting year, month, and day
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-indexed
-    const day = date.getDate().toString().padStart(2, "0");
-    // Constructing the date string
-    return `${year}-${month}-${day}`;
-  };
+  // const formatDate = (isoDateString: any): string => {
+  //   const date = new Date(isoDateString);
+  //   // Extracting year, month, and day
+  //   const year = date.getFullYear();
+  //   const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-indexed
+  //   const day = date.getDate().toString().padStart(2, "0");
+  //   // Constructing the date string
+  //   return `${year}-${month}-${day}`;
+  // };
 
-  const formattedDate = formatDate(deadline);
+  // const formattedDate = formatDate(deadline);
   // const formattedDateCreate = formatDate(date_created);
 
   return (

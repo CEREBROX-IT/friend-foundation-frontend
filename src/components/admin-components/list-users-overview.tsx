@@ -4,6 +4,7 @@ import { FiSearch } from "react-icons/fi";
 import {
   DataGrid,
   GridToolbar,
+  GridValueGetterParams,
   GridRenderCellParams,
   GridAlignment,
 } from "@mui/x-data-grid";
@@ -14,6 +15,8 @@ import {
   useRemoveUserMutation
 } from "../../redux/services/UserApi";
 import { UserDetails } from "../../redux/type/Type";
+import { format } from 'date-fns';  
+
 const ListUsersOverview: FC = () => {
   const { data: GetUserList } = useFetchUsersQuery();
   const [searchQuery, setSearchQuery] = useState("");
@@ -56,6 +59,11 @@ const ListUsersOverview: FC = () => {
       .unwrap()
       .then((response) => console.log(response));
   };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return format(date, 'MM-dd-yyyy');  // Formatting the date to 'YYYY-MM-DD'
+  };
   //-----for the Table------
   const columns = [
     {
@@ -65,11 +73,26 @@ const ListUsersOverview: FC = () => {
       minWidth: 200,
       type: "string",
     },
+
     {
       field: "last_name",
       headerName: "LAST NAME",
       flex: 1,
       minWidth: 170,
+      type: "string", // Added type property
+    },
+    {
+      field: "email",
+      headerName: "EMAIL",
+      flex: 1,
+      minWidth: 200,
+      type: "string", // Added type property
+    },
+    {
+      field: "contact_no",
+      headerName: "CONTACT #",
+      flex: 1,
+      minWidth: 200,
       type: "string", // Added type property
     },
     {
@@ -92,19 +115,29 @@ const ListUsersOverview: FC = () => {
       flex: 1,
       minWidth: 200,
       type: "string", // Added type property
+      valueGetter: (params: GridValueGetterParams) => formatDate(params.value), 
+    },
+    {
+      field: "date_updated",
+      headerName: "DATE UPDATED",
+      flex: 1,
+      minWidth: 200,
+      type: "string", // Added type property
+      valueGetter: (params: GridValueGetterParams) => formatDate(params.value), 
     },
     {
       field: "actions",
       headerName: "ACTIONS",
       sortable: false,
       headerAlign: "center" as GridAlignment,
-      minWidth: 200,
+      minWidth: 250,
       flex: 1,
       renderCell: (params: GridRenderCellParams) => (
         <div className="flex justify-evenly w-full">
           <Button
             variant="contained"
             color="primary"
+            className="hover:scale-105 duration-300 ease-in"
             size="small"
             onClick={() => handleApprove(params?.row.user_id)}
           >

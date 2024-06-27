@@ -56,12 +56,6 @@ const AdminPendingPage: FC = () => {
       minWidth: 200,
     },
     {
-      field: "status",
-      headerName: "STATUS",
-      flex: 1,
-      minWidth: 200,
-    },
-    {
       field: "lacking_report_form",
       headerName: "LACKING REPORT FORM",
       flex: 1,

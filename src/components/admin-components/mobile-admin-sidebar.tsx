@@ -8,7 +8,7 @@ import {
   MdDarkMode,
   MdOutlineDarkMode,
 } from "react-icons/md";
-import { TbReportSearch } from "react-icons/tb";
+import { IoIosNotifications } from "react-icons/io";
 import { IoMdClose } from "react-icons/io";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -90,7 +90,7 @@ const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
         </div>
         <div
           className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-            location.pathname === "/" ? "border-secondary-dark" : ""
+            location.pathname === "/dashboard/users" ? "border-secondary-dark" : ""
           }`}
           onClick={() => {
             navigate("/dashboard/users");
@@ -104,7 +104,7 @@ const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
         
         <div
           className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-            location.pathname === "/" ? "border-secondary-dark" : ""
+            location.pathname === "/dashboard/forms-management" ? "border-secondary-dark" : ""
           }`}
           onClick={() => {
             // Change it to the actual path
@@ -136,7 +136,7 @@ const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
           <>
             <div
               className={`flex w-full bg-secondary-light flex-row max-auto px-2 items-center hover:bg-fifth-dark cursor-pointer hover:border-secondary-dark hover:border-b-[2px] ${
-                location.pathname === "/"
+                location.pathname === "/dashboard/church-district/district-assignment"
                   ? "bg-fifth-dark border-secondary-dark border-b-[2px]"
                   : ""
               }`}
@@ -151,7 +151,7 @@ const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
             </div>
             <div
               className={`flex w-full bg-secondary-light flex-row max-auto px-2 items-center hover:bg-fifth-dark cursor-pointer hover:border-secondary-dark hover:border-b-[2px] ${
-                location.pathname === "/"
+                location.pathname === "/dashboard/church-district/church-assignment"
                   ? "bg-fifth-dark border-secondary-dark border-b-[2px]"
                   : ""
               }`}
@@ -166,7 +166,7 @@ const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
             </div>
             <div
               className={`flex w-full bg-secondary-light flex-row max-auto px-2 items-center hover:bg-fifth-dark cursor-pointer hover:border-secondary-dark hover:border-b-[2px] ${
-                location.pathname === "/"
+                location.pathname === "/dashboard/church-district/assignment-logs"
                   ? "bg-fifth-dark border-secondary-dark border-b-[2px]"
                   : ""
               }`}
@@ -182,55 +182,19 @@ const MobileAdminSideBar: FC<Props> = ({ openSidebar, closeSideBar }) => {
           </>
         )}
         <div
-          className={`flex flex-row max-auto px-2 items-center justify-between hover:bg-secondary-light cursor-pointer`}
+          className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
+            location.pathname === "/dashboard/notification" ? "border-secondary-dark" : ""
+          }`}
           onClick={() => {
-            toggleDropdown("dropdown2");
+            // Change it to the actual path
+            navigate("/dashboard/notification");
           }}
         >
           <div className="h-[42px] min-w-[42px] flex items-center justify-center">
-            <TbReportSearch className="text-[25px] ease-in-out duration-500 mx-2" />
-            <p className={`text-bold text-[15px]`}>Analytic/Alerts</p>
+            <IoIosNotifications className="text-[22px]" />
           </div>
-          {dropdowns.dropdown2 ? (
-            <IoIosArrowBack className="text-[25px] ease-in-out duration-500 mx-2" />
-          ) : (
-            <IoIosArrowDown className="text-[25px] ease-in-out duration-500 mx-2" />
-          )}
+          <p className={`text-bold text-[15px]`}>Notification</p>
         </div>
-        {!dropdowns.dropdown2 && (
-          <>
-            <div
-              className={`flex w-full bg-secondary-light flex-row max-auto px-2 items-center hover:bg-fifth-dark cursor-pointer hover:border-secondary-dark hover:border-b-[2px] ${
-                location.pathname === "/"
-                  ? "bg-fifth-dark border-secondary-dark border-b-[2px]"
-                  : ""
-              }`}
-              onClick={() => {
-                navigate("/dashboard/analytic-alert/chart");
-              }}
-            >
-              <div className="h-[35px] min-w-[42px] flex items-center justify-center ml-2">
-                <IoIosFolder className="text-[20px] ease-in-out duration-500" />
-              </div>
-              <p className={`text-bold text-[14px]`}>Chart</p>
-            </div>
-            <div
-              className={`flex w-full bg-secondary-light flex-row max-auto px-2 items-center hover:bg-fifth-dark cursor-pointer hover:border-secondary-dark hover:border-b-[2px] ${
-                location.pathname === "/"
-                  ? "bg-fifth-dark border-secondary-dark border-b-[2px]"
-                  : ""
-              }`}
-              onClick={() => {
-                navigate("/dashboard/analytic-alert/notification");
-              }}
-            >
-              <div className="h-[35px] min-w-[42px] flex items-center justify-center ml-2">
-                <IoIosFolder className="text-[20px] ease-in-out duration-500" />
-              </div>
-              <p className={`text-bold text-[14px]`}>Notification</p>
-            </div>
-          </>
-        )}
         <div
           className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
             location.pathname === "/dashboard" ? "border-secondary-dark" : ""

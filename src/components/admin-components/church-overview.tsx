@@ -6,14 +6,19 @@ import {
   GridToolbar,
   GridRenderCellParams,
   GridAlignment,
+  GridValueGetterParams
 } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
 import { useFetchChurchListAdminQuery, useRemoveChurchMutation} from "../../redux/services/ChurchApi";
 import { ChurchResponse } from "../../redux/type/Type";
+import AdminEditChurchModal from "./admin-edit-church-modal";
+import { format } from 'date-fns';  
 
 const ChurchOverview: FC = () => {
+
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [selectedData, setSelectedData] = useState({})
   const { data: ChurchListAdmin } = useFetchChurchListAdminQuery();
-  console.log(ChurchListAdmin)
   const [PostDeleteChurch] = useRemoveChurchMutation();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState<ChurchResponse["data"]>([]);
@@ -42,6 +47,29 @@ const ChurchOverview: FC = () => {
   const CustomCellRenderer: React.FC<{ value: string }> = ({ value }) => (
     <h1 className="text-red-700">{value}</h1>
   );
+
+   const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return format(date, 'MM-dd-yyyy');  // Formatting the date to 'YYYY-MM-DD'
+  };
+
+  async function deleteChurch(id: number) {
+    await PostDeleteChurch({ id: id })
+      .unwrap()
+      .then((response) => {
+        console.log(response);
+      });
+  }
+
+  function editChurch(data: any) {
+    setOpenEditModal(true)
+    setSelectedData(data)
+  }
+
+  function closeEditModal () {
+    setOpenEditModal(false);
+  }
+
 
   const columns = [
     {
@@ -73,6 +101,8 @@ const ChurchOverview: FC = () => {
       headerName: "CHURCH ESTABLISH",
       flex: 1,
       minWidth: 250,
+      valueGetter: (params: GridValueGetterParams) => formatDate(params.value),  // Apply date formatting
+
     },
     {
       field: "church_address",
@@ -85,21 +115,33 @@ const ChurchOverview: FC = () => {
       headerName: "DATE CREATE",
       flex: 1,
       minWidth: 200,
+      valueGetter: (params: GridValueGetterParams) => formatDate(params.value),  // Apply date formatting
+
     },
     {
       field: "date_updated",
       headerName: "DATE UPDATED",
       flex: 1,
       minWidth: 200,
+      valueGetter: (params: GridValueGetterParams) => formatDate(params.value),  // Apply date formatting
+
     },
     {
       field: "action",
       headerName: "ACTION",
       flex: 1,
-      minWidth: 170,
+      minWidth: 200,
       headerAlign: "center" as GridAlignment,
       renderCell: (params: GridRenderCellParams) => (
         <div className="flex justify-evenly w-full">
+        <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => editChurch(params.row)}
+          >
+            EDIT
+          </Button>
           <Button
             variant="contained"
             color="error"
@@ -113,14 +155,7 @@ const ChurchOverview: FC = () => {
     },
   ];
 
-  async function deleteChurch(id: number) {
-    await PostDeleteChurch({ id: id })
-      .unwrap()
-      .then((response) => {
-        console.log(response);
-      });
-  }
-
+  
   return (
     <>
       <div className="flex flex-col md:flex-row justify-end dark:text-white items-center px-4 py-3 border-t-[4px] border-secondary-light">
@@ -206,6 +241,7 @@ const ChurchOverview: FC = () => {
           }}
         />
       </Box>
+      {openEditModal && <AdminEditChurchModal closeModal={closeEditModal} data={selectedData}/>}
     </>
   );
 };

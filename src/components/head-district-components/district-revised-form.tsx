@@ -25,7 +25,7 @@ export default function DistrictRevisedForm() {
   const handleCloseModal = () => setOpenModal(false);
   return (
     <div className="flex-1 min-h-screen p-4 max-h-screen overflow-auto">
-      <h1 className="font-bold text-4xl underline">REVISE FORM</h1>
+      <h1 className="font-bold text-2xl text-red-600">REVISE FORM</h1>
       <div className="mt-10 flex flex-col gap-4 flex-1">
         {filterData?.map((item: any) => (
           <FormCardRemarks

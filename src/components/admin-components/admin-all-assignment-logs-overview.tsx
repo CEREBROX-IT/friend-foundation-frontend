@@ -1,10 +1,12 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridValueGetterParams } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
 import { useFetchAssignedLogsQuery } from "../../redux/services/AssignedLogsApi";
 import { AssignedLogsDetails } from "../../redux/type/Type";
+import { format } from 'date-fns';  
+
 const AllAssignmentLogsOverview: FC = () => {
   const { data: AssignedLogs } = useFetchAssignedLogsQuery();
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,6 +34,11 @@ const AllAssignmentLogsOverview: FC = () => {
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return format(date, 'MM-dd-yyyy');  // Formatting the date to 'YYYY-MM-DD'
+  };
+
   //-----for the Table------
   const columns = [
     {
@@ -57,6 +64,8 @@ const AllAssignmentLogsOverview: FC = () => {
       headerName: "DATE CREATED",
       flex: 1,
       minWidth: 200,
+      valueGetter: (params: GridValueGetterParams) => formatDate(params.value),  // Apply date formatting
+
     },
   ];
 

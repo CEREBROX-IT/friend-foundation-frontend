@@ -17,11 +17,11 @@ type Attachment = {
 type ApproveModalProps = {
   data: {
     dynamic_fields: {
-      field_name: string;
-      field_value: string;
+      field_name?: string;
+      field_value?: string;
     }[];
     id: number;
-    response_attachment: Attachment[] | undefined;
+    response_attachment?: Attachment[] | undefined;
   };
   closeModal: () => void;
 };
@@ -66,22 +66,22 @@ const ApproveModal: FC<ApproveModalProps> = ({ data, closeModal }) => {
         {convertArray.map((item, index) => (
           <div className="flex flex-col my-2" key={index}>
             <h1 className="text-lg font-semibold">{item.field_name}</h1>
-            <h2 className="bg-fourth-light p-2 text-sm font-semibold">
+            <h2 className="bg-fourth-light p-2 text-sm ">
               {item.field_value}
             </h2>
           </div>
         ))}
         {files.length > 0 && (
           <div className="mt-4">
-            <h3 className="text-lg font-semibold">Attachments:</h3>
+            <h3 className="text-lg font-semibold underline uppercase">Attachments</h3>
             {files.map((file, index) => {
               const href = import.meta.env.VITE_ATTACHMENT + `${file}`;
-
+              console.log(href)
               return (
                 <div key={index} className="mt-2">
                   <a href={href} className="flex items-center" target="blank">
                     <FaFilePdf className="mr-2" />
-                    <span className="font-bold">ATTACHMENT</span>{" "}
+                    <span>ATTACHMENT</span>{" "}
                     {file?.filename}
                   </a>
                 </div>
@@ -94,7 +94,7 @@ const ApproveModal: FC<ApproveModalProps> = ({ data, closeModal }) => {
           encType="application/json"
         >
           <div>
-            <div className="w-full mt-[15px]">
+            <div className="w-full mt-14">
               <div className="flex flex-row justify-between px-1 text-[15px] mb-1">
                 <span className="font-semibold uppercase">Leave Remarks</span>
               </div>
@@ -126,15 +126,15 @@ const ApproveModal: FC<ApproveModalProps> = ({ data, closeModal }) => {
               <button
                 type="button"
                 onClick={onSubmit}
-                className="mt-10 bg-secondary-light hover:bg-third-light text-white text-sm py-2 px-4 rounded-[10px] w-full h-[45px]"
+                className="mt-10 bg-secondary-light hover:bg-[#B378FF] font-semibold text-lg hover:bg-third-light text-white text-sm py-2 px-4 rounded-[10px] w-full h-[45px]"
               >
-                MARK AS APPROVE
+                APPROVE
               </button>
               <button
                 type="submit"
-                className="mt-10 bg-secondary-light hover:bg-third-light text-sm text-white py-2 px-4 rounded-[10px] w-full h-[45px]"
+                className="mt-10 bg-[#B378FF] font-semibold text-lg hover:bg-third-light text-sm text-white py-2 px-4 rounded-[10px] w-full h-[45px]"
               >
-                MARK AS REVISE
+                REVISE
               </button>
             </div>
           </div>

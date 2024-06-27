@@ -92,7 +92,7 @@ const HeadDistrictSidebar = () => {
           </div>
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-              location.pathname === "/dashboard/users"
+              location.pathname === "/dashboard/church-list"
                 ? "border-secondary-dark"
                 : ""
             }`}
@@ -109,7 +109,7 @@ const HeadDistrictSidebar = () => {
           </div>
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-              location.pathname === "/dashboard/pastors-management"
+              location.pathname === "/dashboard/form-submission"
                 ? "border-secondary-dark"
                 : ""
             }`}
