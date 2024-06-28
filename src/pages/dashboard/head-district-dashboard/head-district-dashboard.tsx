@@ -1,9 +1,8 @@
 import Header from "../../../components/header";
-import React from "react";
+
 import { FaFile } from "react-icons/fa6";
 import { HiMiniUsers } from "react-icons/hi2";
 import ResultCards from "../../../components/result-cards";
-import DistrictOverview from "../../../components/head-district-components/district-dashboard-overview";
 import LoadingAnimation2 from "../../../components/loading-animation2";
 import DistrictRevisedForm from "../../../components/head-district-components/district-revised-form";
 import {

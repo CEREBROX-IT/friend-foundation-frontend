@@ -7,6 +7,8 @@ import { SubmittedFormResponse } from "../../redux/type/Type";
 import ApproveModal from "./approve-modal";
 import { IoMdCloseCircle } from "react-icons/io";
 import { format } from 'date-fns';  
+import { FiSearch } from "react-icons/fi";
+
 
 
 type AdminTableModal = {
@@ -149,6 +151,21 @@ const AdminTablePerForm: FC<AdminTableModal> = ({ id, closeForm }) => {
 
   return (
     <div className="absolute inset-0  h-full  p-6 bg-white">
+       <div className="flex flex-col lg:flex-row gap-2 lg:items-center mt-5">
+        <div className=" w-full lg:max-w-[400px] ">
+          <FiSearch
+            size={20}
+            className="absolute mt-[11px] right-50 font-black ml-3"
+          />
+          <input
+            type="text"
+            placeholder="Search by Form Title"
+            className=" w-full p-2 pl-10 border rounded-[360px] shadow-sm bg-sixth-light dark:bg-fourth-dark"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+      </div>
+      </div>
       <div className="flex justify-end" onClick={closeForm}>
         <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300  " />
       </div>

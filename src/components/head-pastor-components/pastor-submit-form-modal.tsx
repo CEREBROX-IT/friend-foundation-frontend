@@ -20,7 +20,7 @@ type PastorModal = {
     form_title?: string;
     form_description?: string;
     dynamic_fields?: { field_name: string; field_value: string }[];
-    attachments?: Attachment[] | undefined | []
+    attachments?: Attachment[] | []
   };
 };
 
@@ -50,7 +50,8 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
     // Append dynamic_fields as a JSON string
     formData.append("dynamic_fields", JSON.stringify(dynamicFields));
 
-    values?.attachments.forEach((attachment: any, index: number) => {
+    if (Array.isArray(values.attachments)) {
+    values.attachments.forEach((attachment: any, index: number) => {
       formData.append(
         `attachments[${index}][field_name]`,
         attachment.field_name
@@ -58,8 +59,9 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
       formData.append(
         `attachments[${index}][field_value]`,
         attachment.field_value[0]
-      ); // Assuming field_value is an array of files
+      );
     });
+  }
 
     
 
@@ -74,7 +76,7 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
 
   return (
     <div className="absolute flex justify-center inset-0 flex-1 min-w-screen min-h-screen backdrop-brightness-50 ">
-      <div className=" bg-white max-w-[400px] min-w-[400px] h-max p-4">
+      <div className=" bg-white max-w-[400px] min-w-[400px] h-max p-4 border-b-2 rounded-b-2xl">
         <div className="flex justify-end" onClick={closeModal}>
           <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
         </div>

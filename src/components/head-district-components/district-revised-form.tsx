@@ -35,7 +35,7 @@ export default function DistrictRevisedForm() {
             description={item.form_description}
             status={item.status}
             remarks={item?.remarks}
-            card_click={() => navigate("form-submission")}
+            card_click={() => navigate("/form-submission")}
           />
         ))}</> : <div className="flex h-full justify-center items-center ">
           <img src={Empty} className="h-96 w-96"/></div>}

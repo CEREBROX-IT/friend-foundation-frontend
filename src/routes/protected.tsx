@@ -134,7 +134,7 @@ const Protected: FC<RoleProps> = ({ role }) => {
                 }
               />
               <Route
-                path="/dashboard/form-submission"
+                path="/form-submission"
                 element={
                   <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
                     <HeadDistrictSidebar />

@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import SDA_Logo from "../../assets/sda_logo_only.webp";
-import { FaUserTie, FaChurch } from "react-icons/fa6";
 import {
   MdDashboardCustomize,
   MdDarkMode,
