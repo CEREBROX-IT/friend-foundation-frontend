@@ -109,13 +109,13 @@ const HeadDistrictSidebar = () => {
           </div>
           <div
             className={`flex flex-row max-auto px-2 items-center hover:bg-secondary-light cursor-pointer border-b-[2px] border-fifth-dark ${
-              location.pathname === "/dashboard/form-submission"
+              location.pathname === "/form-submission"
                 ? "border-secondary-dark"
                 : ""
             }`}
             onClick={() => {
               //change it to the actual path
-              navigate("/dashboard/form-submission");
+              navigate("/form-submission");
             }}
           >
             <div className="h-[42px] min-w-[42px]  flex items-center justify-center">

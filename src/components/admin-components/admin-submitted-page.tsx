@@ -4,13 +4,13 @@ import { FiSearch } from "react-icons/fi";
 import { DataGrid, GridToolbar, GridValueGetterParams, GridRenderCellParams } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
 import { useFetchSubmittedLogsQuery } from "../../redux/services/FormApi";
-import { SubmittedFormsResponse } from "../../redux/type/Type";
+import { SubmittedFormLog } from "../../redux/type/Type";
 import { format } from 'date-fns';  
 
 const AdminSubmittedPage: FC = () => {
   const { data: SubmittedLogs } = useFetchSubmittedLogsQuery();
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState<SubmittedFormsResponse[]>(
+  const [filteredRows, setFilteredRows] = useState<SubmittedFormLog[]>(
     []
   );
   const { theme } = useContext(ThemeContext);

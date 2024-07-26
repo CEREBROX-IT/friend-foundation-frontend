@@ -6,7 +6,7 @@ import {
   ChurchCountResponse,
   HeadPastorCountResponse,
   DistrictResponse,
-  ReviseFormResponse,
+  FormResponse,
 } from "../type/Type";
 export const StatsApi = createApi({
   reducerPath: "StatsApi",
@@ -54,7 +54,7 @@ export const StatsApi = createApi({
       keepUnusedDataFor: 60,
       providesTags: ["DistrictCount"],
     }),
-    FetchNoReviseForm: builder.query<ReviseFormResponse, void>({
+    FetchNoReviseForm: builder.query<FormResponse, void>({
       query: () => "/stats/revise-count/me",
       keepUnusedDataFor: 60,
       providesTags: ["ReviseCount"],

@@ -79,7 +79,7 @@ const Protected: FC<RoleProps> = ({ role }) => {
               />
 
               <Route
-                path="/dashboard/analytic-alert/notification"
+                path="/dashboard/notifications"
                 element={
                   <div className="relative mx-auto w-full flex flex-row custom-scrollbar">
                     <AdminSideBar />

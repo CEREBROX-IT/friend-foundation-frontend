@@ -1,66 +1,47 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
-import { AsigneeLogs } from "../../MockDataFiles/Mockdata";
-import { isWithinInterval, addDays } from "date-fns";
+import { DataGrid, GridToolbar, GridValueGetterParams } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
+import { useFetchNotificationAdminQuery } from "../../redux/services/NotificationApi";
+import { AdminNotificationResponse } from "../../redux/type/Type";
+import { format } from 'date-fns';  
 
 const NotificationOverview: FC = () => {
-  const currentDate = new Date();
-  const threeDaysAgo = addDays(currentDate, -3);
+  const {data: Admin} = useFetchNotificationAdminQuery()
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredRows, setFilteredRows] = useState(AsigneeLogs);
+  const [filteredRows, setFilteredRows] = useState<AdminNotificationResponse[]>([]);
   const { theme } = useContext(ThemeContext);
-
+  
   useEffect(() => {
     applyFilters();
-  }, [searchQuery]);
+  }, [searchQuery, Admin]);
 
-  const applyFilters = () => {
+ const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const filteredData = AsigneeLogs.filter((row) => {
-      return (
-        row.user_full_name.toLowerCase().includes(lowerCaseQuery) ||
-        row.title.toLowerCase().includes(lowerCaseQuery) ||
-        row.role.toLowerCase().includes(lowerCaseQuery) ||
-        row.previous_assign.toLowerCase().includes(lowerCaseQuery) ||
-        row.current_assign.toLowerCase().includes(lowerCaseQuery)
-      );
-    });
+    const filteredData = Admin?.data?.filter((row) => {
+      return row.title.toLowerCase().includes(lowerCaseQuery);
+    }) || [];
+    
     setFilteredRows(filteredData);
   };
+
 
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return format(date, 'MM-dd-yyyy');  // Formatting the date to 'YYYY-MM-DD'
+  };
+
   //-----for the Table------
   const columns = [
-    {
-      field: "user_full_name",
-      headerName: "FULL NAME",
+     {
+      field: "user_id",
+      headerName: "User ID",
       flex: 1,
       minWidth: 200,
-      renderCell: (params: GridRenderCellParams) => {
-        const dateCreated = new Date(params.row.date);
-        const isNew = isWithinInterval(dateCreated, {
-          start: threeDaysAgo,
-          end: currentDate,
-        });
-        return (
-          <div className="relative flex items-center">
-            <span>{params.value}</span>
-            {isNew && (
-              <span
-                className="bg-[#3b82f6] text-[10px] rounded-[50px] px-2
-                         text-white justify-end mt-[-1rem] ml-1 min-h-[10px] min-w-[10px] end-0"
-              >
-                New
-              </span>
-            )}
-          </div>
-        );
-      },
     },
     {
       field: "title",
@@ -69,28 +50,18 @@ const NotificationOverview: FC = () => {
       minWidth: 200,
     },
     {
-      field: "role",
-      headerName: "ROLE",
+      field: "message",
+      headerName: "MESSAGE",
       flex: 1,
       minWidth: 200,
     },
     {
-      field: "previous_assign",
-      headerName: "PREVIOUS ASSIGN",
+      field: "date_created",
+      headerName: "DATE CREATED",
       flex: 1,
       minWidth: 250,
-    },
-    {
-      field: "current_assign",
-      headerName: "CURRENT ASSIGN",
-      flex: 1,
-      minWidth: 250,
-    },
-    {
-      field: "date",
-      headerName: "DATE",
-      flex: 1,
-      minWidth: 170,
+      valueGetter: (params: GridValueGetterParams) => formatDate(params.value),  // Apply date formatting
+
     },
   ];
 
@@ -180,20 +151,7 @@ const NotificationOverview: FC = () => {
           }}
         />
       </Box>
-      <Button
-        sx={{
-          alignItems: "center",
-          width: "100%",
-          background: "#60a5fa",
-          borderRadius: 0,
-          color: "white",
-          "&:hover": {
-            background: "#3b82f6",
-          },
-        }}
-      >
-        VIEW MORE
-      </Button>
+      
     </>
   );
 };

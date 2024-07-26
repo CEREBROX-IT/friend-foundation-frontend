@@ -8,23 +8,21 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { TextField } from "@mui/material";
 import { RevisePayload } from "../../redux/type/Type";
 
-type Attachment = {
-  filename: string;
-  // Assuming the filename is enough to construct the full URL based on the environment variable
-};
+
 type PastorModal = {
   closeModal: () => void;
   data?: {
     id?: number;
     form_title?: string;
     form_description?: string;
-    dynamic_fields?: { [key: string]: { field_name: string; field_value: string } } | undefined;
+    dynamic_fields?: { field_name: any; field_value: any }[];
+    
+    response_attachment?: { field_name: any; field_value: any[] }[];
   };
   
 };
 
 const PastorEditFormModal: FC<PastorModal> = ({ closeModal, data }) => {
-  
   const { data: DistrictBelong } = useFetchDistrictChurchBelongToQuery();
   const [SubmitForm] = useEditFormMutation();
   const {
@@ -35,9 +33,12 @@ const PastorEditFormModal: FC<PastorModal> = ({ closeModal, data }) => {
 
 const convertArray = Object.values(data?.dynamic_fields || {});
 
+const convertFile = Object.values(data?.response_attachment || [])
+
 
 
   const onSubmit: SubmitHandler<RevisePayload> = async (values) => {
+
     const formData = new FormData();
     formData.append("report_form_id", data?.id?.toString() || "");
     formData.append("district_belong", DistrictBelong?.district_belong || "");
@@ -53,25 +54,39 @@ const convertArray = Object.values(data?.dynamic_fields || {});
     // Append dynamic_fields as a JSON string
     formData.append("dynamic_fields", JSON.stringify(dynamicFields));
 
-    await SubmitForm({ data: formData , id: data.id})
+    if (Array.isArray(values.attachments)) {
+    values.attachments.forEach((attachment: any, index: number) => {
+      formData.append(
+        `attachments[${index}][field_name]`,
+        attachment.field_name
+      ); 
+      formData.append(
+        `attachments[${index}][field_value]`,
+        attachment.field_value[0]
+      );
+    });
+  }
+
+  
+    await SubmitForm({ data: formData , id: data?.id})
       .unwrap()
-      .then((response) => {
-        console.log(response);
+      .then(() => {
+        
         closeModal();
       });
   };
 
   return (
-    <div className="absolute flex justify-center inset-0 flex-1 min-w-screen min-h-screen backdrop-brightness-50 p-4">
+    <div className="absolute flex justify-center inset-0 flex-1  backdrop-brightness-50 p-4">
       <div className=" bg-white lg:max-w-[400px] lg:min-w-[400px] h-max p-4">
         <div className="flex justify-end" onClick={closeModal}>
           <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
         </div>
-        <h1 className=" text-2xl inline-block uppercase font-bold">
+        <h1 className=" text-lg inline-block uppercase font-bold">
           {data?.form_title}
         </h1>
         <hr className="border-black" />
-        <h2 className="text-sm font-medium ">{data?.form_description}</h2>
+        <h2 className="text-sm font-medium text-gray-600 ">{data?.form_description}</h2>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -106,17 +121,15 @@ const convertArray = Object.values(data?.dynamic_fields || {});
               </div>
             ))}
 
-            {/* {ConvertFile.length > 0 && (
+            {convertFile.length > 0 && (
               <div className="mt-4">
                 <h3 className="text-lg font-semibold">Attachments:</h3>
-                {ConvertFile.map((file, index) => {
+                {convertFile.map((_, index) => {
                   return (
                     <TextField
                     type="file"
                       error={!!errors.attachments?.[index]?.field_value}
-                      {...register(`attachments.${index}.field_value`, {
-                        required: `Attachment is required`,
-                      })}
+                      {...register(`attachments.${index}.field_value`)}
                       className=" bg-fourth-light w-full mt-4"
                       InputProps={{
                         sx: {
@@ -128,7 +141,7 @@ const convertArray = Object.values(data?.dynamic_fields || {});
                   );
                 })}
               </div>
-            )} */}
+            )}
           </div>
 
           <button

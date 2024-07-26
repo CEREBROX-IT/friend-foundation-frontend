@@ -19,7 +19,7 @@ export default function ReviseLogs() {
     SubmittedFormLog[]
   >([]);
 
-  const filterData = SubmittedLog?.data.filter(
+  const filterData = SubmittedLog?.data?.filter(
     (item: any) => item.status === "Revise" && item.user_id === id
   );
   
@@ -29,7 +29,6 @@ export default function ReviseLogs() {
       filterData?.filter((row) => {
         return (
           row.form_title?.toLowerCase().includes(lowerCaseQuery) 
-          
         );
       }) ?? [];
     setFilteredRows(filteredData);

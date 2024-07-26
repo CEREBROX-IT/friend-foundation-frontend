@@ -216,7 +216,7 @@ const AdminEditChurchModal: FC<NewDistrictModalProps> = ({ closeModal, data }) =
           >
             <div className="w-full flex justify-center">
               {isLoading ? (
-                <LoadingAnimation message="Registering, please wait!" />
+                <LoadingAnimation message="Updating, please wait!" />
               ) : (
                 "EDIT CHURCH"
               )}

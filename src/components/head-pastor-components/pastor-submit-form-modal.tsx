@@ -32,7 +32,7 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<SubmitFormPayload>();
-  console.log(data)
+  
   
   const onSubmit: SubmitHandler<SubmitFormPayload> = async (values) => {
     const formData = new FormData();
@@ -62,7 +62,7 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
       );
     });
   }
-
+ 
     
 
     await SubmitForm(formData)
@@ -73,9 +73,10 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
   };
 
   const files = data?.attachments ? Object.values(data.attachments) : [];
+  
 
   return (
-    <div className="absolute flex justify-center inset-0 flex-1 min-w-screen min-h-screen backdrop-brightness-50 ">
+    <div className=" absolute flex justify-center inset-0 flex-1 min-w-screen min-h-screen backdrop-brightness-50 ">
       <div className=" bg-white max-w-[400px] min-w-[400px] h-max p-4 border-b-2 rounded-b-2xl">
         <div className="flex justify-end" onClick={closeModal}>
           <IoMdCloseCircle className="text-4xl cursor-pointer hover:rotate-90 duration-300" />
@@ -121,7 +122,7 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
             {files.length > 0 && (
               <div className="mt-4">
                 <h3 className="text-lg font-semibold">Attachments:</h3>
-                {files.map((file, index) => {
+                {files.map((_, index) => {
                   return (
                     <TextField
                     type="file"
@@ -147,7 +148,7 @@ const PastorSubmitFormModal: FC<PastorModal> = ({ closeModal, data }) => {
               <h3 className="text-lg font-semibold">Attachments:</h3>
               {files.map((file, index) => {
                 const href = import.meta.env.VITE_ATTACHMENT + `${file}`;
-                console.log(href)
+    
                 return (
                   <div key={index} className="mt-2">
                     <a href={href} className="flex items-center" target="blank">

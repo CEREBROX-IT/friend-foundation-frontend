@@ -10,7 +10,11 @@ import {
   SubmittedFormResponse,
   SubmittedFormsResponse,
   UnansweredFormsResponse,
+  CustomFormData
 } from "../type/Type";
+
+
+
 
 export const FormApi = createApi({
   reducerPath: "FormApi",
@@ -104,7 +108,7 @@ export const FormApi = createApi({
       keepUnusedDataFor: 60,
       providesTags: ["IncompleteForms"],
     }),
-    EditForm: builder.mutation<void, FormData>({
+    EditForm: builder.mutation<void, CustomFormData>({
       query: ({id, data}) => ({
         url: `/form/edit-response?id=${id}`,
         method: "PUT",

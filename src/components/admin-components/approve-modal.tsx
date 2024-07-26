@@ -16,18 +16,18 @@ type Attachment = {
 
 type ApproveModalProps = {
   data: {
-    dynamic_fields: {
-      field_name?: string;
-      field_value?: string;
-    }[];
-    id: number;
+    dynamic_fields?: {
+      field_name?: any;
+      field_value?: any;
+    } 
+    id?: number 
     response_attachment?: Attachment[] | undefined;
   };
   closeModal: () => void;
 };
 
 const ApproveModal: FC<ApproveModalProps> = ({ data, closeModal }) => {
-  console.log(data)
+  
   const [ApproveForm] = useApproveSubmittedMutation();
   const [AddRemark] = useAddRemarkMutation();
   const {
@@ -52,7 +52,7 @@ const ApproveModal: FC<ApproveModalProps> = ({ data, closeModal }) => {
       });
   };
 
-  const convertArray = Object.values(data.dynamic_fields)
+  const convertArray = Object.values(data.dynamic_fields!)
     const files = data?.response_attachment
       ? Object.values(data.response_attachment)
       : [];

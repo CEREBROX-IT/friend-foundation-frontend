@@ -1,6 +1,5 @@
 import  { FC } from "react";
 import { MdDeleteForever } from "react-icons/md";
-import { FaRegEdit } from "react-icons/fa";
 import JwtDecoder from "../utils/jwt-decoder";
 interface FormCardModal {
   title: string;
@@ -21,7 +20,7 @@ const FormCard: FC<FormCardModal> = ({
   total,
   card_click,
   delete_click,
-  edit_click
+  
 }) => {
   const decodeData = JwtDecoder().decodedToken
   const role = decodeData?.role
@@ -45,10 +44,10 @@ const FormCard: FC<FormCardModal> = ({
       >
         <div className="flex justify-between">
           <div>
-            <h1 className="text-lg font-black uppercase">{title}</h1>
-            <h2 className="text-sm font-semibold">{description}</h2>
+            <h1 className="text-lg font-semibold uppercase">{title}</h1>
+            <h2 className="text-sm text-gray-600">{description}</h2>
           </div>
-          <h3 className="uppercase font-semibold">
+          <h3 className="uppercase ">
             {status}
           </h3>
         </div>
@@ -61,12 +60,12 @@ const FormCard: FC<FormCardModal> = ({
         
       </div>
      {role === "Admin" &&  <div className="flex md:flex-col md:w-10 min-h-full flex flex-col ">
-      <div className="h-1/2 flex flex-col justify-center py-2 items-center bg-red-600 cursor-pointer" onClick={delete_click}>
+      <div className="h-full flex flex-col justify-center py-2 items-center bg-red-600 cursor-pointer" onClick={delete_click}>
         <MdDeleteForever className="text-2xl text-white"/>
       </div>
-      <div className="h-1/2 flex flex-col items-center  py-2 justify-center bg-blue-600 border-t-4 cursor-pointer" >
+      {/* <div className="h-1/2 flex flex-col items-center  py-2 justify-center bg-blue-600 border-t-4 cursor-pointer" >
         <FaRegEdit className="text-2xl text-white"/>
-      </div>
+      </div> */}
       </div>}
     </div>
     

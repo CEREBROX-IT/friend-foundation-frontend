@@ -61,7 +61,7 @@ const PastorListOfPendingForms = () => {
       </div>
       
       
-      <div className="mt-10 flex flex-col gap-4 flex-1 ">
+      <div className="mt-10 flex flex-col gap-4 flex-1 max-h-screen overflow-auto custom-scrollbar">
         {memoizedFilteredRows && memoizedFilteredRows.length > 0 ? <>{memoizedFilteredRows?.map((item) => (
           <FormCard
             title={item.form_title}

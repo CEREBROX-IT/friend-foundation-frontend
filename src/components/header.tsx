@@ -11,8 +11,10 @@ import { useNavigate } from "react-router-dom";
 import JwtDecoder from "../utils/jwt-decoder";
 import { useFetchUserProfileQuery } from "../redux/services/UserApi";
 import { FaRegUser } from "react-icons/fa";
+import {useReadNotificationMutation ,useFetchNotificationUserLoginQuery } from "../redux/services/NotificationApi";
+ 
 
-
+  
 const Header = () => {
   const navigate = useNavigate();
   const userData = JwtDecoder().decodedToken;
@@ -21,6 +23,9 @@ const Header = () => {
   const [OpenNotification, setOpenNotification] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { data: GetUserData } = useFetchUserProfileQuery();
+  const {data: NotificationMessage} = useFetchNotificationUserLoginQuery()
+  const [ReadNotification] = useReadNotificationMutation()
+
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -40,6 +45,10 @@ const Header = () => {
 
   function NotificationHandler(){
     setOpenNotification(!OpenNotification)
+  }
+
+  const handleReadNotification = async () => {
+    await ReadNotification().unwrap().then(() => console.log("success"))
   }
 
   const CloseMenuHandler = () => {
@@ -69,7 +78,7 @@ const Header = () => {
       )}
       </>}
 
-      <div className="bg-sixth-light dark:bg-sixth-dark px-4 p-[4px] flex justify-between">
+      <div className="bg-sixth-light dark:bg-sixth-dark px-4 p-[4px] flex justify-between ">
         <div className="flex flex-row items-center gap-2 text-primary-light dark:text-white text-[20px] font-bold">
           <IoMdMenu
             className="md:hidden text-primary-light text-[30px] cursor-pointer"
@@ -78,7 +87,7 @@ const Header = () => {
           <img src={SampleLogo} className="h-[50px] min-w-[50px]" />
           <p className="hidden md:flex">Friend Foundation Management System</p>
         </div>
-        <div className="flex flex-row gap-2 items-center">
+        <div className="flex flex-row gap-2 items-center relative">
           <p className="hidden lg:block dark:text-white">
             {GetUserData?.data.first_name} {GetUserData?.data.last_name}
           </p>
@@ -123,7 +132,7 @@ const Header = () => {
               // },
             }}
           >
-            {role === "Unassign" ? (
+            {(role === "Unassign"  || role === "Pending") ? (
               <>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </>
@@ -139,10 +148,23 @@ const Header = () => {
               </>
             )}
           </Menu>
-          <div className="relative rounded-[50%] bg-fourth-light dark:bg-fourth-dark h-[40px] min-w-[40px] flex items-center cursor-pointer" onClick={NotificationHandler}>
-            <img src={BellIcon} className="h-[35px] mx-auto" />
-
-            {OpenNotification && <div className="w-60 h-[400px] shadow-black shadow-lg bg-white absolute z-20 -translate-x-52 translate-y-[230px]"></div>}
+            <div className={`${(role === "Unassign" || role === "Pending") && "hidden" }  rounded-[50%] bg-fourth-light dark:bg-fourth-dark h-[40px] min-w-[40px] flex items-center cursor-pointer`} onClick={NotificationHandler}>
+            <img src={BellIcon} className='h-[35px] mx-auto' onClick={handleReadNotification}/>
+            <h1 className="absolute -translate-y-3 -translate-x-1 text-red-700 font-bold">{NotificationMessage?.unseenCount}</h1>
+            {OpenNotification && 
+            <div className="w-60 min-h-[50px] max-h-[400px] overflow-auto custom-scrollbar p-1 text-gray-800 shadow-black shadow-lg bg-white absolute right-0 top-0 translate-y-14 z-20 ">
+              {NotificationMessage?.data?.length === undefined || NotificationMessage?.data?.length > 0 ? <>
+              {NotificationMessage?.data?.map((item: any) => (
+                <>
+                <h1 className="py-2 ">{item.message}</h1>
+                <hr className="border-black"/>
+                </>
+                
+              ))}</> : 
+              <div className="w-full flex-1 flex justify-center items-center">
+                <h1 className="font-bold">No Notification Available</h1>
+                </div>}
+              </div>}
           </div>
         </div>
       </div>

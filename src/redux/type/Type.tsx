@@ -389,7 +389,7 @@ export interface FormResponse {
   active_status: boolean;
   date_created: string; // Assuming date_created is always in ISO 8601 format
   date_updated: string; // Assuming date_updated is always in ISO 8601 format
-
+  count?: number
   
 }
 
@@ -459,7 +459,7 @@ export type SubmittedFormResponse = {
 }
 
 export type ApprovePayload = {
-  id : number
+  id? : number
   remarks?: string | any
 }
 
@@ -491,8 +491,8 @@ export interface SubmittedFormLog {
 }
 
 export type SubmittedFormsResponse = {
-  message: string;
-  data: SubmittedFormLog[];
+  message?: string;
+  data?: SubmittedFormLog[];
 }
 
 export type IncompleteFormsResponse = {
@@ -501,8 +501,10 @@ export type IncompleteFormsResponse = {
   district_belong  : string
   church_belong : string
   status: string
-  lacking_report_form: []
-}[]
+  lacking_report_form: any[]
+  filter?: any
+  minHeight?: any
+}
 
 export interface RevisePayload {
   data: {
@@ -517,8 +519,45 @@ export interface RevisePayload {
   }[];
   dynamic_fields: any
   id: number
+  attachments: []
 }
 
 export interface DeleteFormPayload {
   id: number
+}
+
+export interface CustomFormData {
+  id?: number ;
+  data?: any
+}
+
+
+export interface NotificationResponse {
+  id: number;
+  user_id: number;
+  title: string;
+  message: string;
+  type: string;
+  view_status: boolean;
+  date_created: string; 
+}
+
+export interface DataNotificationResponse {
+  data: NotificationResponse[]
+  unseenCount: number
+}
+
+export interface AdminNotification {
+  id: number
+  user_id: number
+  title: string
+  message: string
+  type: string
+  view_status: string
+  date_created: string
+}
+
+export interface AdminNotificationResponse {
+  message: string
+  data?: AdminNotification[]
 }

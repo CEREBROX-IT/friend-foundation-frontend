@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 
 import BackgroundImage from "../../../assets/authentication/background_image.webp";
 import LeftPanel from "../../../assets/authentication/left_panel.webp";
@@ -25,6 +25,7 @@ const LoginScreen: FC = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [animation, setAnimation] = useState("zoom-in");
+  const [errorMessage, setErrorMessage] = useState("")
   const [Login, { isLoading, isError }] = useAuthLoginMutation();
 
   const {
@@ -39,7 +40,7 @@ const LoginScreen: FC = () => {
       .then((response) => {
         Cookies.set("token", response.token);
         window.location.href = "/";
-      })
+      }).catch((error => setErrorMessage(error?.data?.error)))
       
   };
 
@@ -172,7 +173,7 @@ const LoginScreen: FC = () => {
               ""
             )} */}
             {isError ? (
-              <p className="text-red-600 w-full text-sm">Invalid Credentials</p>
+              <p className="text-red-600 w-full text-sm">{errorMessage}</p>
             ) : (
               ""
             )}

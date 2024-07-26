@@ -16,7 +16,7 @@ export default function DistrictRevisedForm() {
   const filterData = SubmittedLog?.data?.filter(
     (item: any) => item.status === "Revise" && item.user_id === id
   );
-  console.log(filterData);
+ 
 
   // const handleOpenModal = (item: any) => {
   //   setOpenModal(true);
@@ -35,10 +35,9 @@ export default function DistrictRevisedForm() {
             description={item.form_description}
             status={item.status}
             remarks={item?.remarks}
-            card_click={() => navigate("/form-submission")}
           />
         ))}</> : <div className="flex h-full justify-center items-center ">
-          <img src={Empty} className="h-96 w-96"/></div>}
+          <img src={Empty} className="aspect-square w-96 "/></div>}
       </div>
       {openModal && (
         <PastorEditForm closeModal={handleCloseModal} data={selectedData} />

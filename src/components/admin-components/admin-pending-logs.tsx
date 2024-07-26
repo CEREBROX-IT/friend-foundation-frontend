@@ -1,13 +1,14 @@
 import { FC, useState, useEffect, useContext, useMemo } from "react";
 import { Box } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import { DataGrid, GridToolbar, GridRenderCellParams } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridRenderCellParams, GridColDef } from "@mui/x-data-grid";
 import ThemeContext from "../ThemeContext";
 import { useFetchIncompleteFormsQuery } from "../../redux/services/FormApi";
 import { IncompleteFormsResponse } from "../../redux/type/Type";
 
 const AdminPendingPage: FC = () => {
   const { data: PendingLogs } = useFetchIncompleteFormsQuery();
+  console.log(PendingLogs)
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredRows, setFilteredRows] = useState<IncompleteFormsResponse[]>(
     []
@@ -18,6 +19,7 @@ const AdminPendingPage: FC = () => {
     applyFilters();
   }, [searchQuery, PendingLogs]);
 
+  
   const applyFilters = () => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filteredData =
@@ -32,11 +34,18 @@ const AdminPendingPage: FC = () => {
     setFilteredRows(filteredData);
   };
 
+  
   // Memoize the filtered rows to prevent unnecessary re-renders
   const memoizedFilteredRows = useMemo(() => filteredRows, [filteredRows]);
 
   //-----for the Table------
-  const columns = [
+  const columns: GridColDef<IncompleteFormsResponse>[] = [
+    {
+      field: "user_id",
+      headerName: "ID",
+      flex: 1,
+      minWidth: 200,
+    },
     {
       field: "user_full_name",
       headerName: "NAME",
@@ -60,8 +69,7 @@ const AdminPendingPage: FC = () => {
       headerName: "LACKING REPORT FORM",
       flex: 1,
       minWidth: 300,
-      minHeight: 300, // Adjusted minHeight for better visibility
-      renderCell: (params: GridRenderCellParams<string[]>) => (
+      renderCell: (params: GridRenderCellParams<IncompleteFormsResponse, string[]>) => (
         <div
           className="flex flex-col overflow-y-auto"
           style={{ maxHeight: "200px" }} // Adjusted maxHeight for better visibility
@@ -152,7 +160,7 @@ const AdminPendingPage: FC = () => {
         <DataGrid
           rows={memoizedFilteredRows}
           columns={columns}
-          getRowId={(row) => row.user_id}
+          getRowId={(row: any) => row.user_id}
           components={{ Toolbar: GridToolbar }}
           componentsProps={{
             toolbar: {

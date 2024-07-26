@@ -1,6 +1,6 @@
-import React, { useState, FC } from "react";
+import  {FC } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
-import { TextField, IconButton, MenuItem } from "@mui/material";
+import { TextField, IconButton } from "@mui/material";
 import {
   IoIosRemoveCircle,
   IoIosAddCircle,
@@ -42,7 +42,6 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
     name: "attachments",
   });
 
-  const [selectedType, setSelectedType] = useState<"text" | "file">("text");
 
   const onSubmit: SubmitHandler<FormPayload> = async (data) => {
     const formData = new FormData();
@@ -57,13 +56,19 @@ const AddFormModal: FC<AddFormModalProps> = ({ closeAddModalForm }) => {
     data.attachments.forEach((attachment: any, index: any) => {
       formData.append(
         `attachments[${index}][field_name]`,
-        attachment.field_name
+        JSON.stringify(attachment.field_name)
+        
       ); 
       formData.append(
         `attachments[${index}][field_value]`,
         attachment.field_value[0]
       ); 
     });
+
+    // Log formData entries
+  for (const [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+  }
 
     await CreateForm(formData)
       .unwrap()
